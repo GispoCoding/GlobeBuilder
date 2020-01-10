@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/plugins/GlobeBuilder">
+        <file>icon.png</file>
+        <file>naturalEarthLogo250px.png</file>
+    </qresource>
+</RCC>
