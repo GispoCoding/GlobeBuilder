@@ -20,7 +20,7 @@ from qgis.PyQt.QtGui import QIcon, QColor
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsCoordinateReferenceSystem, QgsProject, QgsPointXY, QgsVectorLayer, QgsFeature, QgsGeometry, \
     QgsFillSymbol, QgsEffectStack, QgsDrawSourceEffect, QgsDropShadowEffect, QgsInnerShadowEffect, \
-    QgsGeometryGeneratorSymbolLayer
+    QgsGeometryGeneratorSymbolLayer, Qgis
 
 # Import the code for the dialog
 from .globe_builder_dialog import GlobeBuilderDialog
@@ -67,8 +67,11 @@ class GlobeBuilder:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
-
         self.origo = GlobeBuilder.DEFAULT_ORIGO
+
+        crs = QgsCoordinateReferenceSystem()
+        crs.createFromId(4326)
+        self.wgs84 = crs
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -180,6 +183,22 @@ class GlobeBuilder:
                 action)
             self.iface.removeToolBarIcon(action)
 
+    def calculate_origo(self):
+        if self.dlg.radioButtonCoordinates.isChecked():
+            try:
+                coordinates = tuple(map(lambda c: float(c.strip()), self.dlg.lineEditLatLon.text().split(",")))
+                if abs(coordinates[0]) > 90 or coordinates[1] > 180:
+                    raise ValueError(self.tr(
+                        u"Latitude should be between -90 and 90, longitude should be between -180 and 180"))
+                self.origo = coordinates
+            except ValueError as e:
+                self.origo = GlobeBuilder.DEFAULT_ORIGO
+                self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing latitude and longitude"),
+                                                    "{}: {}".format(self.tr("uTraceback"), e),
+                                                    level=Qgis.Warning, duration=3)
+        elif self.dlg.radioButtonGeolocation.isChecked():
+            pass
+
     def load_natural_eath_data(self):
         # TODO: resolution
         lyr_data = {
@@ -193,6 +212,10 @@ class GlobeBuilder:
                 layer.setName(name)
 
     def change_project_projection_to_globe(self):
+        self.iface.messageBar().pushMessage("{}".format(self.origo), level=Qgis.Warning, duration=3)
+
+        # Change to wgs84 to activate the changes in origo
+        QgsProject.instance().setCrs(self.wgs84)
         proj4_string = GlobeBuilder.PROJ4_STR.format(*self.origo)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj4(proj4_string)
@@ -267,9 +290,13 @@ class GlobeBuilder:
 
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
-        if self.first_start == True:
+        if self.first_start:
             self.first_start = False
             self.dlg = GlobeBuilderDialog()
+
+        # Dialog options
+        self.dlg.on_radioButtonCoordinates_toggled(self.dlg.radioButtonCoordinates.isChecked())
+        self.dlg.on_radioButtonGeolocation_toggled(self.dlg.radioButtonGeolocation.isChecked())
 
         # show the dialog
         self.dlg.show()
@@ -279,7 +306,9 @@ class GlobeBuilder:
         if result:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
+
             self.load_natural_eath_data()
+            self.calculate_origo()
             self.change_background_color()
             self.change_project_projection_to_globe()
             self.add_borders()

@@ -13,15 +13,16 @@
  ***************************************************************************/
 
 """
-
 import os
 import sys
 
+from PyQt5.QtCore import pyqtSlot
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 # Path append made in order to use image resource in dialog https://gis.stackexchange.com/a/202162/123927
+
 sys.path.append(os.path.dirname(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'globe_builder_dialog_base.ui'), resource_suffix='')
@@ -37,3 +38,18 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+
+    # Without this annotation the signal is handled twice,
+    # see https://stackoverflow.com/questions/14311578/event-signal-is-emmitted-twice-every-time
+    @pyqtSlot(bool)
+    def on_radioButtonCoordinates_toggled(self, isChecked):
+        self.lineEditLatLon.setEnabled(isChecked)
+
+    @pyqtSlot(bool)
+    def on_radioButtonGeolocation_toggled(self, isChecked):
+        self.lineEditGeolocation.setEnabled(isChecked)
+        self.pushButtonSearch.setEnabled(isChecked)
+
+    @pyqtSlot()
+    def on_pushButtonSearch_clicked(self):
+        pass
