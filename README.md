@@ -21,3 +21,9 @@ The plugin is still in beta-development. Please report issues preferably to Issu
 2. Launch QGIS and the plugins menu by selecting Plugins - Manage and Install Plugins from the top menu.
 
 3. Select the Install from ZIP tab, browse to the zip file you just downloaded, and click Install Plugin!
+
+## Gist
+There is also a Github [Gist](https://gist.github.com/Joonalai/7b8693ef904df75cb15cb9af0e82c032) that 
+provides the core functionality of the plugin. The usage can be seen in the following gif.
+
+![Gist in action](/screenshots/globe_view_gist.gifraw=true "Gist in action")
