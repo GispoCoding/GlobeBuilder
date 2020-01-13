@@ -59,7 +59,7 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
     # see https://stackoverflow.com/questions/14311578/event-signal-is-emmitted-twice-every-time
     @pyqtSlot(bool)
     def on_radioButtonCoordinates_toggled(self, isChecked):
-        self.lineEditLatLon.setEnabled(isChecked)
+        self.lineEditLonLat.setEnabled(isChecked)
 
     @pyqtSlot(bool)
     def on_radioButtonGeocoding_toggled(self, isChecked):
@@ -110,12 +110,11 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
                 self.listWidgetGeocodingResults.addItem(name)
                 self.geolocations[name] = coordinates
 
-    def get_geocoded_coordinates(self, latlon=True):
+    def get_geocoded_coordinates(self):
         coordinates = None
         if len(self.geolocations) and self.listWidgetGeocodingResults.count() > 0:
             geolocation = self.listWidgetGeocodingResults.currentItem().text()
             coordinates = self.geolocations.get(geolocation, None)
-            if latlon:
-                coordinates = (coordinates[1], coordinates[0])
+            coordinates = {'lon': coordinates[0], 'lat': coordinates[1]}
 
         return coordinates

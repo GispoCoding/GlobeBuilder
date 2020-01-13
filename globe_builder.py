@@ -30,8 +30,8 @@ from .resources import *
 
 class GlobeBuilder:
     NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
-    DEFAULT_ORIGO = (42.5333333333, 0.53333333339999)
-    PROJ4_STR = '+proj=ortho +lat_0={} +lon_0={} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
+    DEFAULT_ORIGO = {'lat': 42.5, 'lon': 0.5}
+    PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
     EARTH_RADIUS = 6371000
 
     """QGIS Plugin Implementation."""
@@ -186,8 +186,9 @@ class GlobeBuilder:
     def calculate_origo(self):
         try:
             if self.dlg.radioButtonCoordinates.isChecked():
-                coordinates = tuple(map(lambda c: float(c.strip()), self.dlg.lineEditLatLon.text().split(",")))
-                if abs(coordinates[0]) > 90 or coordinates[1] > 180:
+                coordinates = tuple(map(lambda c: float(c.strip()), self.dlg.lineEditLonLat.text().split(',')))
+                coordinates = {'lon': coordinates[0], 'lat': coordinates[1]}
+                if abs(coordinates['lat']) > 90 or coordinates['lon'] > 180:
                     raise ValueError(self.tr(
                         u"Latitude should be between -90 and 90, longitude should be between -180 and 180"))
                 self.origo = coordinates
@@ -218,7 +219,7 @@ class GlobeBuilder:
     def change_project_projection_to_globe(self):
         # Change to wgs84 to activate the changes in origo
         QgsProject.instance().setCrs(self.wgs84)
-        proj4_string = GlobeBuilder.PROJ4_STR.format(*self.origo)
+        proj4_string = GlobeBuilder.PROJ4_STR.format(**self.origo)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj4(proj4_string)
         QgsProject.instance().setCrs(crs)
@@ -267,7 +268,7 @@ class GlobeBuilder:
         if layer_name in existing_layer_names:
             return
 
-        proj4_string = GlobeBuilder.PROJ4_STR.format(*self.origo)
+        proj4_string = GlobeBuilder.PROJ4_STR.format(**self.origo)
         # Block signals required to prevent the pop up asking about the crs change
         self.iface.mainWindow().blockSignals(True)
         layer = QgsVectorLayer("Point?EPSG:4326", layer_name, "memory")
@@ -277,7 +278,7 @@ class GlobeBuilder:
         self.iface.mainWindow().blockSignals(False)
 
         feature = QgsFeature()
-        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(self.origo[0], self.origo[1])))
+        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(self.origo['lat'], self.origo['lon'])))
         provider = layer.dataProvider()
         layer.startEditing()
         provider.addFeatures([feature])
@@ -295,6 +296,7 @@ class GlobeBuilder:
         if self.first_start:
             self.first_start = False
             self.dlg = GlobeBuilderDialog()
+            self.dlg.lineEditLonLat.setText("{lon}, {lat}".format(**GlobeBuilder.DEFAULT_ORIGO))
 
         # Dialog options
         self.dlg.on_radioButtonCoordinates_toggled(self.dlg.radioButtonCoordinates.isChecked())
