@@ -20,7 +20,7 @@ from qgis.PyQt.QtGui import QIcon, QColor
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsCoordinateReferenceSystem, QgsProject, QgsPointXY, QgsVectorLayer, QgsFeature, QgsGeometry, \
     QgsFillSymbol, QgsEffectStack, QgsDrawSourceEffect, QgsDropShadowEffect, QgsInnerShadowEffect, \
-    QgsGeometryGeneratorSymbolLayer, Qgis
+    QgsGeometryGeneratorSymbolLayer, Qgis, QgsMessageLog
 
 # Import the code for the dialog
 from .globe_builder_dialog import GlobeBuilderDialog
@@ -214,6 +214,12 @@ class GlobeBuilder:
         for name, source in lyr_data.items():
             if name not in existing_layer_names:
                 layer = self.iface.addVectorLayer(GlobeBuilder.NATURAL_EARTH_BASE_URL + source, name, "ogr")
+                # There is a bug in QGIS 3.10.0 that prevents adding remote Geojson trough SSL
+                if layer is None:
+                    QgsMessageLog.logMessage(self.tr(u"Using local layer"), "GlobeBuilder", Qgis.Info)
+                    fname = os.path.join(os.path.dirname(__file__), "data", source)
+                    layer = self.iface.addVectorLayer(fname, name, "ogr")
+
                 layer.setName(name)
 
     def change_project_projection_to_globe(self):
