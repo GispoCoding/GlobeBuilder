@@ -13,15 +13,17 @@
  ***************************************************************************/
 
 """
+import json
 import os
 import sys
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QSettings, QUrl
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
-
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 # Path append made in order to use image resource in dialog https://gis.stackexchange.com/a/202162/123927
+from qgis.core import Qgis, QgsMessageLog
 
 sys.path.append(os.path.dirname(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -29,6 +31,10 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 
 class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
+    DEFAULT_MAX_NUMBER_OF_RESULTS = 5
+    MAX_NAME_PARTS = 3
+    NOMINATIM_URL = "https://nominatim.openstreetmap.org/search/{query}?limit={limit}&format=geojson"
+
     def __init__(self, parent=None):
         """Constructor."""
         super(GlobeBuilderDialog, self).__init__(parent)
@@ -39,6 +45,16 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
 
+        self.network_access_manager = QNetworkAccessManager()
+        self.network_access_manager.finished.connect(self.on_search_response)
+
+        self.spinBoxMaxResults.setValue(
+            QSettings().value("/GlobeBuilder/maxNumberOfResults",
+                              GlobeBuilderDialog.DEFAULT_MAX_NUMBER_OF_RESULTS,
+                              type=int))
+
+        self.geolocations = {}
+
     # Without this annotation the signal is handled twice,
     # see https://stackoverflow.com/questions/14311578/event-signal-is-emmitted-twice-every-time
     @pyqtSlot(bool)
@@ -46,10 +62,60 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
         self.lineEditLatLon.setEnabled(isChecked)
 
     @pyqtSlot(bool)
-    def on_radioButtonGeolocation_toggled(self, isChecked):
-        self.lineEditGeolocation.setEnabled(isChecked)
+    def on_radioButtonGeocoding_toggled(self, isChecked):
+        self.lineEditGeocoding.setEnabled(isChecked)
         self.pushButtonSearch.setEnabled(isChecked)
+        self.listWidgetGeocodingResults.setEnabled(isChecked)
+        self.spinBoxMaxResults.setEnabled(isChecked)
+
+    @pyqtSlot(int)
+    def on_spinBoxMaxResults_valueChanged(self, value):
+        QSettings().setValue("/GlobeBuilder/maxNumberOfResults", value)
 
     @pyqtSlot()
     def on_pushButtonSearch_clicked(self):
-        pass
+        text = self.lineEditGeocoding.text()
+        if len(text):
+            self.geocode(text)
+
+    def geocode(self, query):
+        self.listWidgetGeocodingResults.clear()
+        self.geolocations.clear()
+
+        params = {
+            'query': query,
+            'limit': self.spinBoxMaxResults.value()
+        }
+        url = GlobeBuilderDialog.NOMINATIM_URL.format(**params)
+
+        QgsMessageLog.logMessage(url, "GlobeBuilder", Qgis.Info)
+        geocoding_request = QNetworkRequest()
+        geocoding_request.setUrl(QUrl(url))
+        self.network_access_manager.get(geocoding_request)
+
+    def on_search_response(self, search_result):
+        error = search_result.error()
+        if error == QNetworkReply.NoError:
+            bytes_string = search_result.readAll()
+            data_string = str(bytes_string, 'utf-8')
+
+            result = json.loads(data_string)
+
+            for f in result['features']:
+                name_parts = f['properties']['display_name'].split(",")
+                name = "{} ({})".format(",".join(
+                    name_parts[0:min(GlobeBuilderDialog.MAX_NAME_PARTS, len(name_parts) - 1)]),
+                    name_parts[-1].strip()) if len(name_parts) > 1 else name_parts[0]
+                coordinates = f['geometry']['coordinates']
+                self.listWidgetGeocodingResults.addItem(name)
+                self.geolocations[name] = coordinates
+
+    def get_geocoded_coordinates(self, latlon=True):
+        coordinates = None
+        if len(self.geolocations) and self.listWidgetGeocodingResults.count() > 0:
+            geolocation = self.listWidgetGeocodingResults.currentItem().text()
+            coordinates = self.geolocations.get(geolocation, None)
+            if latlon:
+                coordinates = (coordinates[1], coordinates[0])
+
+        return coordinates

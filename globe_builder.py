@@ -184,20 +184,24 @@ class GlobeBuilder:
             self.iface.removeToolBarIcon(action)
 
     def calculate_origo(self):
-        if self.dlg.radioButtonCoordinates.isChecked():
-            try:
+        try:
+            if self.dlg.radioButtonCoordinates.isChecked():
                 coordinates = tuple(map(lambda c: float(c.strip()), self.dlg.lineEditLatLon.text().split(",")))
                 if abs(coordinates[0]) > 90 or coordinates[1] > 180:
                     raise ValueError(self.tr(
                         u"Latitude should be between -90 and 90, longitude should be between -180 and 180"))
                 self.origo = coordinates
-            except ValueError as e:
-                self.origo = GlobeBuilder.DEFAULT_ORIGO
-                self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing latitude and longitude"),
-                                                    "{}: {}".format(self.tr("uTraceback"), e),
-                                                    level=Qgis.Warning, duration=3)
-        elif self.dlg.radioButtonGeolocation.isChecked():
-            pass
+
+            elif self.dlg.radioButtonGeocoding.isChecked():
+                coordinates = self.dlg.get_geocoded_coordinates()
+                if not coordinates:
+                    raise ValueError(self.tr(u"Make sure to select an item from the Geolocation list"))
+                self.origo = coordinates
+        except ValueError as e:
+            self.origo = GlobeBuilder.DEFAULT_ORIGO
+            self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),
+                                                "{}: {}".format(self.tr("uTraceback"), e),
+                                                level=Qgis.Warning, duration=4)
 
     def load_natural_eath_data(self):
         # TODO: resolution
@@ -212,8 +216,6 @@ class GlobeBuilder:
                 layer.setName(name)
 
     def change_project_projection_to_globe(self):
-        self.iface.messageBar().pushMessage("{}".format(self.origo), level=Qgis.Warning, duration=3)
-
         # Change to wgs84 to activate the changes in origo
         QgsProject.instance().setCrs(self.wgs84)
         proj4_string = GlobeBuilder.PROJ4_STR.format(*self.origo)
@@ -296,7 +298,7 @@ class GlobeBuilder:
 
         # Dialog options
         self.dlg.on_radioButtonCoordinates_toggled(self.dlg.radioButtonCoordinates.isChecked())
-        self.dlg.on_radioButtonGeolocation_toggled(self.dlg.radioButtonGeolocation.isChecked())
+        self.dlg.on_radioButtonGeocoding_toggled(self.dlg.radioButtonGeocoding.isChecked())
 
         # show the dialog
         self.dlg.show()

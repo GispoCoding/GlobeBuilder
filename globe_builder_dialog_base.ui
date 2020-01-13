@@ -4,26 +4,26 @@
  <widget class="QDialog" name="GlobeBuilderDialogBase">
   <property name="geometry">
    <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>481</width>
-    <height>484</height>
+       <x>0</x>
+       <y>0</y>
+       <width>566</width>
+       <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Globe Builder</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_10">
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetNoConstraint</enum>
-     </property>
-     <item>
-      <widget class="QGroupBox" name="groupBox_5">
-       <property name="title">
-        <string>Center globe based on:</string>
-       </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+             <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0">
+                 <property name="sizeConstraint">
+                     <enum>QLayout::SetNoConstraint</enum>
+                 </property>
+                 <item>
+                     <widget class="QGroupBox" name="groupBox_5">
+                         <property name="title">
+                             <string>Center globe based on:</string>
+                         </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -58,11 +58,11 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QRadioButton" name="radioButtonGeolocation">
-              <property name="text">
-               <string>Geolocation</string>
-              </property>
-             </widget>
+                <widget class="QRadioButton" name="radioButtonGeocoding">
+                    <property name="text">
+                        <string>Geocoding</string>
+                    </property>
+                </widget>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -76,17 +76,62 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <item>
-                 <widget class="QLineEdit" name="lineEditGeolocation"/>
+                    <widget class="QLineEdit" name="lineEditGeocoding"/>
                 </item>
-                <item>
-                 <widget class="QPushButton" name="pushButtonSearch">
-                  <property name="text">
-                   <string>Search</string>
-                  </property>
-                 </widget>
-                </item>
+                   <item>
+                       <widget class="QPushButton" name="pushButtonSearch">
+                           <property name="text">
+                               <string>Search</string>
+                           </property>
+                       </widget>
+                   </item>
                </layout>
               </item>
+                 <item>
+                     <widget class="QListWidget" name="listWidgetGeocodingResults"/>
+                 </item>
+                 <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_2">
+                         <item>
+                             <widget class="QLabel" name="label_4">
+                                 <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                         <horstretch>0</horstretch>
+                                         <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                 </property>
+                                 <property name="text">
+                                     <string>Maximum number of addresses to list</string>
+                                 </property>
+                             </widget>
+                         </item>
+                         <item>
+                             <widget class="QSpinBox" name="spinBoxMaxResults">
+                                 <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                         <horstretch>0</horstretch>
+                                         <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                 </property>
+                                 <property name="maximumSize">
+                                     <size>
+                                         <width>50</width>
+                                         <height>16777215</height>
+                                     </size>
+                                 </property>
+                                 <property name="minimum">
+                                     <number>1</number>
+                                 </property>
+                                 <property name="maximum">
+                                     <number>40</number>
+                                 </property>
+                                 <property name="value">
+                                     <number>10</number>
+                                 </property>
+                             </widget>
+                         </item>
+                     </layout>
+                 </item>
              </layout>
             </item>
            </layout>
