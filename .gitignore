@@ -105,5 +105,4 @@ ENV/
 # Projects specifig
 .idea
 GlobeBuilder.iml
-resources.py
 /icon_large.xcf
