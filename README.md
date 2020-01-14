@@ -16,7 +16,7 @@ The plugin is still in beta-development. Please report issues preferably to Issu
 
 ## Installation instructions
 ### QGIS Plugin
-1. Download the repository as a zip using the Clone or download button in GitHub (above).
+1. Download the latest release zip from GitHub releases (above).
 
 2. Launch QGIS and the plugins menu by selecting Plugins - Manage and Install Plugins from the top menu.
 
