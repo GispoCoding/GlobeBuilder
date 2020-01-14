@@ -18,7 +18,7 @@
 #Add iso code for any locales you want to support here (space separated)
 # default is no locales
 # LOCALES = af
-LOCALES = fi
+LOCALES = GlobeBuilder_fi
 
 # If locales are enabled, set the name of the lrelease binary on your system. If
 # you have trouble compiling the translations, you may have to specify the full path to
@@ -96,8 +96,8 @@ test: compile transcompile
 	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); \
 		export QGIS_DEBUG=0; \
 		export QGIS_LOG_FILE=/dev/null; \
-		nosetests -v --with-id --with-coverage --cover-package=. \
-		3>&1 1>&2 2>&3 3>&- || true
+		pytest -v test \
+        3>&1 1>&2 2>&3 3>&- || true
 	@echo "----------------------"
 	@echo "If you get a 'no module named qgis.core error, try sourcing"
 	@echo "the helper script we have provided first then run make test."
@@ -185,7 +185,7 @@ transcompile:
 	@echo "Compiled translation files to .qm files."
 	@echo "----------------------------------------"
 	@chmod +x scripts/compile-strings.sh
-	@scripts/compile-strings.sh $(LRELEASE) $(PLUGINNAME)_$(LOCALES)
+	@scripts/compile-strings.sh $(LRELEASE) $(LOCALES)
 
 transclean:
 	@echo

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fi_FI">
+<!DOCTYPE TS><TS version="2.0" language="fi_FI" sourcelanguage="">
+<context>
+    <name>@default</name>
+    <message>
+        <location filename="../test/test_translations.py" line="42"/>
+        <source>Good morning</source>
+        <translation>Hyvää huomenta</translation>
+    </message>
+</context>
 <context>
     <name>GlobeBuilder</name>
     <message>
@@ -98,7 +105,12 @@
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="173"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please, note that the plugin utilizes the &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt; geocoding API. Please, &lt;span style=&quot; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;. The OpenStreetMap data is licensed under &lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please, note that the plugin utilizes the &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
+               style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;
+               geocoding API. Please, &lt;span style=&quot; font-weight:600;&quot;&gt;use maximum of 1 geocoding request
+               per second&lt;/span&gt;. The OpenStreetMap data is licensed under &lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
+               style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+           </source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lisäosa hyödyntää &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
             style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;
             geokoodaus-API:a.  &lt;span style=&quot; font-weight:600;&quot;&gt;Tee enintään 1 geokoodauskysely sekunnissat
@@ -106,7 +118,7 @@
             style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL-lisenssillä&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dialog_base.ui" line="203"/>
+        <location filename="../globe_builder_dialog_base.ui" line="208"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>

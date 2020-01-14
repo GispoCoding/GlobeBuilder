@@ -9,10 +9,10 @@ __copyright__ = 'Copyright 2020, Gispo Ltd.'
 
 import unittest
 
-from qgis.PyQt.QtGui import QDialogButtonBox, QDialog
-from utilities import get_qgis_app
+from qgis.PyQt.QtWidgets import QDialogButtonBox, QDialog
 
 from globe_builder_dialog import GlobeBuilderDialog
+from .utilities import get_qgis_app
 
 QGIS_APP = get_qgis_app()
 

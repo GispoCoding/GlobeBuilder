@@ -36,10 +36,16 @@ class QGISTest(unittest.TestCase):
         """
         crs = QgsCoordinateReferenceSystem()
         wkt = (
-            'GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",'
-            'SPHEROID["WGS_1984",6378137.0,298.257223563]],'
-            'PRIMEM["Greenwich",0.0],UNIT["Degree",'
-            '0.0174532925199433]]')
+            'GEOGCS["WGS 84",DATUM["WGS_1984",'
+            'SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],'
+            'AUTHORITY["EPSG","6326"]],'
+            'PRIMEM["Greenwich",0,'
+            'AUTHORITY["EPSG","8901"]],'
+            'UNIT["degree",0.0174532925199433,'
+            'AUTHORITY["EPSG","9122"]],'
+            'AUTHORITY["EPSG","4326"]]'
+        )
         crs.createFromWkt(wkt)
         auth_id = crs.authid()
         expected_auth_id = 'EPSG:4326'
