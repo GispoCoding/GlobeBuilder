@@ -171,10 +171,10 @@
          <widget class="QLabel" name="label_5">
           <property name="text">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please, note that the plugin utilizes the &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
-            style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;
-            geocoding API. Please, &lt;span style=&quot; font-weight:600;&quot;&gt;use maximum of 1 geocoding request
-            per second&lt;/span&gt;. The OpenStreetMap data is licensed under &lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
-            style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+               style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;
+               geocoding API. Please, &lt;span style=&quot; font-weight:600;&quot;&gt;use maximum of 1 geocoding request
+               per second&lt;/span&gt;. The OpenStreetMap data is licensed under &lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
+               style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
            </string>
           </property>
           <property name="wordWrap">
