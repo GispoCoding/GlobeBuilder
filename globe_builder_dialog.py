@@ -88,9 +88,16 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
         }
         url = GlobeBuilderDialog.NOMINATIM_URL.format(**params)
 
+        # http://osgeo-org.1560.x6.nabble.com/QGIS-Developer-Do-we-have-a-User-Agent-string-for-QGIS-td5360740.html
+        user_agent = QSettings().value("/qgis/networkAndProxy/userAgent", "Mozilla/5.0")
+        user_agent += " " if len(user_agent) else ""
+        user_agent += "QGIS/{}".format(Qgis.QGIS_VERSION_INT)
+        user_agent += " GlobeBuilder-plugin"
+
         QgsMessageLog.logMessage(url, "GlobeBuilder", Qgis.Info)
-        geocoding_request = QNetworkRequest()
-        geocoding_request.setUrl(QUrl(url))
+        geocoding_request = QNetworkRequest(QUrl(url))
+        # https://www.riverbankcomputing.com/pipermail/pyqt/2016-May/037514.html
+        geocoding_request.setRawHeader(b"User-Agent", bytes(user_agent, "utf-8"))
         self.network_access_manager.get(geocoding_request)
 
     def on_search_response(self, search_result):
@@ -109,10 +116,15 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
                 coordinates = f['geometry']['coordinates']
                 self.listWidgetGeocodingResults.addItem(name)
                 self.geolocations[name] = coordinates
+        else:
+            QgsMessageLog.logMessage(str(error), "GlobeBuilder", Qgis.Warning)
+            QgsMessageLog.logMessage(search_result.errorString(), "GlobeBuilder", Qgis.Warning)
 
     def get_geocoded_coordinates(self):
         coordinates = None
-        if len(self.geolocations) and self.listWidgetGeocodingResults.count() > 0:
+        if (len(self.geolocations) and
+                self.listWidgetGeocodingResults.count() > 0 and
+                self.listWidgetGeocodingResults.currentItem() is not None):
             geolocation = self.listWidgetGeocodingResults.currentItem().text()
             coordinates = self.geolocations.get(geolocation, None)
             coordinates = {'lon': coordinates[0], 'lat': coordinates[1]}
