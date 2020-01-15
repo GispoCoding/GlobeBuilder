@@ -1,7 +1,7 @@
 GlobeLoader
 ===========
 
-QGIS 3 plugin that is meant for adding globe visualization for the current map.
+QGIS 3 plugin that is meant for adding globe visualization to the current map.
 
 ![Plugin in action](/screenshots/geocoding1.gif?raw=true "Plugin in action")
 
@@ -16,6 +16,9 @@ The plugin is still in beta-development. Please report issues preferably to Issu
 
 ## Installation instructions
 ### QGIS Plugin
+The plugin can be installed trough QGIS Plugins Repository. It can also be installed by downloading a release from this 
+repository:
+
 1. Download the latest release zip from GitHub releases (above).
 
 2. Launch QGIS and the plugins menu by selecting Plugins - Manage and Install Plugins from the top menu.
