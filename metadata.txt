@@ -6,7 +6,7 @@
 name=Globe Builder
 qgisMinimumVersion=3.0
 description=This plugin is meant for adding globe visualization for the current map.
-version=0.2.2
+version=0.2.3
 author=Gispo Ltd.
 email=joona@gispo.fi
 
