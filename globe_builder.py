@@ -37,17 +37,24 @@ from .globe_builder_dialog import GlobeBuilderDialog
 from .resources import *
 
 
-class GlobeBuilder:
-    class LayerConnectionType(enum.Enum):
-        local = 1
-        url = 2
+class LayerConnectionType(enum.Enum):
+    local = 1
+    url = 2
 
+
+class BorderDrawMethod(enum.Enum):
+    geometry_generator = "Point"
+    buffered_point = "Polygon"
+
+
+class GlobeBuilder:
     NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson"
     LOCAL_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
     DEFAULT_ORIGIN = {'lat': 42.5, 'lon': 0.5}
     AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
     EARTH_RADIUS = 6370997
     DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
+    DEFAULT_BORDER_DRAW_METHOD = BorderDrawMethod.buffered_point
 
     """QGIS Plugin Implementation."""
 
@@ -203,9 +210,6 @@ class GlobeBuilder:
             if self.dlg.radioButtonCoordinates.isChecked():
                 coordinates = tuple(map(lambda c: float(c.strip()), self.dlg.lineEditLonLat.text().split(',')))
                 coordinates = {'lon': coordinates[0], 'lat': coordinates[1]}
-                if abs(coordinates['lat']) > 90 or coordinates['lon'] > 180:
-                    raise ValueError(self.tr(
-                        u"Latitude should be between -90 and 90, longitude should be between -180 and 180"))
                 self.origin = coordinates
 
             elif self.dlg.radioButtonGeocoding.isChecked():
@@ -227,11 +231,11 @@ class GlobeBuilder:
         }
         existing_layer_names = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
 
-        connection_type = GlobeBuilder.LayerConnectionType(
+        connection_type = LayerConnectionType(
             QSettings().value("/GlobeBuilder/layerConnectionType", GlobeBuilder.DEFAULT_LAYER_CONNECTION_TYPE.value,
                               type=int))
 
-        if connection_type == GlobeBuilder.LayerConnectionType.local:
+        if connection_type == LayerConnectionType.local:
             root = GlobeBuilder.LOCAL_DATA_DIR
         else:
             root = GlobeBuilder.NATURAL_EARTH_BASE_URL
@@ -271,24 +275,28 @@ class GlobeBuilder:
 
     # noinspection PyArgumentList
     @staticmethod
-    def set_border_styles(layer):
-        sym = layer.renderer().symbol()
+    def set_border_styles(layer, draw_method):
+        renderer = layer.renderer()
+        sym = renderer.symbol()
 
         props = {'color': 'blue'}
         fill_symbol = QgsFillSymbol.createSimple(props)
 
         # Assign effects
-        stack = QgsEffectStack()
-        stack.appendEffect(QgsDropShadowEffect.create({'color': 'white'}))
-        stack.appendEffect(QgsInnerShadowEffect.create({'color': 'white'}))
-        fill_symbol.symbolLayers()[0].setPaintEffect(stack)
+        effect_stack = QgsEffectStack()
+        effect_stack.appendEffect(QgsDropShadowEffect.create({'color': 'white'}))
+        effect_stack.appendEffect(QgsInnerShadowEffect.create({'color': 'white'}))
 
-        geom_generator_sl = QgsGeometryGeneratorSymbolLayer.create({
-            'SymbolType': 'Fill',
-            'geometryModifier': 'buffer($geometry, {:d})'.format(GlobeBuilder.EARTH_RADIUS)
-        })
-        geom_generator_sl.setSubSymbol(fill_symbol)
-        sym.changeSymbolLayer(0, geom_generator_sl)
+        fill_symbol.symbolLayers()[0].setPaintEffect(effect_stack)
+        if draw_method == BorderDrawMethod.buffered_point:
+            renderer.setSymbol(fill_symbol)
+        else:
+            geom_generator_sl = QgsGeometryGeneratorSymbolLayer.create({
+                'SymbolType': 'Fill',
+                'geometryModifier': 'buffer($geometry, {:d})'.format(GlobeBuilder.EARTH_RADIUS)
+            })
+            geom_generator_sl.setSubSymbol(fill_symbol)
+            sym.changeSymbolLayer(0, geom_generator_sl)
 
         layer.triggerRepaint()
         return layer
@@ -299,24 +307,30 @@ class GlobeBuilder:
         if layer_name in existing_layer_names:
             return
 
+        draw_method = BorderDrawMethod(
+            QSettings().value("/GlobeBuilder/borderDrawMethod", GlobeBuilder.DEFAULT_BORDER_DRAW_METHOD.value,
+                              type=str))
         proj4_string = GlobeBuilder.AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         # Block signals required to prevent the pop up asking about the crs change
         self.iface.mainWindow().blockSignals(True)
-        layer = QgsVectorLayer("Point?EPSG:4326", layer_name, "memory")
+        layer = QgsVectorLayer(draw_method.value, layer_name, "memory")
         crs = layer.crs()
         crs.createFromProj4(proj4_string)
         layer.setCrs(crs)
         self.iface.mainWindow().blockSignals(False)
 
         feature = QgsFeature()
-        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon'])))
+        geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
+        if draw_method == BorderDrawMethod.buffered_point:
+            geom = geom.buffer(GlobeBuilder.EARTH_RADIUS, GlobeBuilder.EARTH_RADIUS)
+        feature.setGeometry(geom)
         provider = layer.dataProvider()
         layer.startEditing()
         provider.addFeatures([feature])
         layer.commitChanges()
 
         # Assign styles and add to toc
-        self.set_border_styles(layer)
+        self.set_border_styles(layer, draw_method)
         QgsProject.instance().addMapLayer(layer)
 
     def run(self):

@@ -3,7 +3,7 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../test/test_translations.py" line="42"/>
+        <location filename="../test/test_translations.py" line="48"/>
         <source>Good morning</source>
         <translation>Hyvää huomenta</translation>
     </message>
@@ -11,49 +11,54 @@
 <context>
     <name>GlobeBuilder</name>
     <message>
-        <location filename="../globe_builder.py" line="181"/>
+        <location filename="../globe_builder.py" line="203"/>
         <source>&amp;Globe Builder</source>
         <translation>Maapallonäkymän rakentaja</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="169"/>
+        <location filename="../globe_builder.py" line="191"/>
         <source>Build Globe view</source>
         <translation>Rakenna maapallonäkymä</translation>
     </message>
     <message>
         <location filename="../globe_builder.py" line="192"/>
         <source>Latitude should be between -90 and 90, longitude should be between -180 and 180</source>
-        <translation>Leveysaste pitäisi olla -90 ja 90 asteen välissä, pituusasteen tulisi olla -180 ja 180 asteen välissä</translation>
+        <translation type="obsolete">Leveysaste pitäisi olla -90 ja 90 asteen välissä, pituusasteen tulisi olla -180 ja 180 asteen välissä</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="199"/>
+        <location filename="../globe_builder.py" line="218"/>
         <source>Make sure to select an item from the Geolocation list</source>
         <translation>Varmista, että valitset kohteen geokoodauslistalta</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="203"/>
+        <location filename="../globe_builder.py" line="222"/>
         <source>Error occurred while parsing center of the globe</source>
         <translation>Keskitystä etsiessä tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="203"/>
-        <source>uTraceback</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../globe_builder.py" line="210"/>
+        <location filename="../globe_builder.py" line="229"/>
         <source>Countries</source>
         <translation>Valtiot</translation>
     </message>
     <message>
         <location filename="../globe_builder.py" line="219"/>
         <source>Using local layer</source>
-        <translation>Käytetään paikallisesti ladattua tasoa</translation>
+        <translation type="obsolete">Käytetään paikallisesti ladattua tasoa</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="272"/>
+        <location filename="../globe_builder.py" line="306"/>
         <source>Sea</source>
         <translation>Meri</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="222"/>
+        <source>uTraceback</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="249"/>
+        <source>Could not load Natural Earth layer &apos;{}&apos;</source>
+        <translation>Natural earth-tason {} lataaminen ei onnistunut</translation>
     </message>
 </context>
 <context>
@@ -121,6 +126,39 @@
         <location filename="../globe_builder_dialog_base.ui" line="208"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>LayerConnectionType</name>
+    <message>
+        <location filename="../globe_builder.py" line="196"/>
+        <source>&amp;Globe Builder</source>
+        <translation type="obsolete">Maapallonäkymän rakentaja</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="184"/>
+        <source>Build Globe view</source>
+        <translation type="obsolete">Rakenna maapallonäkymä</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="211"/>
+        <source>Make sure to select an item from the Geolocation list</source>
+        <translation type="obsolete">Varmista, että valitset kohteen geokoodauslistalta</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="215"/>
+        <source>Error occurred while parsing center of the globe</source>
+        <translation type="obsolete">Keskitystä etsiessä tapahtui virhe</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="222"/>
+        <source>Countries</source>
+        <translation type="obsolete">Valtiot</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder.py" line="294"/>
+        <source>Sea</source>
+        <translation type="obsolete">Meri</translation>
     </message>
 </context>
 </TS>
