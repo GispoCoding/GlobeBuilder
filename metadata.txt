@@ -4,13 +4,13 @@
 
 [general]
 name=Globe Builder
-qgisMinimumVersion=3.0
-description=This plugin is meant for adding globe visualization for the current map.
+qgisMinimumVersion=3.2
+description=This plugin is meant for adding globe visualization to the current map.
 version=0.2.3
 author=Gispo Ltd.
 email=joona@gispo.fi
 
-about=This plugin builds a globe from Natural Earth countries GeoJSON and custom "world from space" projection described <a href="http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html">here</a>. This plugin uses <a href="https://wiki.openstreetmap.org/wiki/Nominatim">OpenStreetMap Nominatim</a> geocoding API. The OpenStreetMap data is licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL license</a>.
+about=This plugin builds a globe from Natural Earth countries GeoJSON and an Azimuthal orthographic projection ("world from space") projection described <a href="http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html">here</a>. This plugin uses <a href="https://wiki.openstreetmap.org/wiki/Nominatim">OpenStreetMap Nominatim</a> geocoding API. The OpenStreetMap data is licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL license</a>.
 
 tracker=https://github.com/GispoCoding/GlobeBuilder/issues
 repository=https://github.com/GispoCoding/GlobeBuilder

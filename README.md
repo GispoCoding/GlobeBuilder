@@ -1,7 +1,7 @@
-GlobeLoader
+Globe Builder
 ===========
 
-QGIS 3 plugin that is meant for adding globe visualization to the current map.
+QGIS 3 plugin that is meant for adding globe visualization to the current map using.
 
 ![Plugin in action](/screenshots/geocoding1.gif?raw=true "Plugin in action")
 
