@@ -39,9 +39,12 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 
 class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
+    NOMINATIM_URL = "https://nominatim.openstreetmap.org/search/{query}?limit={limit}&format=geojson"
     DEFAULT_MAX_NUMBER_OF_RESULTS = 5
     MAX_NAME_PARTS = 3
-    NOMINATIM_URL = "https://nominatim.openstreetmap.org/search/{query}?limit={limit}&format=geojson"
+    DEFAULT_USE_NE_COUNTRIES = True
+    DEFAULT_USE_NE_GRATICULES = False
+    DEFAULT_USE_S2_CLOUDLESS = False
 
     def __init__(self, parent=None):
         """Constructor."""
@@ -60,6 +63,18 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
             QSettings().value("/GlobeBuilder/maxNumberOfResults",
                               GlobeBuilderDialog.DEFAULT_MAX_NUMBER_OF_RESULTS,
                               type=int))
+        self.checkBoxCountries.setChecked(
+            QSettings().value("/GlobeBuilder/useNE-countries",
+                              GlobeBuilderDialog.DEFAULT_USE_NE_COUNTRIES,
+                              type=bool))
+        self.checkBoxGraticules.setChecked(
+            QSettings().value("/GlobeBuilder/useNE-graticules",
+                              GlobeBuilderDialog.DEFAULT_USE_NE_GRATICULES,
+                              type=bool))
+        self.checkBoxS2cloudless.setChecked(
+            QSettings().value("/GlobeBuilder/useS2cloudless",
+                              GlobeBuilderDialog.DEFAULT_USE_S2_CLOUDLESS,
+                              type=bool))
 
         self.geolocations = {}
 
@@ -79,6 +94,15 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
     @pyqtSlot(int)
     def on_spinBoxMaxResults_valueChanged(self, value):
         QSettings().setValue("/GlobeBuilder/maxNumberOfResults", value)
+
+    def on_checkBoxCountries_stateChanged(self):
+        QSettings().setValue("/GlobeBuilder/useNE-countries", self.checkBoxCountries.isChecked())
+
+    def on_checkBoxGraticules_stateChanged(self):
+        QSettings().setValue("/GlobeBuilder/useNE-graticules", self.checkBoxGraticules.isChecked())
+
+    def on_checkBoxS2cloudless_stateChanged(self):
+        QSettings().setValue("/GlobeBuilder/useS2cloudless", self.checkBoxS2cloudless.isChecked())
 
     @pyqtSlot()
     def on_pushButtonSearch_clicked(self):

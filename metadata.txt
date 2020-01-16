@@ -10,7 +10,7 @@ version=0.2.3
 author=Gispo Ltd.
 email=joona@gispo.fi
 
-about=This plugin builds a globe from Natural Earth countries GeoJSON and an Azimuthal orthographic projection ("world from space") projection described <a href="http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html">here</a>. This plugin uses <a href="https://wiki.openstreetmap.org/wiki/Nominatim">OpenStreetMap Nominatim</a> geocoding API. The OpenStreetMap data is licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL license</a>.
+about=This plugin builds a globe from Natural Earth countries GeoJSON and an Azimuthal orthographic projection ("world from space") projection described <a href="http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html">here</a>. This plugin uses <a href="https://wiki.openstreetmap.org/wiki/Nominatim">OpenStreetMap Nominatim</a> geocoding API. The OpenStreetMap data is licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL license</a>. This plugin lists Sentinel-2 cloudless as an optional data source. Sentinel-2 cloudless data <a href="https://s2maps.eu/"> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 & 2018) released under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">.
 
 tracker=https://github.com/GispoCoding/GlobeBuilder/issues
 repository=https://github.com/GispoCoding/GlobeBuilder

@@ -29,7 +29,7 @@ from qgis.PyQt.QtGui import QIcon, QColor
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsCoordinateReferenceSystem, QgsProject, QgsPointXY, QgsVectorLayer, QgsFeature, QgsGeometry, \
     QgsFillSymbol, QgsEffectStack, QgsDropShadowEffect, QgsInnerShadowEffect, \
-    QgsGeometryGeneratorSymbolLayer, Qgis
+    QgsGeometryGeneratorSymbolLayer, Qgis, QgsRasterLayer
 
 # Import the code for the dialog
 from .globe_builder_dialog import GlobeBuilderDialog
@@ -49,6 +49,7 @@ class BorderDrawMethod(enum.Enum):
 
 class GlobeBuilder:
     NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson"
+    S2CLOUDLESS_WMTS_URL = "url=https://tiles.maps.eox.at/wmts?SERVICE%3DWMTS%26REQUEST%3DGetCapabilities&contextualWMSLegend=0&crs=EPSG:4326&dpiMode=7&featureCount=10&format=image/jpeg&layers=s2cloudless-2018&styles=default&tileMatrixSet=WGS84"
     LOCAL_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
     DEFAULT_ORIGIN = {'lat': 42.5, 'lon': 0.5}
     AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
@@ -223,12 +224,23 @@ class GlobeBuilder:
                                                 "{}: {}".format(self.tr("uTraceback"), e),
                                                 level=Qgis.Warning, duration=4)
 
-    def load_natural_eath_data(self):
+    def load_data(self):
+        if self.dlg.checkBoxS2cloudless.isChecked():
+            s2_layer = QgsRasterLayer(GlobeBuilder.S2CLOUDLESS_WMTS_URL, self.tr(u'S2 Cloudless 2018'), "wms")
+            if s2_layer.isValid():
+                QgsProject.instance().addMapLayer(s2_layer)
+            else:
+                self.iface.messageBar().pushMessage(self.tr(u"Could not add Sentinel 2 Cloudless layer"),
+                                                    level=Qgis.Warning, duration=4)
+        ne_data = {}
+        if self.dlg.checkBoxCountries.isChecked():
+            ne_data[self.tr(u'Countries')] = 'ne_110m_admin_0_countries.geojson'
+        if self.dlg.checkBoxGraticules.isChecked():
+            ne_data[self.tr(u'Graticules')] = 'ne_10m_graticules_30.geojson'
+        len(ne_data) and self.load_natural_eath_data(ne_data)
+
+    def load_natural_eath_data(self, ne_data):
         # TODO: resolution
-        lyr_data = {
-            self.tr(u'Countries'): 'ne_110m_admin_0_countries.geojson',
-            # 'Graticules': 'ne_10m_graticules_30.geojson',
-        }
         existing_layer_names = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
 
         connection_type = LayerConnectionType(
@@ -240,7 +252,7 @@ class GlobeBuilder:
         else:
             root = GlobeBuilder.NATURAL_EARTH_BASE_URL
 
-        for name, source in lyr_data.items():
+        for name, source in ne_data.items():
             if name not in existing_layer_names:
                 layer = self.iface.addVectorLayer(os.path.join(root, source), name, "ogr")
                 if layer is None:
@@ -353,7 +365,7 @@ class GlobeBuilder:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            self.load_natural_eath_data()
+            self.load_data()
             self.calculate_origin()
             self.change_background_color()
             self.change_project_projection_to_azimuthal_orthographic()
