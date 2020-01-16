@@ -21,6 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+import enum
 import os.path
 
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
@@ -28,7 +29,7 @@ from qgis.PyQt.QtGui import QIcon, QColor
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsCoordinateReferenceSystem, QgsProject, QgsPointXY, QgsVectorLayer, QgsFeature, QgsGeometry, \
     QgsFillSymbol, QgsEffectStack, QgsDropShadowEffect, QgsInnerShadowEffect, \
-    QgsGeometryGeneratorSymbolLayer, Qgis, QgsMessageLog
+    QgsGeometryGeneratorSymbolLayer, Qgis
 
 # Import the code for the dialog
 from .globe_builder_dialog import GlobeBuilderDialog
@@ -37,10 +38,16 @@ from .resources import *
 
 
 class GlobeBuilder:
-    NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
+    class LayerConnectionType(enum.Enum):
+        local = 1
+        url = 2
+
+    NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson"
+    LOCAL_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
     DEFAULT_ORIGIN = {'lat': 42.5, 'lon': 0.5}
     AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
     EARTH_RADIUS = 6370997
+    DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
 
     """QGIS Plugin Implementation."""
 
@@ -219,14 +226,27 @@ class GlobeBuilder:
             # 'Graticules': 'ne_10m_graticules_30.geojson',
         }
         existing_layer_names = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
+
+        connection_type = GlobeBuilder.LayerConnectionType(
+            QSettings().value("/GlobeBuilder/layerConnectionType", GlobeBuilder.DEFAULT_LAYER_CONNECTION_TYPE.value,
+                              type=int))
+
+        if connection_type == GlobeBuilder.LayerConnectionType.local:
+            root = GlobeBuilder.LOCAL_DATA_DIR
+        else:
+            root = GlobeBuilder.NATURAL_EARTH_BASE_URL
+
         for name, source in lyr_data.items():
             if name not in existing_layer_names:
-                layer = self.iface.addVectorLayer(GlobeBuilder.NATURAL_EARTH_BASE_URL + source, name, "ogr")
-                # There is a bug in QGIS 3.10.0 that prevents adding remote Geojson trough SSL
+                layer = self.iface.addVectorLayer(os.path.join(root, source), name, "ogr")
                 if layer is None:
-                    QgsMessageLog.logMessage(self.tr(u"Using local layer"), "GlobeBuilder", Qgis.Info)
-                    fname = os.path.join(os.path.dirname(__file__), "data", source)
-                    layer = self.iface.addVectorLayer(fname, name, "ogr")
+                    layer = self.iface.addVectorLayer(os.path.join(GlobeBuilder.LOCAL_DATA_DIR, source), name, "ogr")
+                if layer is None:
+                    self.iface.messageBar().pushMessage(
+                        self.tr(u"Could not load Natural Earth layer '{}'".format(name)),
+                        level=Qgis.Warning, duration=3)
+                else:
+                    layer.setName(name)
 
     def change_project_projection_to_azimuthal_orthographic(self):
         # Change to wgs84 to activate the changes in origin
