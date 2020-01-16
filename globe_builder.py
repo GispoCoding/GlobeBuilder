@@ -54,6 +54,7 @@ class GlobeBuilder:
     DEFAULT_ORIGIN = {'lat': 42.5, 'lon': 0.5}
     AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
     EARTH_RADIUS = 6370997
+    DEFAULT_NUMBER_OF_SEGMENTS = 64
     DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
     DEFAULT_BORDER_DRAW_METHOD = BorderDrawMethod.buffered_point
 
@@ -225,8 +226,10 @@ class GlobeBuilder:
                                                 level=Qgis.Warning, duration=4)
 
     def load_data(self):
-        if self.dlg.checkBoxS2cloudless.isChecked():
-            s2_layer = QgsRasterLayer(GlobeBuilder.S2CLOUDLESS_WMTS_URL, self.tr(u'S2 Cloudless 2018'), "wms")
+        existing_layer_names = self.get_existing_layer_names()
+        s2_cloudless_layer_name = self.tr(u'S2 Cloudless 2018')
+        if self.dlg.checkBoxS2cloudless.isChecked() and s2_cloudless_layer_name not in existing_layer_names:
+            s2_layer = QgsRasterLayer(GlobeBuilder.S2CLOUDLESS_WMTS_URL, s2_cloudless_layer_name, "wms")
             if s2_layer.isValid():
                 QgsProject.instance().addMapLayer(s2_layer)
             else:
@@ -241,7 +244,7 @@ class GlobeBuilder:
 
     def load_natural_eath_data(self, ne_data):
         # TODO: resolution
-        existing_layer_names = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
+        existing_layer_names = self.get_existing_layer_names()
 
         connection_type = LayerConnectionType(
             QSettings().value("/GlobeBuilder/layerConnectionType", GlobeBuilder.DEFAULT_LAYER_CONNECTION_TYPE.value,
@@ -285,6 +288,10 @@ class GlobeBuilder:
         self.iface.mapCanvas().setCanvasColor(new_background_color)
         self.iface.mapCanvas().refresh()
 
+    @staticmethod
+    def get_existing_layer_names():
+        return [layer.name() for layer in QgsProject.instance().mapLayers().values()]
+
     # noinspection PyArgumentList
     @staticmethod
     def set_border_styles(layer, draw_method):
@@ -314,10 +321,10 @@ class GlobeBuilder:
         return layer
 
     def add_borders(self):
-        layer_name = self.tr(u"Sea")
-        existing_layer_names = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
-        if layer_name in existing_layer_names:
-            return
+        layer_name = self.tr(u"Halo")
+
+        instance = QgsProject.instance()
+        [instance.removeMapLayer(lyr.id()) for lyr in instance.mapLayersByName(layer_name)]
 
         draw_method = BorderDrawMethod(
             QSettings().value("/GlobeBuilder/borderDrawMethod", GlobeBuilder.DEFAULT_BORDER_DRAW_METHOD.value,
@@ -334,7 +341,7 @@ class GlobeBuilder:
         feature = QgsFeature()
         geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
         if draw_method == BorderDrawMethod.buffered_point:
-            geom = geom.buffer(GlobeBuilder.EARTH_RADIUS, GlobeBuilder.EARTH_RADIUS)
+            geom = geom.buffer(GlobeBuilder.EARTH_RADIUS, GlobeBuilder.DEFAULT_NUMBER_OF_SEGMENTS)
         feature.setGeometry(geom)
         provider = layer.dataProvider()
         layer.startEditing()
@@ -343,7 +350,7 @@ class GlobeBuilder:
 
         # Assign styles and add to toc
         self.set_border_styles(layer, draw_method)
-        QgsProject.instance().addMapLayer(layer)
+        instance.addMapLayer(layer)
 
     def run(self):
         """Run method that performs all the real work"""

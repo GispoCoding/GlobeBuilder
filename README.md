@@ -30,3 +30,13 @@ There is also a Github [Gist](https://gist.github.com/Joonalai/7b8693ef904df75cb
 provides the core functionality of the plugin. The usage can be seen in the following gif.
 
 ![Gist in action](/screenshots/globe_view_gist.gif?raw=true "Gist in action")
+
+## Licence
+
+This plugin is licenced with [GNU Genereal Public License, version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
+This plugin uses <a href="https://wiki.openstreetmap.org/wiki/Nominatim">OpenStreetMap Nominatim</a> geocoding API. 
+The OpenStreetMap data is licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL license</a>. 
+This plugin lists Sentinel-2 cloudless as an optional data source. Sentinel-2 cloudless data by
+by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 & 2018) released under 
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
+For commercial usage of Sentinel-2 cloudless please see https://cloudless.eox.at.
