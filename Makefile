@@ -65,7 +65,7 @@ PEP8EXCLUDE=pydev,resources.py,conf.py,third_party,ui
 #	* Windows:
 #	  AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins'
 
-QGISDIR=.local/share/QGIS/QGIS3/profiles/default
+QGISDIR=.local/share/QGIS/QGIS3/profiles/dev
 
 #################################################
 # Normally you would not need to edit below here
@@ -104,7 +104,7 @@ test: compile transcompile
 	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); \
 		export QGIS_DEBUG=0; \
 		export QGIS_LOG_FILE=/dev/null; \
-		pytest -v test \
+		pytest -v test --cov=. test \
         3>&1 1>&2 2>&3 3>&- || true
 	@echo "----------------------"
 	@echo "If you get a 'no module named qgis.core error, try sourcing"

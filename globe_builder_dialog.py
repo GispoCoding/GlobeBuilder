@@ -83,7 +83,7 @@ class GlobeBuilderDialog(QtWidgets.QDialog, FORM_CLASS):
     @pyqtSlot()
     def on_pushButtonSearch_clicked(self):
         text = self.lineEditGeocoding.text()
-        if len(text):
+        if len(text.strip()):
             self.geocode(text)
 
     def geocode(self, query):

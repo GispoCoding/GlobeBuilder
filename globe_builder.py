@@ -27,7 +27,7 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon, QColor
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsCoordinateReferenceSystem, QgsProject, QgsPointXY, QgsVectorLayer, QgsFeature, QgsGeometry, \
-    QgsFillSymbol, QgsEffectStack, QgsDrawSourceEffect, QgsDropShadowEffect, QgsInnerShadowEffect, \
+    QgsFillSymbol, QgsEffectStack, QgsDropShadowEffect, QgsInnerShadowEffect, \
     QgsGeometryGeneratorSymbolLayer, Qgis, QgsMessageLog
 
 # Import the code for the dialog
@@ -38,9 +38,9 @@ from .resources import *
 
 class GlobeBuilder:
     NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
-    DEFAULT_ORIGO = {'lat': 42.5, 'lon': 0.5}
-    PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
-    EARTH_RADIUS = 6371000
+    DEFAULT_ORIGIN = {'lat': 42.5, 'lon': 0.5}
+    AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
+    EARTH_RADIUS = 6370997
 
     """QGIS Plugin Implementation."""
 
@@ -75,7 +75,7 @@ class GlobeBuilder:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
-        self.origo = GlobeBuilder.DEFAULT_ORIGO
+        self.origin = GlobeBuilder.DEFAULT_ORIGIN
 
         crs = QgsCoordinateReferenceSystem()
         crs.createFromId(4326)
@@ -191,7 +191,7 @@ class GlobeBuilder:
                 action)
             self.iface.removeToolBarIcon(action)
 
-    def calculate_origo(self):
+    def calculate_origin(self):
         try:
             if self.dlg.radioButtonCoordinates.isChecked():
                 coordinates = tuple(map(lambda c: float(c.strip()), self.dlg.lineEditLonLat.text().split(',')))
@@ -199,15 +199,15 @@ class GlobeBuilder:
                 if abs(coordinates['lat']) > 90 or coordinates['lon'] > 180:
                     raise ValueError(self.tr(
                         u"Latitude should be between -90 and 90, longitude should be between -180 and 180"))
-                self.origo = coordinates
+                self.origin = coordinates
 
             elif self.dlg.radioButtonGeocoding.isChecked():
                 coordinates = self.dlg.get_geocoded_coordinates()
                 if not coordinates:
                     raise ValueError(self.tr(u"Make sure to select an item from the Geolocation list"))
-                self.origo = coordinates
+                self.origin = coordinates
         except ValueError as e:
-            self.origo = GlobeBuilder.DEFAULT_ORIGO
+            self.origin = GlobeBuilder.DEFAULT_ORIGIN
             self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),
                                                 "{}: {}".format(self.tr("uTraceback"), e),
                                                 level=Qgis.Warning, duration=4)
@@ -228,12 +228,10 @@ class GlobeBuilder:
                     fname = os.path.join(os.path.dirname(__file__), "data", source)
                     layer = self.iface.addVectorLayer(fname, name, "ogr")
 
-                layer.setName(name)
-
-    def change_project_projection_to_globe(self):
-        # Change to wgs84 to activate the changes in origo
+    def change_project_projection_to_azimuthal_orthographic(self):
+        # Change to wgs84 to activate the changes in origin
         QgsProject.instance().setCrs(self.wgs84)
-        proj4_string = GlobeBuilder.PROJ4_STR.format(**self.origo)
+        proj4_string = GlobeBuilder.AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj4(proj4_string)
         QgsProject.instance().setCrs(crs)
@@ -261,7 +259,6 @@ class GlobeBuilder:
 
         # Assign effects
         stack = QgsEffectStack()
-        stack.appendEffect(QgsDrawSourceEffect.create({'enabled': 'False'}))
         stack.appendEffect(QgsDropShadowEffect.create({'color': 'white'}))
         stack.appendEffect(QgsInnerShadowEffect.create({'color': 'white'}))
         fill_symbol.symbolLayers()[0].setPaintEffect(stack)
@@ -282,7 +279,7 @@ class GlobeBuilder:
         if layer_name in existing_layer_names:
             return
 
-        proj4_string = GlobeBuilder.PROJ4_STR.format(**self.origo)
+        proj4_string = GlobeBuilder.AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         # Block signals required to prevent the pop up asking about the crs change
         self.iface.mainWindow().blockSignals(True)
         layer = QgsVectorLayer("Point?EPSG:4326", layer_name, "memory")
@@ -292,7 +289,7 @@ class GlobeBuilder:
         self.iface.mainWindow().blockSignals(False)
 
         feature = QgsFeature()
-        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(self.origo['lat'], self.origo['lon'])))
+        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon'])))
         provider = layer.dataProvider()
         layer.startEditing()
         provider.addFeatures([feature])
@@ -310,7 +307,7 @@ class GlobeBuilder:
         if self.first_start:
             self.first_start = False
             self.dlg = GlobeBuilderDialog()
-            self.dlg.lineEditLonLat.setText("{lon}, {lat}".format(**GlobeBuilder.DEFAULT_ORIGO))
+            self.dlg.lineEditLonLat.setText("{lon}, {lat}".format(**GlobeBuilder.DEFAULT_ORIGIN))
 
         # Dialog options
         self.dlg.on_radioButtonCoordinates_toggled(self.dlg.radioButtonCoordinates.isChecked())
@@ -322,12 +319,8 @@ class GlobeBuilder:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
-
             self.load_natural_eath_data()
-            self.calculate_origo()
+            self.calculate_origin()
             self.change_background_color()
-            self.change_project_projection_to_globe()
+            self.change_project_projection_to_azimuthal_orthographic()
             self.add_borders()
-            pass
