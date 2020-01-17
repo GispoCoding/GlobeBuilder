@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fi_FI" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="fi_FI">
 <context>
     <name>@default</name>
     <message>
@@ -11,12 +12,12 @@
 <context>
     <name>GlobeBuilder</name>
     <message>
-        <location filename="../globe_builder.py" line="204"/>
+        <location filename="../globe_builder.py" line="205"/>
         <source>&amp;Globe Builder</source>
         <translation>Maapallonäkymän rakentaja</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="192"/>
+        <location filename="../globe_builder.py" line="193"/>
         <source>Build Globe view</source>
         <translation>Rakenna maapallonäkymä</translation>
     </message>
@@ -26,17 +27,17 @@
         <translation type="obsolete">Leveysaste pitäisi olla -90 ja 90 asteen välissä, pituusasteen tulisi olla -180 ja 180 asteen välissä</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="219"/>
+        <location filename="../globe_builder.py" line="220"/>
         <source>Make sure to select an item from the Geolocation list</source>
         <translation>Varmista, että valitset kohteen geokoodauslistalta</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="223"/>
+        <location filename="../globe_builder.py" line="224"/>
         <source>Error occurred while parsing center of the globe</source>
         <translation>Keskitystä etsiessä tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="237"/>
+        <location filename="../globe_builder.py" line="240"/>
         <source>Countries</source>
         <translation>Valtiot</translation>
     </message>
@@ -51,34 +52,34 @@
         <translation type="obsolete">Meri</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="223"/>
+        <location filename="../globe_builder.py" line="224"/>
         <source>uTraceback</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="261"/>
+        <location filename="../globe_builder.py" line="264"/>
         <source>Could not load Natural Earth layer &apos;{}&apos;</source>
         <translation>Natural earth-tason {} lataaminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="229"/>
+        <location filename="../globe_builder.py" line="230"/>
         <source>S2 Cloudless 2018</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="233"/>
+        <location filename="../globe_builder.py" line="236"/>
         <source>Could not add Sentinel 2 Cloudless layer</source>
         <translation>Sentinel 2 Cloudless -tason lisääminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="239"/>
+        <location filename="../globe_builder.py" line="242"/>
         <source>Graticules</source>
         <translation>Koordinaattiviivasto</translation>
     </message>
     <message>
-        <location filename="../globe_builder.py" line="317"/>
+        <location filename="../globe_builder.py" line="324"/>
         <source>Halo</source>
-        <translation type="unfinished"></translation>
+        <translation>Kehä</translation>
     </message>
 </context>
 <context>
@@ -182,11 +183,23 @@
             2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons
             Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
-            font-size:10pt;&quot;&gt;. For commercial usage please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
+            font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
             style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
            </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Lisäosa hyödyntää &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
+            style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;
+            geokoodaus-API:a.  &lt;span style=&quot; font-weight:600;&quot;&gt;Tee enintään 1 geokoodauskysely sekunnissat
+            &lt;/span&gt;. OpenStreetMap-aineisto on lisensoitu &lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
+            style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL-lisenssillä&lt;/span&gt;&lt;/a&gt;.&lt;/html&gt; Sentinel-2 cloudless -aineisto &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span
+            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
+            style=&quot; font-size:10pt;&quot;&gt; on EOX IT Services GmbH julkaisema (Sisältää muokattua Copernicus Sentinel aineistoa vuosilta
+            2017 &amp;amp; 2018) on lisensoitu lisenssillä &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
+            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons
+            Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
+            font-size:10pt;&quot;&gt;. Sentinel-2 cloudless -aineiston kaupalliseen käyttöön katso lisätietoja: &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
+            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
+            style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
