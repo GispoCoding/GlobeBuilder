@@ -3,7 +3,7 @@ Globe Builder
 
 QGIS 3 plugin that is meant for adding globe visualization to the current map using.
 
-![Plugin in action](/screenshots/geocoding1.gif?raw=true "Plugin in action")
+![Plugin in action](/images/screenshots/geocoding1.gif?raw=true "Plugin in action")
 
 Inspired by these blog posts by 
 [statsmapsnpix](http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html)
@@ -29,7 +29,7 @@ repository:
 There is also a Github [Gist](https://gist.github.com/Joonalai/7b8693ef904df75cb15cb9af0e82c032) that 
 provides the core functionality of the plugin. The usage can be seen in the following gif.
 
-![Gist in action](/screenshots/globe_view_gist.gif?raw=true "Gist in action")
+![Gist in action](/images/screenshots/globe_view_gist.gif?raw=true "Gist in action")
 
 ## Licence
 

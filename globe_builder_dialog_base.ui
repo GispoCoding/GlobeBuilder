@@ -209,23 +209,7 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Please,
-            note that the plugin utilizes the &lt;/span&gt;&lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt; geocoding API. Please, &lt;/span&gt;&lt;span style=&quot;
-            font-size:10pt; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt;. Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data
-            2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons
-            Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
-            font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-           </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Please, note that the plugin utilizes the &lt;/span&gt;&lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; geocoding API. Please, &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -255,7 +239,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/images/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
