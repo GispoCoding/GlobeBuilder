@@ -39,16 +39,16 @@ LRELEASE = lrelease
 SOURCES = \
 	__init__.py \
 	plugin.py plugin.py utils/settings.py utils/utils.py globe.py \
-	globe_builder_dialog.py globe_builder_dockwidget.py
+	globe_builder_dockwidget.py
 
 PLUGINNAME = GlobeBuilder
 
 PY_FILES = \
 	__init__.py \
 	plugin.py plugin.py utils/settings.py utils/utils.py globe.py \
-    globe_builder_dialog.py globe_builder_dockwidget.py
+    globe_builder_dockwidget.py
 
-UI_FILES = globe_builder_dialog_base.ui globe_builder_dockwidget_base.ui
+UI_FILES = globe_builder_dockwidget_base.ui
 
 EXTRAS = metadata.txt icon.png
 
