@@ -30,7 +30,7 @@ class LayerConnectionType(enum.Enum):
     url = 2
 
 
-class BorderDrawMethod(enum.Enum):
+class HaloDrawMethod(enum.Enum):
     geometry_generator = "Point"
     buffered_point = "Polygon"
 
@@ -43,7 +43,7 @@ AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0
 EARTH_RADIUS = 6370997
 DEFAULT_NUMBER_OF_SEGMENTS = 64
 DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
-DEFAULT_BORDER_DRAW_METHOD = BorderDrawMethod.buffered_point
+DEFAULT_HALO_DRAW_METHOD = HaloDrawMethod.buffered_point
 
 # UI
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search/{query}?limit={limit}&format=geojson"

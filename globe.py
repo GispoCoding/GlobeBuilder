@@ -28,9 +28,9 @@ from qgis.core import QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterL
     QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer, QgsFeature, QgsGeometry, \
     QgsPointXY
 
-from utils.settings import (LayerConnectionType, BorderDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
+from utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
                             DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
-                            DEFAULT_BORDER_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN)
+                            DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN)
 from utils.utils import tr
 
 
@@ -117,7 +117,7 @@ class Globe:
 
     # noinspection PyArgumentList
     @staticmethod
-    def set_border_styles(layer, draw_method):
+    def set_halo_styles(layer, draw_method):
         renderer = layer.renderer()
         sym = renderer.symbol()
 
@@ -130,7 +130,7 @@ class Globe:
         effect_stack.appendEffect(QgsInnerShadowEffect.create({'color': 'white'}))
 
         fill_symbol.symbolLayers()[0].setPaintEffect(effect_stack)
-        if draw_method == BorderDrawMethod.buffered_point:
+        if draw_method == HaloDrawMethod.buffered_point:
             renderer.setSymbol(fill_symbol)
         else:
             geom_generator_sl = QgsGeometryGeneratorSymbolLayer.create({
@@ -143,14 +143,14 @@ class Globe:
         layer.triggerRepaint()
         return layer
 
-    def add_borders(self):
+    def add_halo(self):
         layer_name = tr(u"Halo")
 
         instance = QgsProject.instance()
         [instance.removeMapLayer(lyr.id()) for lyr in instance.mapLayersByName(layer_name)]
 
-        draw_method = BorderDrawMethod(
-            QSettings().value("/GlobeBuilder/borderDrawMethod", DEFAULT_BORDER_DRAW_METHOD.value,
+        draw_method = HaloDrawMethod(
+            QSettings().value("/GlobeBuilder/haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value,
                               type=str))
         proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         # Block signals required to prevent the pop up asking about the crs change
@@ -163,7 +163,7 @@ class Globe:
 
         feature = QgsFeature()
         geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
-        if draw_method == BorderDrawMethod.buffered_point:
+        if draw_method == HaloDrawMethod.buffered_point:
             geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
         feature.setGeometry(geom)
         provider = layer.dataProvider()
@@ -172,5 +172,5 @@ class Globe:
         layer.commitChanges()
 
         # Assign styles and add to toc
-        self.set_border_styles(layer, draw_method)
+        self.set_halo_styles(layer, draw_method)
         instance.addMapLayer(layer)

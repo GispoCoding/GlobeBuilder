@@ -118,6 +118,18 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if len(text.strip()):
             self.geocode(text)
 
+    @pyqtSlot()
+    def on_pushButtonLoadData_clicked(self):
+        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
+                             self.checkBoxGraticules.isChecked())
+
+    @pyqtSlot()
+    def on_pushButtonCenter_clicked(self):
+        self.globe.set_origin(self.calculate_origin_coordinates())
+        self.globe.change_background_color()
+        self.globe.change_project_projection_to_azimuthal_orthographic()
+        self.globe.add_halo()
+
     def geocode(self, query):
         self.listWidgetGeocodingResults.clear()
         self.geolocations.clear()
@@ -189,14 +201,3 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                 "{}: {}".format(self.tr("uTraceback"), e),
                                                 level=Qgis.Warning, duration=4)
         return coordinates
-
-    @pyqtSlot()
-    def on_pushButtonRun_clicked(self):
-        """Run the logic"""
-
-        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
-                             self.checkBoxGraticules.isChecked())
-        self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.change_background_color()
-        self.globe.change_project_projection_to_azimuthal_orthographic()
-        self.globe.add_borders()
