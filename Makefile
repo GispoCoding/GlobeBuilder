@@ -38,15 +38,17 @@ LRELEASE = lrelease
 # translation
 SOURCES = \
 	__init__.py \
-	globe_builder.py globe_builder_dialog.py
+	plugin.py plugin.py utils/settings.py utils/utils.py globe.py \
+	globe_builder_dialog.py globe_builder_dockwidget.py
 
 PLUGINNAME = GlobeBuilder
 
 PY_FILES = \
 	__init__.py \
-	globe_builder.py globe_builder_dialog.py
+	plugin.py plugin.py utils/settings.py utils/utils.py globe.py \
+    globe_builder_dialog.py globe_builder_dockwidget.py
 
-UI_FILES = globe_builder_dialog_base.ui
+UI_FILES = globe_builder_dialog_base.ui globe_builder_dockwidget_base.ui
 
 EXTRAS = metadata.txt icon.png
 
@@ -121,10 +123,10 @@ deploy: compile doc transcompile
 	# the Python plugin directory is located at:
 	# $HOME/$(QGISDIR)/python/plugins
 	mkdir -p $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(PY_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(UI_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(COMPILED_RESOURCE_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
-	cp -vf $(EXTRAS) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(PY_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(UI_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(COMPILED_RESOURCE_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(EXTRAS) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
 	cp -vfr i18n $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
 	cp -vfr $(HELP) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/help
 	# Copy extra directories if any
