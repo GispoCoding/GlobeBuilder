@@ -24,6 +24,9 @@
 import enum
 import os
 
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
+
 
 class LayerConnectionType(enum.Enum):
     local = 1
@@ -44,6 +47,14 @@ EARTH_RADIUS = 6370997
 DEFAULT_NUMBER_OF_SEGMENTS = 64
 DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
 DEFAULT_HALO_DRAW_METHOD = HaloDrawMethod.buffered_point
+
+# Colors
+DEFAULT_BACKGROUND_COLOR = QColor(Qt.black)
+DEFAULT_HALO_COLOR = QColor(Qt.white)
+DEFAULT_HALO_FILL_COLOR = QColor(Qt.blue)
+_transparent = QColor(Qt.black)
+_transparent.setAlpha(0)
+TRANSPARENT_COLOR = _transparent
 
 # UI
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search/{query}?limit={limit}&format=geojson"

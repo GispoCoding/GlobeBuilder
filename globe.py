@@ -22,16 +22,15 @@
 """
 import os
 
-from PyQt5.QtCore import QSettings, Qt
-from PyQt5.QtGui import QColor
-from qgis.core import QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack, \
-    QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer, QgsFeature, QgsGeometry, \
-    QgsPointXY
+from PyQt5.QtCore import QSettings
+from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
+                       QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
+                       QgsFeature, QgsGeometry, QgsPointXY, QgsLayerTreeLayer)
 
-from utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
-                            DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
-                            DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN)
-from utils.utils import tr
+from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
+                             DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
+                             DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN, TRANSPARENT_COLOR)
+from .utils.utils import tr
 
 
 class Globe:
@@ -39,6 +38,7 @@ class Globe:
     def __init__(self, iface):
         self.iface = iface
         self.origin = DEFAULT_ORIGIN
+        self.qgis_instance = QgsProject.instance()
 
         crs = QgsCoordinateReferenceSystem()
         crs.createFromId(4326)
@@ -54,7 +54,7 @@ class Globe:
         if load_s2 and s2_cloudless_layer_name not in existing_layer_names:
             s2_layer = QgsRasterLayer(S2CLOUDLESS_WMTS_URL, s2_cloudless_layer_name, "wms")
             if s2_layer.isValid():
-                QgsProject.instance().addMapLayer(s2_layer)
+                self.qgis_instance.addMapLayer(s2_layer)
             else:
                 self.iface.messageBar().pushMessage(tr(u"Could not add Sentinel 2 Cloudless layer"),
                                                     level=Qgis.Warning, duration=4)
@@ -92,24 +92,24 @@ class Globe:
 
     def change_project_projection_to_azimuthal_orthographic(self):
         # Change to wgs84 to activate the changes in origin
-        QgsProject.instance().setCrs(self.wgs84)
+        self.qgis_instance.setCrs(self.wgs84)
         proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj4(proj4_string)
-        QgsProject.instance().setCrs(crs)
+        self.qgis_instance.setCrs(crs)
 
-    def change_background_color(self, color=Qt.black):
-        new_background_color = QColor(color)
-
+    def change_background_color(self, new_background_color):
         # Write it to the project (will still need to be saved!)
-        instance = QgsProject.instance()
-        instance.writeEntry("Gui", "/CanvasColorRedPart", new_background_color.red())
-        instance.writeEntry("Gui", "/CanvasColorGreenPart", new_background_color.green())
-        instance.writeEntry("Gui", "/CanvasColorBluePart", new_background_color.blue())
+        self.qgis_instance.writeEntry("Gui", "/CanvasColorRedPart", new_background_color.red())
+        self.qgis_instance.writeEntry("Gui", "/CanvasColorGreenPart", new_background_color.green())
+        self.qgis_instance.writeEntry("Gui", "/CanvasColorBluePart", new_background_color.blue())
 
         # And apply for the current session
         self.iface.mapCanvas().setCanvasColor(new_background_color)
         self.iface.mapCanvas().refresh()
+
+    def change_halo_color(self, layer_name, color):
+        layers = self.qgis_instance.mapLayersByName(layer_name)
 
     @staticmethod
     def get_existing_layer_names():
@@ -117,19 +117,30 @@ class Globe:
 
     # noinspection PyArgumentList
     @staticmethod
-    def set_halo_styles(layer, draw_method):
+    def set_halo_styles(layer, draw_method, stroke_color, use_effects, fill_color=None):
         renderer = layer.renderer()
         sym = renderer.symbol()
 
         props = {'color': 'blue'}
         fill_symbol = QgsFillSymbol.createSimple(props)
+        fill_symbol_layer = fill_symbol.symbolLayers()[0]
+        fill_symbol_layer.setStrokeColor(stroke_color)
+        if fill_color is not None:
+            fill_symbol_layer.setColor(fill_color)
+        elif not use_effects:
+            fill_symbol_layer.setColor(TRANSPARENT_COLOR)
 
-        # Assign effects
-        effect_stack = QgsEffectStack()
-        effect_stack.appendEffect(QgsDropShadowEffect.create({'color': 'white'}))
-        effect_stack.appendEffect(QgsInnerShadowEffect.create({'color': 'white'}))
+        if use_effects:
+            # Assign effects
+            effect_stack = QgsEffectStack()
+            drop_shdw = QgsDropShadowEffect()
+            drop_shdw.setColor(stroke_color)
+            inner_shdw = QgsInnerShadowEffect()
+            inner_shdw.setColor(stroke_color)
+            effect_stack.appendEffect(drop_shdw)
+            effect_stack.appendEffect(inner_shdw)
 
-        fill_symbol.symbolLayers()[0].setPaintEffect(effect_stack)
+            fill_symbol_layer.setPaintEffect(effect_stack)
         if draw_method == HaloDrawMethod.buffered_point:
             renderer.setSymbol(fill_symbol)
         else:
@@ -143,11 +154,10 @@ class Globe:
         layer.triggerRepaint()
         return layer
 
-    def add_halo(self):
+    def add_halo(self, use_effects, stroke_color, fill_color=None):
         layer_name = tr(u"Halo")
 
-        instance = QgsProject.instance()
-        [instance.removeMapLayer(lyr.id()) for lyr in instance.mapLayersByName(layer_name)]
+        [self.qgis_instance.removeMapLayer(lyr.id()) for lyr in self.qgis_instance.mapLayersByName(layer_name)]
 
         draw_method = HaloDrawMethod(
             QSettings().value("/GlobeBuilder/haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value,
@@ -171,6 +181,10 @@ class Globe:
         provider.addFeatures([feature])
         layer.commitChanges()
 
-        # Assign styles and add to toc
-        self.set_halo_styles(layer, draw_method)
-        instance.addMapLayer(layer)
+        # Assign styles and to map (but not toc yet)
+        self.set_halo_styles(layer, draw_method, stroke_color, use_effects, fill_color)
+        self.qgis_instance.addMapLayer(layer, False)
+
+        index = 0 if use_effects else -1
+        tree_root = self.qgis_instance.layerTreeRoot()
+        tree_root.insertChildNode(index, QgsLayerTreeLayer(layer))

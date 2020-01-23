@@ -34,7 +34,7 @@
         <translation>Natural earth-tason {} lataaminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="147"/>
+        <location filename="../globe.py" line="158"/>
         <source>Halo</source>
         <translation>Kehä</translation>
     </message>
@@ -107,48 +107,48 @@
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="14"/>
         <source>Globe Builder</source>
-        <translation>Maapallonäkymän rakentaja</translation>
+        <translation type="obsolete">Maapallonäkymän rakentaja</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="63"/>
         <source>Center globe based on:</source>
-        <translation>Keskitä maapallo:</translation>
+        <translation type="obsolete">Keskitä maapallo:</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="73"/>
         <source>Coordinates</source>
-        <translation>Koordinaatit</translation>
+        <translation type="obsolete">Koordinaatit</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="85"/>
         <source>&apos;Longitude, Latitude&apos; in decimal degree</source>
-        <translation>&apos;Pituusaste, leveysaste&apos; desimaaliasteina</translation>
+        <translation type="obsolete">&apos;Pituusaste, leveysaste&apos; desimaaliasteina</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="101"/>
         <source>Geocoding</source>
-        <translation>Geokoodaus</translation>
+        <translation type="obsolete">Geokoodaus</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="117"/>
         <source>Address for the geolocation of interest:</source>
-        <translation>Sanahaku:</translation>
+        <translation type="obsolete">Sanahaku:</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="129"/>
         <source>Search</source>
-        <translation>Hae</translation>
+        <translation type="obsolete">Hae</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="163"/>
         <source>Maximum number of addresses to list:
                                                                      </source>
-        <translation>Haettavien osoitteiden maksimimäärä:</translation>
+        <translation type="obsolete">Haettavien osoitteiden maksimimäärä:</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="208"/>
         <source>Attributions</source>
-        <translation>Aineistolähteet</translation>
+        <translation type="obsolete">Aineistolähteet</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="173"/>
@@ -167,22 +167,17 @@
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="24"/>
         <source>Data sources</source>
-        <translation>Tietolähteet</translation>
+        <translation type="obsolete">Tietolähteet</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="30"/>
         <source>Countries</source>
-        <translation>Valtiot</translation>
+        <translation type="obsolete">Valtiot</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="40"/>
         <source>Graticules</source>
-        <translation>Koordinaattiviivasto</translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dialog_base.ui" line="50"/>
-        <source>Sentinel-2 cloudless</source>
-        <translation></translation>
+        <translation type="obsolete">Koordinaattiviivasto</translation>
     </message>
     <message>
         <location filename="../globe_builder_dialog_base.ui" line="212"/>
@@ -217,53 +212,21 @@
             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
             style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-        <location filename="../globe_builder_dialog_base.ui" line="214"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;
-                                         font-size:10pt;&quot;&gt;Please, note that the plugin utilizes the &lt;/span&gt;&lt;a
-                                         href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
-                                         style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap
-                                         Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;
-                                         geocoding API. Please, &lt;/span&gt;&lt;span style=&quot; font-size:10pt;
-                                         font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span
-                                         style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed
-                                         under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
-                                         style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL
-                                         license&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.
-                                         Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span
-                                         style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
-                                         style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains
-                                         modified Copernicus Sentinel data 2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a
-                                         href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
-                                         style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative
-                                         Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span
-                                         style=&quot; font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2
-                                         cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
-                                         style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
-                                         style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                                     </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dialog_base.ui" line="266"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/images/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>GlobeBuilderDockWidget</name>
     <message>
-        <location filename="../globe_builder_dockwidget.py" line="197"/>
+        <location filename="../globe_builder_dockwidget.py" line="215"/>
         <source>Make sure to select an item from the Geolocation list</source>
         <translation>Varmista, että valitset kohteen geokoodauslistalta</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget.py" line="201"/>
+        <location filename="../globe_builder_dockwidget.py" line="218"/>
         <source>Error occurred while parsing center of the globe</source>
         <translation>Keskitystä etsiessä tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget.py" line="201"/>
+        <location filename="../globe_builder_dockwidget.py" line="218"/>
         <source>uTraceback</source>
         <translation></translation>
     </message>
@@ -276,32 +239,32 @@
         <translation>Maapallonäkymän rakentaja</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="29"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="46"/>
         <source>Data sources</source>
         <translation>Tietolähteet</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="39"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="56"/>
         <source>Countries</source>
         <translation>Valtiot</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="49"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="66"/>
         <source>Graticules</source>
         <translation>Koordinaattiviivasto</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="59"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="76"/>
         <source>Sentinel-2 cloudless</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="100"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="122"/>
         <source>Center globe based on:</source>
         <translation>Keskitä maapallo:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="110"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="138"/>
         <source>Coordinates</source>
         <translation>Koordinaatit</translation>
     </message>
@@ -313,7 +276,7 @@
         <translation type="obsolete">&apos;Pituusaste, leveysaste&apos; desimaaliasteina</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="138"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="166"/>
         <source>Geocoding</source>
         <translation>Geokoodaus</translation>
     </message>
@@ -325,7 +288,7 @@
         <translation type="obsolete">Sanahaku:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="166"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="194"/>
         <source>Search</source>
         <translation>Hae</translation>
     </message>
@@ -337,64 +300,88 @@
         <translation type="obsolete">Haettavien osoitteiden maksimimäärä:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="266"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="466"/>
         <source>Attributions</source>
         <translation>Aineistolähteet</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="318"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="489"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/images/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="322"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="511"/>
         <source>Run</source>
-        <translation type="obsolete">Aja</translation>
+        <translation>Suorita</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="86"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="103"/>
         <source>Load Data</source>
         <translation>Lataa</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="122"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="150"/>
         <source>&apos;Longitude, Latitude&apos; in decimal degree</source>
         <translation>&apos;Pituusaste, leveysaste&apos; desimaaliasteina</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="154"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="182"/>
         <source>Address for the geolocation of interest:</source>
         <translation>Sanahaku:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="199"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="227"/>
         <source>Maximum number of addresses to list:</source>
         <translation>Haettavien osoitteiden maksimimäärä:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="252"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="280"/>
         <source>Center</source>
         <translation>Keskitä</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="272"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Please,
-             note that the plugin utilizes the &lt;/span&gt;&lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt; geocoding API. Please, &lt;/span&gt;&lt;span style=&quot;
-             font-size:10pt; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt;. Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data
-             2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons
-             Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
-             font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-            </source>
+        <location filename="../globe_builder_dockwidget_base.ui" line="294"/>
+        <source>Visualization</source>
+        <translation>Visualisointi</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="307"/>
+        <source>Colors</source>
+        <translation>Värit</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="331"/>
+        <source>Background</source>
+        <translation>Tausta</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="338"/>
+        <source>Halo</source>
+        <translation>Kehä</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="391"/>
+        <source>Halo type</source>
+        <translation>Kehän tyyppi</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="411"/>
+        <source>Halo, no fill</source>
+        <translation>Kehä, ei täyttöä</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="421"/>
+        <source>Outline, no fill</source>
+        <translation>Ulkoviiva, ei täyttöä</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="430"/>
+        <source>Outline, fill</source>
+        <translation>Ulkoviiva, täyttö</translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="472"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Please, note that the plugin utilizes the &lt;/span&gt;&lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; geocoding API. Please, &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
 </context>

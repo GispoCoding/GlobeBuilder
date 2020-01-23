@@ -19,19 +19,20 @@
  *                                                                         *
  ***************************************************************************/
 """
-import json
 import os
 import sys
 
-from PyQt5.QtCore import pyqtSignal, QSettings, pyqtSlot, QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PyQt5.QtCore import pyqtSignal, QSettings, pyqtSlot
+from PyQt5.QtGui import QColor
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
-from qgis._core import Qgis, QgsMessageLog
+from qgis.core import Qgis
 
 from .globe import Globe
-from .utils.settings import (NOMINATIM_URL, DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
-                             DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, MAX_NAME_PARTS, DEFAULT_ORIGIN)
+from .utils.geocoder import Geocoder
+from .utils.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
+                             DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
+                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR)
 
 sys.path.append(os.path.dirname(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -43,6 +44,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def __init__(self, iface, parent=None):
         """Constructor."""
+        self.is_initializing = True
+
         super(GlobeBuilderDockWidget, self).__init__(parent)
 
         # Set up the user interface from Designer.
@@ -54,9 +57,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.iface = iface
         self.globe = Globe(iface)
-
-        self.network_access_manager = QNetworkAccessManager()
-        self.network_access_manager.finished.connect(self.on_search_response)
+        self.geocoder = Geocoder(lambda results: self.on_geocoding_finished(results))
 
         # Set default values
         self.spinBoxMaxResults.setValue(
@@ -79,8 +80,14 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.lineEditLonLat.setText("{lon}, {lat}".format(**DEFAULT_ORIGIN))
         self.on_radioButtonCoordinates_toggled(self.radioButtonCoordinates.isChecked())
         self.on_radioButtonGeocoding_toggled(self.radioButtonGeocoding.isChecked())
+        self.on_radioButtonHFill_toggled(self.radioButtonHFill.isChecked())
+
+        self.mColorButtonBackground.setColor(DEFAULT_BACKGROUND_COLOR)
+        self.mColorButtonHalo.setColor(DEFAULT_HALO_COLOR)
+        self.mColorButtonHFill.setColor(DEFAULT_HALO_FILL_COLOR)
 
         self.geolocations = {}
+        self.is_initializing = False
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -89,15 +96,31 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     # Without this annotation the signal is handled twice,
     # see https://stackoverflow.com/questions/14311578/event-signal-is-emmitted-twice-every-time
     @pyqtSlot(bool)
-    def on_radioButtonCoordinates_toggled(self, isChecked):
-        self.lineEditLonLat.setEnabled(isChecked)
+    def on_radioButtonCoordinates_toggled(self, is_checked):
+        self.lineEditLonLat.setEnabled(is_checked)
 
     @pyqtSlot(bool)
-    def on_radioButtonGeocoding_toggled(self, isChecked):
-        self.lineEditGeocoding.setEnabled(isChecked)
-        self.pushButtonSearch.setEnabled(isChecked)
-        self.listWidgetGeocodingResults.setEnabled(isChecked)
-        self.spinBoxMaxResults.setEnabled(isChecked)
+    def on_radioButtonGeocoding_toggled(self, is_checked):
+        self.lineEditGeocoding.setEnabled(is_checked)
+        self.pushButtonSearch.setEnabled(is_checked)
+        self.listWidgetGeocodingResults.setEnabled(is_checked)
+        self.spinBoxMaxResults.setEnabled(is_checked)
+
+    @pyqtSlot(bool)
+    def on_radioButtonHHalo_toggled(self, is_checked):
+        if not self.is_initializing:
+            self.add_halo_to_globe()
+
+    @pyqtSlot(bool)
+    def on_radioButtonHOutline_toggled(self, is_checked):
+        if not self.is_initializing:
+            self.add_halo_to_globe()
+
+    @pyqtSlot(bool)
+    def on_radioButtonHFill_toggled(self, is_checked):
+        self.mColorButtonHFill.setEnabled(is_checked)
+        if not self.is_initializing:
+            self.add_halo_to_globe()
 
     @pyqtSlot(int)
     def on_spinBoxMaxResults_valueChanged(self, value):
@@ -116,7 +139,9 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pushButtonSearch_clicked(self):
         text = self.lineEditGeocoding.text()
         if len(text.strip()):
-            self.geocode(text)
+            self.listWidgetGeocodingResults.clear()
+            self.geolocations.clear()
+            self.geocoder.geocode(text, self.spinBoxMaxResults.value())
 
     @pyqtSlot()
     def on_pushButtonLoadData_clicked(self):
@@ -126,51 +151,44 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pushButtonCenter_clicked(self):
         self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.change_background_color()
         self.globe.change_project_projection_to_azimuthal_orthographic()
-        self.globe.add_halo()
+        self.add_halo_to_globe()
 
-    def geocode(self, query):
-        self.listWidgetGeocodingResults.clear()
-        self.geolocations.clear()
+    @pyqtSlot()
+    def on_pushButtonRun_clicked(self):
+        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
+                             self.checkBoxGraticules.isChecked())
+        self.globe.set_origin(self.calculate_origin_coordinates())
+        self.globe.change_background_color(self.mColorButtonBackground.color())
+        self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
+        self.globe.change_project_projection_to_azimuthal_orthographic()
+        self.add_halo_to_globe()
 
-        params = {
-            'query': query,
-            'limit': self.spinBoxMaxResults.value()
-        }
-        url = NOMINATIM_URL.format(**params)
+    @pyqtSlot(QColor)
+    def on_mColorButtonBackground_colorChanged(self, color):
+        if not self.is_initializing:
+            self.globe.change_background_color(color)
 
-        # http://osgeo-org.1560.x6.nabble.com/QGIS-Developer-Do-we-have-a-User-Agent-string-for-QGIS-td5360740.html
-        user_agent = QSettings().value("/qgis/networkAndProxy/userAgent", "Mozilla/5.0")
-        user_agent += " " if len(user_agent) else ""
-        user_agent += "QGIS/{}".format(Qgis.QGIS_VERSION_INT)
-        user_agent += " GlobeBuilder-plugin"
+    @pyqtSlot(QColor)
+    def on_mColorButtonHalo_colorChanged(self, color):
+        if not self.is_initializing:
+            self.add_halo_to_globe()
 
-        QgsMessageLog.logMessage(url, "GlobeBuilder", Qgis.Info)
-        geocoding_request = QNetworkRequest(QUrl(url))
-        # https://www.riverbankcomputing.com/pipermail/pyqt/2016-May/037514.html
-        geocoding_request.setRawHeader(b"User-Agent", bytes(user_agent, "utf-8"))
-        self.network_access_manager.get(geocoding_request)
+    @pyqtSlot(QColor)
+    def on_mColorButtonHFill_colorChanged(self, color):
+        if not self.is_initializing:
+            self.add_halo_to_globe()
 
-    def on_search_response(self, search_result):
-        error = search_result.error()
-        if error == QNetworkReply.NoError:
-            bytes_string = search_result.readAll()
-            data_string = str(bytes_string, 'utf-8')
+    def add_halo_to_globe(self):
+        self.globe.add_halo(self.radioButtonHHalo.isChecked(), self.mColorButtonHalo.color(),
+                            self.get_halo_fill_color())
 
-            result = json.loads(data_string)
+    def get_halo_fill_color(self):
+        return self.mColorButtonHFill.color() if self.radioButtonHFill.isChecked() else None
 
-            for f in result['features']:
-                name_parts = f['properties']['display_name'].split(",")
-                name = "{} ({})".format(",".join(
-                    name_parts[0:min(MAX_NAME_PARTS, len(name_parts) - 1)]),
-                    name_parts[-1].strip()) if len(name_parts) > 1 else name_parts[0]
-                coordinates = f['geometry']['coordinates']
-                self.listWidgetGeocodingResults.addItem(name)
-                self.geolocations[name] = coordinates
-        else:
-            QgsMessageLog.logMessage(str(error), "GlobeBuilder", Qgis.Warning)
-            QgsMessageLog.logMessage(search_result.errorString(), "GlobeBuilder", Qgis.Warning)
+    def on_geocoding_finished(self, geolocations):
+        self.geolocations = geolocations.copy()
+        [self.listWidgetGeocodingResults.addItem(name) for name in self.geolocations.keys()]
 
     def get_geocoded_coordinates(self):
         coordinates = None
@@ -196,7 +214,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     raise ValueError(self.tr(u"Make sure to select an item from the Geolocation list"))
                 coordinates = None
         except ValueError as e:
-            self.origin = DEFAULT_ORIGIN
             self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),
                                                 "{}: {}".format(self.tr("uTraceback"), e),
                                                 level=Qgis.Warning, duration=4)

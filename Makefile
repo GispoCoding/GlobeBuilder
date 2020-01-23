@@ -38,14 +38,16 @@ LRELEASE = lrelease
 # translation
 SOURCES = \
 	__init__.py \
-	plugin.py plugin.py utils/settings.py utils/utils.py globe.py \
+	plugin.py plugin.py utils/settings.py utils/utils.py utils/geocoder.py \
+	globe.py \
 	globe_builder_dockwidget.py
 
 PLUGINNAME = GlobeBuilder
 
 PY_FILES = \
 	__init__.py \
-	plugin.py plugin.py utils/settings.py utils/utils.py globe.py \
+	plugin.py plugin.py utils/settings.py utils/utils.py utils/geocoder.py \
+	globe.py \
     globe_builder_dockwidget.py
 
 UI_FILES = globe_builder_dockwidget_base.ui
