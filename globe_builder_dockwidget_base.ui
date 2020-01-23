@@ -2,14 +2,14 @@
 <ui version="4.0">
  <class>GlobeBuilderDockWidgetBase</class>
  <widget class="QDockWidget" name="GlobeBuilderDockWidgetBase">
-  <property name="geometry">
-   <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>620</width>
-       <height>875</height>
-   </rect>
-  </property>
+     <property name="geometry">
+         <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>814</width>
+             <height>788</height>
+         </rect>
+     </property>
      <property name="floating">
          <bool>false</bool>
      </property>
@@ -32,9 +32,9 @@
                                  <property name="geometry">
                                      <rect>
                                          <x>0</x>
-                                         <y>-16</y>
-                                         <width>584</width>
-                                         <height>611</height>
+                                         <y>0</y>
+                                         <width>792</width>
+                                         <height>524</height>
                                      </rect>
                                  </property>
                                  <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -44,6 +44,9 @@
                                                  <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
                                                      <property name="title">
                                                          <string>Data sources</string>
+                                                     </property>
+                                                     <property name="collapsed">
+                                                         <bool>false</bool>
                                                      </property>
                                                      <layout class="QVBoxLayout" name="verticalLayout_11">
                                                          <item>
@@ -170,6 +173,36 @@
                                                              </layout>
                                                          </item>
                                                          <item>
+                                                             <widget class="Line" name="line_3">
+                                                                 <property name="orientation">
+                                                                     <enum>Qt::Horizontal</enum>
+                                                                 </property>
+                                                             </widget>
+                                                         </item>
+                                                         <item>
+                                                             <layout class="QHBoxLayout" name="horizontalLayout_12">
+                                                                 <item>
+                                                                     <widget class="QRadioButton"
+                                                                             name="radioButtonLayer">
+                                                                         <property name="text">
+                                                                             <string>Layer</string>
+                                                                         </property>
+                                                                     </widget>
+                                                                 </item>
+                                                                 <item>
+                                                                     <widget class="QgsMapLayerComboBox"
+                                                                             name="mMapLayerComboBox"/>
+                                                                 </item>
+                                                             </layout>
+                                                         </item>
+                                                         <item>
+                                                             <widget class="Line" name="line">
+                                                                 <property name="orientation">
+                                                                     <enum>Qt::Horizontal</enum>
+                                                                 </property>
+                                                             </widget>
+                                                         </item>
+                                                         <item>
                                                              <layout class="QHBoxLayout" name="horizontalLayout_5">
                                                                  <item>
                                                                      <widget class="QRadioButton"
@@ -182,13 +215,6 @@
                                                                  <item>
                                                                      <layout class="QVBoxLayout"
                                                                              name="verticalLayout_2">
-                                                                         <item>
-                                                                             <widget class="Line" name="line">
-                                                                                 <property name="orientation">
-                                                                                     <enum>Qt::Horizontal</enum>
-                                                                                 </property>
-                                                                             </widget>
-                                                                         </item>
                                                                          <item>
                                                                              <widget class="QLabel" name="label_3">
                                                                                  <property name="text">
@@ -329,7 +355,7 @@
                                                  <string>Visualization</string>
                                              </property>
                                              <property name="collapsed">
-                                                 <bool>false</bool>
+                                                 <bool>true</bool>
                                              </property>
                                              <layout class="QVBoxLayout" name="verticalLayout_13">
                                                  <item>
@@ -599,6 +625,11 @@
             <class>QgsColorButton</class>
             <extends>QToolButton</extends>
             <header>qgscolorbutton.h</header>
+        </customwidget>
+        <customwidget>
+            <class>QgsMapLayerComboBox</class>
+            <extends>QComboBox</extends>
+            <header>qgsmaplayercombobox.h</header>
         </customwidget>
     </customwidgets>
     <resources>

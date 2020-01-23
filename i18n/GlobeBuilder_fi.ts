@@ -9,32 +9,32 @@
         <translation>Hyvää huomenta</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="53"/>
+        <location filename="../globe.py" line="50"/>
         <source>S2 Cloudless 2018</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe.py" line="59"/>
+        <location filename="../globe.py" line="56"/>
         <source>Could not add Sentinel 2 Cloudless layer</source>
         <translation>Sentinel 2 Cloudless -tason lisääminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="63"/>
+        <location filename="../globe.py" line="60"/>
         <source>Countries</source>
         <translation>Valtiot</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="65"/>
+        <location filename="../globe.py" line="62"/>
         <source>Graticules</source>
         <translation>Koordinaattiviivasto</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="87"/>
+        <location filename="../globe.py" line="84"/>
         <source>Could not load Natural Earth layer &apos;{}&apos;</source>
         <translation>Natural earth-tason {} lataaminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="158"/>
+        <location filename="../globe.py" line="155"/>
         <source>Halo</source>
         <translation>Kehä</translation>
     </message>
@@ -216,19 +216,24 @@
 <context>
     <name>GlobeBuilderDockWidget</name>
     <message>
-        <location filename="../globe_builder_dockwidget.py" line="215"/>
+        <location filename="../globe_builder_dockwidget.py" line="219"/>
         <source>Make sure to select an item from the Geolocation list</source>
         <translation>Varmista, että valitset kohteen geokoodauslistalta</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget.py" line="218"/>
+        <location filename="../globe_builder_dockwidget.py" line="234"/>
         <source>Error occurred while parsing center of the globe</source>
         <translation>Keskitystä etsiessä tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget.py" line="218"/>
+        <location filename="../globe_builder_dockwidget.py" line="234"/>
         <source>uTraceback</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget.py" line="225"/>
+        <source>Make sure to have at least one layer in the project</source>
+        <translation>Varmista, että olet valinnut ainakin yhden tason projektissa</translation>
     </message>
 </context>
 <context>
@@ -244,27 +249,27 @@
         <translation>Tietolähteet</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="56"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="59"/>
         <source>Countries</source>
         <translation>Valtiot</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="66"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="69"/>
         <source>Graticules</source>
         <translation>Koordinaattiviivasto</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="76"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="79"/>
         <source>Sentinel-2 cloudless</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="122"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="125"/>
         <source>Center globe based on:</source>
-        <translation>Keskitä maapallo:</translation>
+        <translation>Keskitäysasetukset</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="138"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="141"/>
         <source>Coordinates</source>
         <translation>Koordinaatit</translation>
     </message>
@@ -276,7 +281,7 @@
         <translation type="obsolete">&apos;Pituusaste, leveysaste&apos; desimaaliasteina</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="166"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="197"/>
         <source>Geocoding</source>
         <translation>Geokoodaus</translation>
     </message>
@@ -288,7 +293,7 @@
         <translation type="obsolete">Sanahaku:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="194"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="218"/>
         <source>Search</source>
         <translation>Hae</translation>
     </message>
@@ -300,89 +305,94 @@
         <translation type="obsolete">Haettavien osoitteiden maksimimäärä:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="466"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="490"/>
         <source>Attributions</source>
         <translation>Aineistolähteet</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="489"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="513"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/GlobeBuilder/images/naturalEarthLogo250px.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="511"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="535"/>
         <source>Run</source>
         <translation>Suorita</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="103"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="106"/>
         <source>Load Data</source>
         <translation>Lataa</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="150"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="153"/>
         <source>&apos;Longitude, Latitude&apos; in decimal degree</source>
         <translation>&apos;Pituusaste, leveysaste&apos; desimaaliasteina</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="182"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="206"/>
         <source>Address for the geolocation of interest:</source>
         <translation>Sanahaku:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="227"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="251"/>
         <source>Maximum number of addresses to list:</source>
         <translation>Haettavien osoitteiden maksimimäärä:</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="280"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="304"/>
         <source>Center</source>
         <translation>Keskitä</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="294"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="318"/>
         <source>Visualization</source>
         <translation>Visualisointi</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="307"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="331"/>
         <source>Colors</source>
         <translation>Värit</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="331"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="355"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="338"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="362"/>
         <source>Halo</source>
         <translation>Kehä</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="391"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="415"/>
         <source>Halo type</source>
         <translation>Kehän tyyppi</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="411"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="435"/>
         <source>Halo, no fill</source>
         <translation>Kehä, ei täyttöä</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="421"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="445"/>
         <source>Outline, no fill</source>
         <translation>Ulkoviiva, ei täyttöä</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="430"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="454"/>
         <source>Outline, fill</source>
         <translation>Ulkoviiva, täyttö</translation>
     </message>
     <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="472"/>
+        <location filename="../globe_builder_dockwidget_base.ui" line="496"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Please, note that the plugin utilizes the &lt;/span&gt;&lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; geocoding API. Please, &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../globe_builder_dockwidget_base.ui" line="176"/>
+        <source>Layer</source>
+        <translation>Keskitä tason perusteella</translation>
     </message>
 </context>
 <context>

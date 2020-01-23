@@ -26,13 +26,13 @@ from PyQt5.QtCore import pyqtSignal, QSettings, pyqtSlot
 from PyQt5.QtGui import QColor
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
-from qgis.core import Qgis
+from qgis.core import Qgis, QgsCoordinateTransform, QgsProject
 
 from .globe import Globe
 from .utils.geocoder import Geocoder
 from .utils.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
                              DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
-                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR)
+                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR, WGS84)
 
 sys.path.append(os.path.dirname(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -79,6 +79,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.lineEditLonLat.setText("{lon}, {lat}".format(**DEFAULT_ORIGIN))
         self.on_radioButtonCoordinates_toggled(self.radioButtonCoordinates.isChecked())
+        self.on_radioButtonLayer_toggled(self.radioButtonLayer.isChecked())
         self.on_radioButtonGeocoding_toggled(self.radioButtonGeocoding.isChecked())
         self.on_radioButtonHFill_toggled(self.radioButtonHFill.isChecked())
 
@@ -98,6 +99,10 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot(bool)
     def on_radioButtonCoordinates_toggled(self, is_checked):
         self.lineEditLonLat.setEnabled(is_checked)
+
+    @pyqtSlot(bool)
+    def on_radioButtonLayer_toggled(self, is_checked):
+        self.mMapLayerComboBox.setEnabled(is_checked)
 
     @pyqtSlot(bool)
     def on_radioButtonGeocoding_toggled(self, is_checked):
@@ -213,6 +218,18 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 if not coordinates:
                     raise ValueError(self.tr(u"Make sure to select an item from the Geolocation list"))
                 coordinates = None
+
+            elif self.radioButtonLayer.isChecked():
+                layer = self.mMapLayerComboBox.currentLayer()
+                if layer is None:
+                    raise ValueError(self.tr(u"Make sure to have at least one layer in the project"))
+                center_point = layer.extent().center()
+
+                transformer = QgsCoordinateTransform(layer.crs(), WGS84, QgsProject.instance())
+                center_point = transformer.transform(center_point)
+                coordinates = {'lon': center_point.x(), 'lat': center_point.y()}
+
+
         except ValueError as e:
             self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),
                                                 "{}: {}".format(self.tr("uTraceback"), e),

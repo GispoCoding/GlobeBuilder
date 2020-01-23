@@ -26,6 +26,7 @@ import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
+from qgis._core import QgsCoordinateReferenceSystem
 
 
 class LayerConnectionType(enum.Enum):
@@ -47,6 +48,10 @@ EARTH_RADIUS = 6370997
 DEFAULT_NUMBER_OF_SEGMENTS = 64
 DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
 DEFAULT_HALO_DRAW_METHOD = HaloDrawMethod.buffered_point
+
+_crs = QgsCoordinateReferenceSystem()
+_crs.createFromId(4326)
+WGS84 = _crs
 
 # Colors
 DEFAULT_BACKGROUND_COLOR = QColor(Qt.black)

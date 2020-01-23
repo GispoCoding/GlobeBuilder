@@ -29,7 +29,8 @@ from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRaster
 
 from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
                              DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
-                             DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN, TRANSPARENT_COLOR)
+                             DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN, TRANSPARENT_COLOR,
+                             WGS84)
 from .utils.utils import tr
 
 
@@ -39,10 +40,6 @@ class Globe:
         self.iface = iface
         self.origin = DEFAULT_ORIGIN
         self.qgis_instance = QgsProject.instance()
-
-        crs = QgsCoordinateReferenceSystem()
-        crs.createFromId(4326)
-        self.wgs84 = crs
 
     def set_origin(self, coordinates):
         if coordinates is not None:
@@ -92,7 +89,7 @@ class Globe:
 
     def change_project_projection_to_azimuthal_orthographic(self):
         # Change to wgs84 to activate the changes in origin
-        self.qgis_instance.setCrs(self.wgs84)
+        self.qgis_instance.setCrs(WGS84)
         proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj4(proj4_string)
