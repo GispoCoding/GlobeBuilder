@@ -26,7 +26,7 @@ from PyQt5.QtCore import QSettings, QUrl
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 from qgis.core import Qgis, QgsMessageLog
 
-from utils.settings import NOMINATIM_URL, MAX_NAME_PARTS
+from .settings import NOMINATIM_URL, MAX_NAME_PARTS
 
 
 class Geocoder:
