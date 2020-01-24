@@ -232,6 +232,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         except ValueError as e:
             self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),
-                                                "{}: {}".format(self.tr("uTraceback"), e),
-                                                level=Qgis.Warning, duration=4)
+                                                "{}: {}".format(self.tr(u"Traceback"), e),
+                                                level=Qgis.Warning, duration=6)
         return coordinates
