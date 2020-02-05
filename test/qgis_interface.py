@@ -26,7 +26,7 @@ __copyright__ = (
 import logging
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
-from qgis.core import QgsProject
+from qgis.core import QgsProject, QgsVectorLayer
 from qgis.gui import QgsMapCanvas
 
 LOGGER = logging.getLogger('QGIS')
@@ -41,12 +41,15 @@ class QgisInterface(QObject):
     """
     currentLayerChanged = pyqtSignal(QgsMapCanvas)
 
-    def __init__(self, canvas):
+    def __init__(self, canvas, messageBar, mainWindow):
         """Constructor
         :param canvas:
         """
         QObject.__init__(self)
         self.canvas = canvas
+        self._messageBar = messageBar
+        self._mainWindow = mainWindow
+
         # Set up slots so we can mimic the behaviour of QGIS when layers
         # are added.
         LOGGER.debug('Initialising canvas...')
@@ -57,6 +60,7 @@ class QgisInterface(QObject):
 
         # For processing module
         self.destCrs = None
+        self._layers = []
 
     @pyqtSlot('QList<QgsMapLayer*>')
     def addLayers(self, layers):
@@ -76,6 +80,7 @@ class QgisInterface(QObject):
             final_layers.append(layer)
         for layer in layers:
             final_layers.append(layer)
+        self._layers = final_layers
 
         self.canvas.setLayers(final_layers)
         # LOGGER.debug('Layer Count After: %s' % len(self.canvas.layers()))
@@ -83,12 +88,14 @@ class QgisInterface(QObject):
     @pyqtSlot()
     def removeAllLayers(self):
         """Remove layers from the canvas before they get deleted."""
-        self.canvas.setLayerSet([])
+        self.canvas.setLayers([])
+        self._layers = []
 
     def newProject(self):
         """Create new project."""
         # noinspection PyArgumentList
         QgsProject.instance().removeAllMapLayers()
+        self._layers = []
 
     # ---------------- API Mock for QgsInterface follows -------------------
 
@@ -120,7 +127,10 @@ class QgisInterface(QObject):
         :param provider_key: Provider key e.g. 'ogr'
         :type provider_key: str
         """
-        pass
+        layer = QgsVectorLayer(path, base_name, provider_key)
+        self.addLayers([layer])
+        layers = self.canvas.layers()
+        return layer
 
     def addRasterLayer(self, path, base_name):
         """Add a raster layer given a raster layer file name
@@ -189,3 +199,13 @@ class QgisInterface(QObject):
     def legendInterface(self):
         """Get the legend."""
         return self.canvas
+
+    def messageBar(self):
+        """Get the messagebar"""
+        return self._messageBar
+
+    def mainWindow(self):
+        return self._mainWindow
+
+    def getMockLayers(self):
+        return self._layers

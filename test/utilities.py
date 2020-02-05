@@ -4,6 +4,8 @@
 import logging
 import sys
 
+from .mock_qgis_classes import MockMessageBar, MainWindow
+
 LOGGER = logging.getLogger('QGIS')
 QGIS_APP = None  # Static variable used to hold hand to running QGIS app
 CANVAS = None
@@ -56,6 +58,6 @@ def get_qgis_app():
     if IFACE is None:
         # QgisInterface is a stub implementation of the QGIS plugin interface
         # noinspection PyPep8Naming
-        IFACE = QgisInterface(CANVAS)
+        IFACE = QgisInterface(CANVAS, MockMessageBar(), MainWindow())
 
     return QGIS_APP, CANVAS, IFACE, PARENT

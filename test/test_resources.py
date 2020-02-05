@@ -36,6 +36,6 @@ class GlobeBuilderDialogTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(GlobeBuilderResourcesTest)
+    suite = unittest.makeSuite(GlobeBuilderDialogTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)

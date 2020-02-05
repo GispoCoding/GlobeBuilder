@@ -105,9 +105,6 @@ class Globe:
         self.iface.mapCanvas().setCanvasColor(new_background_color)
         self.iface.mapCanvas().refresh()
 
-    def change_halo_color(self, layer_name, color):
-        layers = self.qgis_instance.mapLayersByName(layer_name)
-
     @staticmethod
     def get_existing_layer_names():
         return [layer.name() for layer in QgsProject.instance().mapLayers().values()]
