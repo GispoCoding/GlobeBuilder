@@ -46,6 +46,9 @@ class Globe:
         if coordinates is not None:
             self.origin = coordinates
 
+    def set_group_visibility(self, is_visible):
+        self.group.setItemVisibilityCheckedRecursive(is_visible)
+
     def load_data(self, load_s2, load_countries, load_graticules):
         if self.group is None:
             self.add_group()
