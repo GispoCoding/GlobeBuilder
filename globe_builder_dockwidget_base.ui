@@ -4,10 +4,10 @@
  <widget class="QDockWidget" name="GlobeBuilderDockWidgetBase">
   <property name="geometry">
    <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>814</width>
-    <height>788</height>
+       <x>0</x>
+       <y>0</y>
+       <width>729</width>
+       <height>763</height>
    </rect>
   </property>
   <property name="floating">
@@ -17,25 +17,25 @@
    <string>Globe Builder</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QVBoxLayout" name="verticalLayout_4">
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetNoConstraint</enum>
-      </property>
-      <item>
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
+      <layout class="QVBoxLayout" name="verticalLayout_18">
+          <item>
+              <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
+                  <property name="sizeConstraint">
+                      <enum>QLayout::SetNoConstraint</enum>
+                  </property>
+                  <item>
+                      <widget class="QScrollArea" name="scrollArea">
+                          <property name="widgetResizable">
+                              <bool>true</bool>
+                          </property>
         <widget class="QWidget" name="scrollAreaWidgetContents_2">
          <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>792</width>
-           <height>584</height>
-          </rect>
+             <rect>
+                 <x>0</x>
+                 <y>-80</y>
+                 <width>693</width>
+                 <height>623</height>
+             </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
@@ -455,9 +455,9 @@
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <widget class="QgsColorButton" name="mColorButtonHFill"/>
-                   </item>
+                      <item>
+                          <widget class="QgsColorButton" name="mColorButtonHFill"/>
+                      </item>
                   </layout>
                  </item>
                 </layout>
@@ -467,13 +467,67 @@
             </layout>
            </widget>
           </item>
-          <item>
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
+             <item>
+                 <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
+                     <property name="title">
+                         <string>Layout</string>
+                     </property>
+                     <property name="collapsed">
+                         <bool>false</bool>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_17">
+                         <item>
+                             <layout class="QVBoxLayout" name="verticalLayout_4">
+                                 <item>
+                                     <layout class="QHBoxLayout" name="horizontalLayout_13">
+                                         <item>
+                                             <widget class="QLabel" name="label_composer">
+                                                 <property name="text">
+                                                     <string>Map composer:</string>
+                                                 </property>
+                                             </widget>
+                                         </item>
+                                         <item>
+                                             <widget class="QComboBox" name="comboBoxLayouts"/>
+                                         </item>
+                                     </layout>
+                                 </item>
+                                 <item>
+                                     <layout class="QHBoxLayout" name="horizontalLayout_14">
+                                         <item>
+                                             <spacer name="horizontalSpacer_6">
+                                                 <property name="orientation">
+                                                     <enum>Qt::Horizontal</enum>
+                                                 </property>
+                                                 <property name="sizeHint" stdset="0">
+                                                     <size>
+                                                         <width>40</width>
+                                                         <height>20</height>
+                                                     </size>
+                                                 </property>
+                                             </spacer>
+                                         </item>
+                                         <item>
+                                             <widget class="QPushButton" name="pushButtonAddToLayout">
+                                                 <property name="text">
+                                                     <string>Add to Layout</string>
+                                                 </property>
+                                             </widget>
+                                         </item>
+                                     </layout>
+                                 </item>
+                             </layout>
+                         </item>
+                     </layout>
+                 </widget>
+             </item>
+             <item>
+                 <spacer name="verticalSpacer_3">
+                     <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                         <size>
               <width>20</width>
               <height>40</height>
              </size>

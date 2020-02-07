@@ -56,6 +56,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.setupUi(self)
 
         self.iface = iface
+        self.qgis_instance = QgsProject.instance()
+        self.layout_manager = self.qgis_instance.layoutManager()
         self.globe = Globe(iface)
         self.geocoder = Geocoder(lambda results: self.on_geocoding_finished(results))
 
@@ -82,12 +84,19 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.on_radioButtonLayer_toggled(self.radioButtonLayer.isChecked())
         self.on_radioButtonGeocoding_toggled(self.radioButtonGeocoding.isChecked())
         self.on_radioButtonHFill_toggled(self.radioButtonHFill.isChecked())
+        self.populate_comboBoxLayouts()
 
         self.mColorButtonBackground.setColor(DEFAULT_BACKGROUND_COLOR)
         self.mColorButtonHalo.setColor(DEFAULT_HALO_COLOR)
         self.mColorButtonHFill.setColor(DEFAULT_HALO_FILL_COLOR)
 
         self.geolocations = {}
+
+        # connections
+        self.layout_manager.layoutAdded.connect(self.populate_comboBoxLayouts)
+        self.layout_manager.layoutRemoved.connect(self.populate_comboBoxLayouts)
+        self.layout_manager.layoutRenamed.connect(self.populate_comboBoxLayouts)
+
         self.is_initializing = False
 
     def closeEvent(self, event):
@@ -184,6 +193,12 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if not self.is_initializing:
             self.add_halo_to_globe()
 
+    def populate_comboBoxLayouts(self, *args):
+        self.comboBoxLayouts.clear()
+        for layout in self.layout_manager.layouts():
+            self.comboBoxLayouts.addItem(layout.name())
+        self.pushButtonAddToLayout.setEnabled(self.comboBoxLayouts.count() > 0)
+
     def add_halo_to_globe(self):
         self.globe.add_halo(self.radioButtonHHalo.isChecked(), self.mColorButtonHalo.color(),
                             self.get_halo_fill_color())
@@ -225,7 +240,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     raise ValueError(self.tr(u"Make sure to have at least one layer in the project"))
                 center_point = layer.extent().center()
 
-                transformer = QgsCoordinateTransform(layer.crs(), WGS84, QgsProject.instance())
+                transformer = QgsCoordinateTransform(layer.crs(), WGS84, self.qgis_instance)
                 center_point = transformer.transform(center_point)
                 coordinates = {'lon': center_point.x(), 'lat': center_point.y()}
 
