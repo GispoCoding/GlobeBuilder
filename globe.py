@@ -25,7 +25,7 @@ import os
 from PyQt5.QtCore import QSettings
 from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
                        QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
-                       QgsFeature, QgsGeometry, QgsPointXY)
+                       QgsFeature, QgsGeometry, QgsPointXY, QgsMapThemeCollection)
 
 from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
                              DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
@@ -203,3 +203,14 @@ class Globe:
         # tree_root.insertChildNode(index, QgsLayerTreeLayer(layer))
 
         self.insert_layer_to_group(layer, index)
+
+    def add_theme(self):
+        theme_name = tr(u"Globe")
+        theme_collection = self.qgis_instance.mapThemeCollection()
+        layers = [layer.layer() for layer in self.group.findLayers()]
+        if theme_name not in theme_collection.mapThemes():
+            theme_collection.removeMapTheme(theme_name)
+        if len(layers):
+            map_theme_record = QgsMapThemeCollection.MapThemeRecord()
+            map_theme_record.setLayerRecords([QgsMapThemeCollection.MapThemeLayerRecord(layer) for layer in layers])
+            theme_collection.insert(theme_name, map_theme_record)

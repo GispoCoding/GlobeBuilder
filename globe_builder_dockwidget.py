@@ -178,6 +178,10 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.globe.change_project_projection_to_azimuthal_orthographic()
         self.add_halo_to_globe()
 
+    @pyqtSlot()
+    def on_pushButtonAddToLayout_clicked(self):
+        self.globe.add_theme()
+
     @pyqtSlot(QColor)
     def on_mColorButtonBackground_colorChanged(self, color):
         if not self.is_initializing:
