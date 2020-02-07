@@ -9,34 +9,39 @@
         <translation>Hyvää huomenta</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="70"/>
+        <location filename="../globe.py" line="54"/>
         <source>S2 Cloudless 2018</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../globe.py" line="76"/>
+        <location filename="../globe.py" line="60"/>
         <source>Could not add Sentinel 2 Cloudless layer</source>
         <translation>Sentinel 2 Cloudless -tason lisääminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="80"/>
+        <location filename="../globe.py" line="64"/>
         <source>Countries</source>
         <translation>Valtiot</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="82"/>
+        <location filename="../globe.py" line="66"/>
         <source>Graticules</source>
         <translation>Koordinaattiviivasto</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="104"/>
+        <location filename="../globe.py" line="93"/>
         <source>Could not load Natural Earth layer &apos;{}&apos;</source>
         <translation>Natural earth-tason {} lataaminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../globe.py" line="172"/>
+        <location filename="../globe.py" line="170"/>
         <source>Halo</source>
         <translation>Kehä</translation>
+    </message>
+    <message>
+        <location filename="../globe.py" line="71"/>
+        <source>Globe</source>
+        <translation>Maapallo</translation>
     </message>
 </context>
 <context>

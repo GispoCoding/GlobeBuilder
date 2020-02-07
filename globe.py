@@ -25,7 +25,7 @@ import os
 from PyQt5.QtCore import QSettings
 from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
                        QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
-                       QgsFeature, QgsGeometry, QgsPointXY, QgsLayerTreeLayer)
+                       QgsFeature, QgsGeometry, QgsPointXY)
 
 from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
                              DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
@@ -40,18 +40,22 @@ class Globe:
         self.iface = iface
         self.origin = DEFAULT_ORIGIN
         self.qgis_instance = QgsProject.instance()
+        self.group = None
 
     def set_origin(self, coordinates):
         if coordinates is not None:
             self.origin = coordinates
 
     def load_data(self, load_s2, load_countries, load_graticules):
+        if self.group is None:
+            self.add_group()
+
         existing_layer_names = self.get_existing_layer_names()
         s2_cloudless_layer_name = tr(u'S2 Cloudless 2018')
         if load_s2 and s2_cloudless_layer_name not in existing_layer_names:
             s2_layer = QgsRasterLayer(S2CLOUDLESS_WMTS_URL, s2_cloudless_layer_name, "wms")
             if s2_layer.isValid():
-                self.qgis_instance.addMapLayer(s2_layer)
+                self.insert_layer_to_group(s2_layer)
             else:
                 self.iface.messageBar().pushMessage(tr(u"Could not add Sentinel 2 Cloudless layer"),
                                                     level=Qgis.Warning, duration=4)
@@ -61,6 +65,10 @@ class Globe:
         if load_graticules:
             ne_data[tr(u'Graticules')] = 'ne_10m_graticules_30.geojson'
         len(ne_data) and self.load_natural_eath_data(ne_data)
+        self.iface.mapCanvas().refresh()
+
+    def add_group(self):
+        self.group = self.qgis_instance.layerTreeRoot().addGroup(tr(u"Globe"))
 
     def load_natural_eath_data(self, ne_data):
         # TODO: resolution
@@ -77,15 +85,25 @@ class Globe:
 
         for name, source in ne_data.items():
             if name not in existing_layer_names:
-                layer = self.iface.addVectorLayer(os.path.join(root, source), name, "ogr")
+
+                layer = QgsVectorLayer(os.path.join(root, source), name, "ogr")
                 if layer is None:
-                    layer = self.iface.addVectorLayer(os.path.join(LOCAL_DATA_DIR, source), name, "ogr")
+                    layer = QgsVectorLayer(os.path.join(LOCAL_DATA_DIR, source), name, "ogr")
                 if layer is None:
                     self.iface.messageBar().pushMessage(
                         tr(u"Could not load Natural Earth layer '{}'".format(name)),
                         level=Qgis.Warning, duration=3)
                 else:
                     layer.setName(name)
+                    self.insert_layer_to_group(layer)
+
+    def insert_layer_to_group(self, layer, index=0):
+        self.qgis_instance.addMapLayer(layer, False)
+        try:
+            self.group.insertLayer(index, layer)
+        except RuntimeError:
+            self.add_group()
+            self.group.insertLayer(index, layer)
 
     def change_project_projection_to_azimuthal_orthographic(self):
         # Change to wgs84 to activate the changes in origin
@@ -180,5 +198,8 @@ class Globe:
         self.qgis_instance.addMapLayer(layer, False)
 
         index = 0 if use_effects else -1
-        tree_root = self.qgis_instance.layerTreeRoot()
-        tree_root.insertChildNode(index, QgsLayerTreeLayer(layer))
+        # Remove if certain that group will be used with Halo
+        # tree_root = self.qgis_instance.layerTreeRoot()
+        # tree_root.insertChildNode(index, QgsLayerTreeLayer(layer))
+
+        self.insert_layer_to_group(layer, index)
