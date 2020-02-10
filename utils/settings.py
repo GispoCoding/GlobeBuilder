@@ -56,6 +56,7 @@ WGS84 = _crs
 # Colors
 DEFAULT_BACKGROUND_COLOR = QColor(Qt.black)
 DEFAULT_HALO_COLOR = QColor(Qt.white)
+DEFAULT_HALO_LAYOUT_COLOR = QColor(Qt.black)
 DEFAULT_HALO_FILL_COLOR = QColor(Qt.blue)
 _transparent = QColor(Qt.black)
 _transparent.setAlpha(0)

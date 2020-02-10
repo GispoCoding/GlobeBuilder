@@ -32,7 +32,9 @@ from .globe import Globe
 from .utils.geocoder import Geocoder
 from .utils.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
                              DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
-                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR, WGS84)
+                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR, WGS84,
+                             DEFAULT_HALO_LAYOUT_COLOR)
+from .utils.utils import create_layout
 
 sys.path.append(os.path.dirname(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -57,7 +59,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.iface = iface
         self.qgis_instance = QgsProject.instance()
-        self.layout_manager = self.qgis_instance.layoutManager()
+        self.layout_mngr = self.qgis_instance.layoutManager()
         self.globe = Globe(iface)
         self.geocoder = Geocoder(lambda results: self.on_geocoding_finished(results))
 
@@ -84,6 +86,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.on_radioButtonLayer_toggled(self.radioButtonLayer.isChecked())
         self.on_radioButtonGeocoding_toggled(self.radioButtonGeocoding.isChecked())
         self.on_radioButtonHFill_toggled(self.radioButtonHFill.isChecked())
+        self.on_radioButtonHFillWithHalo_toggled(self.radioButtonHFillWithHalo.isChecked())
+
         self.populate_comboBoxLayouts()
 
         self.mColorButtonBackground.setColor(DEFAULT_BACKGROUND_COLOR)
@@ -93,9 +97,9 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.geolocations = {}
 
         # connections
-        self.layout_manager.layoutAdded.connect(self.populate_comboBoxLayouts)
-        self.layout_manager.layoutRemoved.connect(self.populate_comboBoxLayouts)
-        self.layout_manager.layoutRenamed.connect(self.populate_comboBoxLayouts)
+        self.layout_mngr.layoutAdded.connect(self.populate_comboBoxLayouts)
+        self.layout_mngr.layoutRemoved.connect(self.populate_comboBoxLayouts)
+        self.layout_mngr.layoutRenamed.connect(self.populate_comboBoxLayouts)
 
         self.is_initializing = False
 
@@ -130,9 +134,14 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if not self.is_initializing:
             self.add_halo_to_globe()
 
+    def on_radioButtonHFillWithHalo_toggled(self, is_checked):
+        self.mColorButtonHFill.setEnabled(is_checked or self.radioButtonHFill.isChecked())
+        if not self.is_initializing:
+            self.add_halo_to_globe()
+
     @pyqtSlot(bool)
     def on_radioButtonHFill_toggled(self, is_checked):
-        self.mColorButtonHFill.setEnabled(is_checked)
+        self.mColorButtonHFill.setEnabled(is_checked or self.radioButtonHFillWithHalo.isChecked())
         if not self.is_initializing:
             self.add_halo_to_globe()
 
@@ -180,7 +189,17 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     @pyqtSlot()
     def on_pushButtonAddToLayout_clicked(self):
-        self.globe.add_theme()
+        selected_layouts = tuple(
+            filter(lambda l: l.name() == self.comboBoxLayouts.currentText(), self.layout_mngr.layouts()))
+        layout = selected_layouts[0] if len(selected_layouts) == 1 else create_layout("LayoutGlobe", self.qgis_instance)
+
+        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
+                             self.checkBoxGraticules.isChecked())
+        self.mColorButtonHalo.setColor(DEFAULT_HALO_LAYOUT_COLOR)
+        self.add_halo_to_globe()
+        self.globe.set_group_visibility(False)
+        self.globe.refresh_theme()
+        self.globe.add_to_layout(layout)
 
     @pyqtSlot(QColor)
     def on_mColorButtonBackground_colorChanged(self, color):
@@ -199,16 +218,18 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def populate_comboBoxLayouts(self, *args):
         self.comboBoxLayouts.clear()
-        for layout in self.layout_manager.layouts():
+        self.comboBoxLayouts.addItem(self.tr(u"Create new layout (LayoutGlobe)"))
+        for layout in self.layout_mngr.layouts():
             self.comboBoxLayouts.addItem(layout.name())
-        self.pushButtonAddToLayout.setEnabled(self.comboBoxLayouts.count() > 0)
 
     def add_halo_to_globe(self):
         self.globe.add_halo(self.radioButtonHHalo.isChecked(), self.mColorButtonHalo.color(),
-                            self.get_halo_fill_color())
+                            self.get_halo_fill_color(), self.radioButtonHFillWithHalo.isChecked())
+        self.globe.refresh_theme()
 
     def get_halo_fill_color(self):
-        return self.mColorButtonHFill.color() if self.radioButtonHFill.isChecked() else None
+        return self.mColorButtonHFill.color() if (
+                self.radioButtonHFill.isChecked() or self.radioButtonHFillWithHalo.isChecked()) else None
 
     def on_geocoding_finished(self, geolocations):
         self.geolocations = geolocations.copy()

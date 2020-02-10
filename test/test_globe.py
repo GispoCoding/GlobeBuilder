@@ -100,6 +100,20 @@ class GlobeTest(unittest.TestCase):
         names = get_existing_layer_names()
         self.assertTrue("Halo" in names)
 
+    def test_group(self):
+        group = self.globe.group
+        children = QGIS_INSTANCE.layerTreeRoot().children()
+        self.assertTrue(group in children)
+
+    def test_theme_exist_if_items_in_group(self):
+        self.globe.load_data(False, False, True)
+        self.globe.refresh_theme()
+        self.assertTrue(Globe.THEME_NAME in QGIS_INSTANCE.mapThemeCollection().mapThemes())
+
+    def test_theme_doesnt_exist_group_is_empty(self):
+        self.globe.refresh_theme()
+        self.assertFalse(Globe.THEME_NAME in QGIS_INSTANCE.mapThemeCollection().mapThemes())
+
 
 def get_existing_layer_names():
     return {layer.name() for layer in IFACE.getMockLayers() + CANVAS.layers()}

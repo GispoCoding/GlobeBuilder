@@ -6,8 +6,8 @@
    <rect>
        <x>0</x>
        <y>0</y>
-       <width>729</width>
-       <height>763</height>
+       <width>977</width>
+       <height>844</height>
    </rect>
   </property>
   <property name="floating">
@@ -16,28 +16,28 @@
   <property name="windowTitle">
    <string>Globe Builder</string>
   </property>
-  <widget class="QWidget" name="dockWidgetContents">
-      <layout class="QVBoxLayout" name="verticalLayout_18">
-          <item>
-              <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
-                  <property name="sizeConstraint">
-                      <enum>QLayout::SetNoConstraint</enum>
-                  </property>
-                  <item>
-                      <widget class="QScrollArea" name="scrollArea">
-                          <property name="widgetResizable">
-                              <bool>true</bool>
-                          </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents_2">
-         <property name="geometry">
-             <rect>
-                 <x>0</x>
-                 <y>-80</y>
-                 <width>693</width>
-                 <height>623</height>
-             </rect>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_10">
+     <widget class="QWidget" name="dockWidgetContents">
+         <layout class="QVBoxLayout" name="verticalLayout_19">
+             <item>
+                 <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
+                     <property name="sizeConstraint">
+                         <enum>QLayout::SetNoConstraint</enum>
+                     </property>
+                     <item>
+                         <widget class="QScrollArea" name="scrollArea">
+                             <property name="widgetResizable">
+                                 <bool>true</bool>
+                             </property>
+                             <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                                 <property name="geometry">
+                                     <rect>
+                                         <x>0</x>
+                                         <y>-140</y>
+                                         <width>941</width>
+                                         <height>796</height>
+                                     </rect>
+                                 </property>
+                                 <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_9">
             <item>
@@ -318,7 +318,7 @@
              <string>Visualization</string>
             </property>
             <property name="collapsed">
-             <bool>true</bool>
+                <bool>false</bool>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
@@ -448,13 +448,24 @@
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_10">
-                   <item>
-                    <widget class="QRadioButton" name="radioButtonHFill">
-                     <property name="text">
-                      <string>Outline, fill</string>
-                     </property>
-                    </widget>
-                   </item>
+                      <item>
+                          <layout class="QVBoxLayout" name="verticalLayout_18">
+                              <item>
+                                  <widget class="QRadioButton" name="radioButtonHFillWithHalo">
+                                      <property name="text">
+                                          <string>Halo, fill</string>
+                                      </property>
+                                  </widget>
+                              </item>
+                              <item>
+                                  <widget class="QRadioButton" name="radioButtonHFill">
+                                      <property name="text">
+                                          <string>Outline, fill</string>
+                                      </property>
+                                  </widget>
+                              </item>
+                          </layout>
+                      </item>
                       <item>
                           <widget class="QgsColorButton" name="mColorButtonHFill"/>
                       </item>
@@ -467,74 +478,75 @@
             </layout>
            </widget>
           </item>
-             <item>
-                 <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
-                     <property name="title">
-                         <string>Layout</string>
-                     </property>
-                     <property name="collapsed">
-                         <bool>false</bool>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_17">
-                         <item>
-                             <layout class="QVBoxLayout" name="verticalLayout_4">
-                                 <item>
-                                     <layout class="QHBoxLayout" name="horizontalLayout_13">
-                                         <item>
-                                             <widget class="QLabel" name="label_composer">
-                                                 <property name="text">
-                                                     <string>Map composer:</string>
-                                                 </property>
-                                             </widget>
-                                         </item>
-                                         <item>
-                                             <widget class="QComboBox" name="comboBoxLayouts"/>
-                                         </item>
-                                     </layout>
-                                 </item>
-                                 <item>
-                                     <layout class="QHBoxLayout" name="horizontalLayout_14">
-                                         <item>
-                                             <spacer name="horizontalSpacer_6">
-                                                 <property name="orientation">
-                                                     <enum>Qt::Horizontal</enum>
-                                                 </property>
-                                                 <property name="sizeHint" stdset="0">
-                                                     <size>
-                                                         <width>40</width>
-                                                         <height>20</height>
-                                                     </size>
-                                                 </property>
-                                             </spacer>
-                                         </item>
-                                         <item>
-                                             <widget class="QPushButton" name="pushButtonAddToLayout">
-                                                 <property name="text">
-                                                     <string>Add to Layout</string>
-                                                 </property>
-                                             </widget>
-                                         </item>
-                                     </layout>
-                                 </item>
-                             </layout>
-                         </item>
-                     </layout>
-                 </widget>
-             </item>
-             <item>
-                 <spacer name="verticalSpacer_3">
-                     <property name="orientation">
-                         <enum>Qt::Vertical</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                         <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+                                     <item>
+                                         <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
+                                             <property name="title">
+                                                 <string>Layout</string>
+                                             </property>
+                                             <property name="collapsed">
+                                                 <bool>false</bool>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_17">
+                                                 <item>
+                                                     <layout class="QVBoxLayout" name="verticalLayout_4">
+                                                         <item>
+                                                             <layout class="QHBoxLayout" name="horizontalLayout_13">
+                                                                 <item>
+                                                                     <widget class="QLabel" name="label_composer">
+                                                                         <property name="text">
+                                                                             <string>Map composer:</string>
+                                                                         </property>
+                                                                     </widget>
+                                                                 </item>
+                                                                 <item>
+                                                                     <widget class="QComboBox" name="comboBoxLayouts"/>
+                                                                 </item>
+                                                             </layout>
+                                                         </item>
+                                                         <item>
+                                                             <layout class="QHBoxLayout" name="horizontalLayout_14">
+                                                                 <item>
+                                                                     <spacer name="horizontalSpacer_6">
+                                                                         <property name="orientation">
+                                                                             <enum>Qt::Horizontal</enum>
+                                                                         </property>
+                                                                         <property name="sizeHint" stdset="0">
+                                                                             <size>
+                                                                                 <width>40</width>
+                                                                                 <height>20</height>
+                                                                             </size>
+                                                                         </property>
+                                                                     </spacer>
+                                                                 </item>
+                                                                 <item>
+                                                                     <widget class="QPushButton"
+                                                                             name="pushButtonAddToLayout">
+                                                                         <property name="text">
+                                                                             <string>Add to Layout</string>
+                                                                         </property>
+                                                                     </widget>
+                                                                 </item>
+                                                             </layout>
+                                                         </item>
+                                                     </layout>
+                                                 </item>
+                                             </layout>
+                                         </widget>
+                                     </item>
+                                     <item>
+                                         <spacer name="verticalSpacer_3">
+                                             <property name="orientation">
+                                                 <enum>Qt::Vertical</enum>
+                                             </property>
+                                             <property name="sizeHint" stdset="0">
+                                                 <size>
+                                                     <width>20</width>
+                                                     <height>40</height>
+                                                 </size>
+                                             </property>
+                                         </spacer>
+                                     </item>
+                                 </layout>
         </widget>
        </widget>
       </item>

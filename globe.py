@@ -23,9 +23,11 @@
 import os
 
 from PyQt5.QtCore import QSettings
+from PyQt5.QtGui import QColor
 from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
                        QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
-                       QgsFeature, QgsGeometry, QgsPointXY, QgsMapThemeCollection)
+                       QgsFeature, QgsGeometry, QgsPointXY, QgsMapThemeCollection, QgsLayoutItemMap,
+                       QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
 
 from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
                              DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
@@ -35,12 +37,23 @@ from .utils.utils import tr
 
 
 class Globe:
+    THEME_NAME = tr(u"Globe")
+    GROUP_NAME = tr(u"Globe")
 
-    def __init__(self, iface):
+    def __init__(self, iface, origin=DEFAULT_ORIGIN):
         self.iface = iface
-        self.origin = DEFAULT_ORIGIN
+        self.origin = origin
         self.qgis_instance = QgsProject.instance()
-        self.group = None
+
+    @property
+    def group(self):
+        root = self.qgis_instance.layerTreeRoot()
+        groups = tuple(filter(lambda g: g.name() == Globe.GROUP_NAME,
+                              filter(root.isGroup, root.children())))
+        if len(groups) == 1:
+            return groups[0]
+        else:
+            return root.addGroup(Globe.GROUP_NAME)
 
     def set_origin(self, coordinates):
         if coordinates is not None:
@@ -50,9 +63,6 @@ class Globe:
         self.group.setItemVisibilityCheckedRecursive(is_visible)
 
     def load_data(self, load_s2, load_countries, load_graticules):
-        if self.group is None:
-            self.add_group()
-
         existing_layer_names = self.get_existing_layer_names()
         s2_cloudless_layer_name = tr(u'S2 Cloudless 2018')
         if load_s2 and s2_cloudless_layer_name not in existing_layer_names:
@@ -69,9 +79,6 @@ class Globe:
             ne_data[tr(u'Graticules')] = 'ne_10m_graticules_30.geojson'
         len(ne_data) and self.load_natural_eath_data(ne_data)
         self.iface.mapCanvas().refresh()
-
-    def add_group(self):
-        self.group = self.qgis_instance.layerTreeRoot().addGroup(tr(u"Globe"))
 
     def load_natural_eath_data(self, ne_data):
         # TODO: resolution
@@ -102,11 +109,7 @@ class Globe:
 
     def insert_layer_to_group(self, layer, index=0):
         self.qgis_instance.addMapLayer(layer, False)
-        try:
-            self.group.insertLayer(index, layer)
-        except RuntimeError:
-            self.add_group()
-            self.group.insertLayer(index, layer)
+        self.group.insertLayer(index, layer)
 
     def change_project_projection_to_azimuthal_orthographic(self):
         # Change to wgs84 to activate the changes in origin
@@ -169,10 +172,13 @@ class Globe:
         layer.triggerRepaint()
         return layer
 
-    def add_halo(self, use_effects, stroke_color, fill_color=None):
+    def add_halo(self, use_effects, stroke_color, fill_color=None, halo_with_fill=False):
         layer_name = tr(u"Halo")
 
-        [self.qgis_instance.removeMapLayer(lyr.id()) for lyr in self.qgis_instance.mapLayersByName(layer_name)]
+        if halo_with_fill:
+            self.add_halo(True, stroke_color)
+        else:
+            [self.qgis_instance.removeMapLayer(lyr.id()) for lyr in self.qgis_instance.mapLayersByName(layer_name)]
 
         draw_method = HaloDrawMethod(
             QSettings().value("/GlobeBuilder/haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value,
@@ -207,13 +213,37 @@ class Globe:
 
         self.insert_layer_to_group(layer, index)
 
-    def add_theme(self):
-        theme_name = tr(u"Globe")
+    def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()
         layers = [layer.layer() for layer in self.group.findLayers()]
-        if theme_name not in theme_collection.mapThemes():
-            theme_collection.removeMapTheme(theme_name)
+        if Globe.THEME_NAME not in theme_collection.mapThemes():
+            theme_collection.removeMapTheme(Globe.THEME_NAME)
         if len(layers):
             map_theme_record = QgsMapThemeCollection.MapThemeRecord()
             map_theme_record.setLayerRecords([QgsMapThemeCollection.MapThemeLayerRecord(layer) for layer in layers])
-            theme_collection.insert(theme_name, map_theme_record)
+            theme_collection.insert(Globe.THEME_NAME, map_theme_record)
+
+    def add_to_layout(self, layout, background_color=QColor(255, 255, 255, 0)):
+        '''
+        Inspired by https://opensourceoptions.com/blog/pyqgis-create-and-print-a-map-layout-with-python/
+        '''
+        layers = [layer.layer() for layer in self.group.findLayers()]
+        # create map item in the layout
+        map = QgsLayoutItemMap(layout)
+        map.setRect(20, 20, 20, 20)
+        # set the map extent
+        ms = QgsMapSettings()
+        ms.setLayers(layers)  # set layers to be mapped
+        crs = QgsCoordinateReferenceSystem()
+        crs.createFromProj4(AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin))
+        map.setCrs(crs)
+        map.setFollowVisibilityPreset(True)
+        map.setFollowVisibilityPresetName(Globe.THEME_NAME)
+        rect = QgsRectangle(ms.fullExtent())
+
+        ms.setExtent(rect)
+        map.setExtent(rect)
+        map.setBackgroundColor(background_color)
+        layout.addLayoutItem(map)
+        map.attemptMove(QgsLayoutPoint(5, 20, QgsUnitTypes.LayoutMillimeters))
+        map.attemptResize(QgsLayoutSize(80, 80, QgsUnitTypes.LayoutMillimeters))

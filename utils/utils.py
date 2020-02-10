@@ -21,6 +21,7 @@
  ***************************************************************************/
 """
 from PyQt5.QtCore import QCoreApplication
+from qgis.core import QgsPrintLayout
 
 
 def tr(message):
@@ -36,3 +37,17 @@ def tr(message):
     """
     # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
     return QCoreApplication.translate('GlobeBuilder', message)
+
+
+def create_layout(layout_name, qgis_instance):
+    manager = qgis_instance.layoutManager()
+    layouts_list = manager.printLayouts()
+    # remove any duplicate layouts
+    for layout in layouts_list:
+        if layout.name() == layout_name:
+            manager.removeLayout(layout)
+    layout = QgsPrintLayout(qgis_instance)
+    layout.initializeDefaults()
+    layout.setName(layout_name)
+    manager.addLayout(layout)
+    return layout
