@@ -23,18 +23,18 @@ import os
 import sys
 
 from PyQt5.QtCore import pyqtSignal, QSettings, pyqtSlot
-from PyQt5.QtGui import QColor
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
-from qgis.core import Qgis, QgsCoordinateTransform, QgsProject
+from qgis.core import Qgis, QgsProject
 
 from .globe import Globe
 from .utils.geocoder import Geocoder
 from .utils.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
                              DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
-                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR, WGS84,
-                             DEFAULT_HALO_LAYOUT_COLOR)
-from .utils.utils import create_layout
+                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
+                             DEFAULT_LAYOUT_BACKGROUND_COLOR, DEFAULT_COUNTRIES_COLOR,
+                             DEFAULT_GRATICULES_COLOR)
+from .utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
 
 sys.path.append(os.path.dirname(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -87,12 +87,16 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.on_radioButtonGeocoding_toggled(self.radioButtonGeocoding.isChecked())
         self.on_radioButtonHFill_toggled(self.radioButtonHFill.isChecked())
         self.on_radioButtonHFillWithHalo_toggled(self.radioButtonHFillWithHalo.isChecked())
+        self.on_checkBoxIntCountries_stateChanged()
 
         self.populate_comboBoxLayouts()
 
         self.mColorButtonBackground.setColor(DEFAULT_BACKGROUND_COLOR)
         self.mColorButtonHalo.setColor(DEFAULT_HALO_COLOR)
         self.mColorButtonHFill.setColor(DEFAULT_HALO_FILL_COLOR)
+        self.mColorButtonLayoutBackground.setColor(DEFAULT_LAYOUT_BACKGROUND_COLOR)
+        self.mColorButtonCountries.setColor(DEFAULT_COUNTRIES_COLOR)
+        self.mColorButtonGraticules.setColor(DEFAULT_GRATICULES_COLOR)
 
         self.geolocations = {}
 
@@ -124,26 +128,37 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.listWidgetGeocodingResults.setEnabled(is_checked)
         self.spinBoxMaxResults.setEnabled(is_checked)
 
-    @pyqtSlot(bool)
-    def on_radioButtonHHalo_toggled(self, is_checked):
-        if not self.is_initializing:
-            self.add_halo_to_globe()
+    # @pyqtSlot(bool)
+    # def on_radioButtonHHalo_toggled(self, is_checked):
+    #     if not self.is_initializing:
+    #         self.add_halo_to_globe()
 
-    @pyqtSlot(bool)
-    def on_radioButtonHOutline_toggled(self, is_checked):
-        if not self.is_initializing:
-            self.add_halo_to_globe()
+    # @pyqtSlot(bool)
+    # def on_radioButtonHOutline_toggled(self, is_checked):
+    #     if not self.is_initializing:
+    #         self.add_halo_to_globe()
+
+    # @pyqtSlot(QColor)
+    # def on_mColorButtonBackground_colorChanged(self, color):
+    #     if not self.is_initializing:
+    #         self.globe.change_background_color(color)
+    #
+    # @pyqtSlot(QColor)
+    # def on_mColorButtonHalo_colorChanged(self, color):
+    #     if not self.is_initializing:
+    #         self.add_halo_to_globe()
+    #
+    # @pyqtSlot(QColor)
+    # def on_mColorButtonHFill_colorChanged(self, color):
+    #     if not self.is_initializing:
+    #         self.add_halo_to_globe()
 
     def on_radioButtonHFillWithHalo_toggled(self, is_checked):
         self.mColorButtonHFill.setEnabled(is_checked or self.radioButtonHFill.isChecked())
-        if not self.is_initializing:
-            self.add_halo_to_globe()
 
     @pyqtSlot(bool)
     def on_radioButtonHFill_toggled(self, is_checked):
         self.mColorButtonHFill.setEnabled(is_checked or self.radioButtonHFillWithHalo.isChecked())
-        if not self.is_initializing:
-            self.add_halo_to_globe()
 
     @pyqtSlot(int)
     def on_spinBoxMaxResults_valueChanged(self, value):
@@ -158,6 +173,10 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_checkBoxS2cloudless_stateChanged(self):
         QSettings().setValue("/GlobeBuilder/useS2cloudless", self.checkBoxS2cloudless.isChecked())
 
+    def on_checkBoxIntCountries_stateChanged(self):
+        QSettings().setValue("/GlobeBuilder/intCountries", self.checkBoxIntCountries.isChecked())
+        self.mColorButtonIntCountries.setEnabled(self.checkBoxIntCountries.isChecked())
+
     @pyqtSlot()
     def on_pushButtonSearch_clicked(self):
         text = self.lineEditGeocoding.text()
@@ -168,8 +187,19 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     @pyqtSlot()
     def on_pushButtonLoadData_clicked(self):
+        self.load_data_to_globe(False)
+
+    def load_data_to_globe(self, possibly_use_intersecting_colors=True):
         self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
-                             self.checkBoxGraticules.isChecked())
+                             self.checkBoxGraticules.isChecked(), self.mColorButtonCountries.color(),
+                             self.mColorButtonGraticules.color(),
+                             self.get_intersecting_countries_color() if possibly_use_intersecting_colors else None)
+
+    @pyqtSlot()
+    def on_pushButtonApplyVisualizations_clicked(self):
+        if not self.is_initializing:
+            self.load_data_to_globe()
+            self.add_halo_to_globe()
 
     @pyqtSlot()
     def on_pushButtonCenter_clicked(self):
@@ -179,12 +209,12 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     @pyqtSlot()
     def on_pushButtonRun_clicked(self):
-        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
-                             self.checkBoxGraticules.isChecked())
+        self.load_data_to_globe(False)
         self.globe.set_origin(self.calculate_origin_coordinates())
         self.globe.change_background_color(self.mColorButtonBackground.color())
         self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
         self.globe.change_project_projection_to_azimuthal_orthographic()
+        self.globe.set_group_visibility(True)
         self.add_halo_to_globe()
 
     @pyqtSlot()
@@ -193,28 +223,17 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             filter(lambda l: l.name() == self.comboBoxLayouts.currentText(), self.layout_mngr.layouts()))
         layout = selected_layouts[0] if len(selected_layouts) == 1 else create_layout("LayoutGlobe", self.qgis_instance)
 
-        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
-                             self.checkBoxGraticules.isChecked())
-        self.mColorButtonHalo.setColor(DEFAULT_HALO_LAYOUT_COLOR)
+        # For some reason layout mode can't handle azimuthal ortographic projection with any decimals and the
+        # projection needs to be set to project level before attempting to use it in a layout
+        self.globe.set_origin(
+            {key: float("{:.0f}".format(val)) for key, val in self.calculate_origin_coordinates().items()})
+        self.globe.change_temporarily_to_azimuthal_ortographic_projection()
+        self.load_data_to_globe()
+
         self.add_halo_to_globe()
         self.globe.set_group_visibility(False)
         self.globe.refresh_theme()
-        self.globe.add_to_layout(layout)
-
-    @pyqtSlot(QColor)
-    def on_mColorButtonBackground_colorChanged(self, color):
-        if not self.is_initializing:
-            self.globe.change_background_color(color)
-
-    @pyqtSlot(QColor)
-    def on_mColorButtonHalo_colorChanged(self, color):
-        if not self.is_initializing:
-            self.add_halo_to_globe()
-
-    @pyqtSlot(QColor)
-    def on_mColorButtonHFill_colorChanged(self, color):
-        if not self.is_initializing:
-            self.add_halo_to_globe()
+        self.globe.add_to_layout(layout, background_color=self.mColorButtonLayoutBackground.color())
 
     def populate_comboBoxLayouts(self, *args):
         self.comboBoxLayouts.clear()
@@ -230,6 +249,9 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def get_halo_fill_color(self):
         return self.mColorButtonHFill.color() if (
                 self.radioButtonHFill.isChecked() or self.radioButtonHFillWithHalo.isChecked()) else None
+
+    def get_intersecting_countries_color(self):
+        return self.mColorButtonIntCountries.color() if self.checkBoxIntCountries.isChecked() else None
 
     def on_geocoding_finished(self, geolocations):
         self.geolocations = geolocations.copy()
@@ -265,10 +287,11 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     raise ValueError(self.tr(u"Make sure to have at least one layer in the project"))
                 center_point = layer.extent().center()
 
-                transformer = QgsCoordinateTransform(layer.crs(), WGS84, self.qgis_instance)
-                center_point = transformer.transform(center_point)
+                center_point = transform_to_wgs84(center_point, layer.crs(), self.qgis_instance)
                 coordinates = {'lon': center_point.x(), 'lat': center_point.y()}
 
+            elif self.radioButtonCenter.isChecked():
+                coordinates = get_map_center_coordinates(self.iface, self.qgis_instance)
 
         except ValueError as e:
             self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),

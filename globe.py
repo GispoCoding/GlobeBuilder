@@ -33,7 +33,7 @@ from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WM
                              DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
                              DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN, TRANSPARENT_COLOR,
                              WGS84)
-from .utils.utils import tr
+from .utils.utils import tr, set_selection_based_style, get_feature_ids_that_intersect_bbox
 
 
 class Globe:
@@ -62,7 +62,8 @@ class Globe:
     def set_group_visibility(self, is_visible):
         self.group.setItemVisibilityCheckedRecursive(is_visible)
 
-    def load_data(self, load_s2, load_countries, load_graticules):
+    def load_data(self, load_s2, load_countries, load_graticules, countries_color, graticules_color,
+                  intersecting_countries_color):
         existing_layer_names = self.get_existing_layer_names()
         s2_cloudless_layer_name = tr(u'S2 Cloudless 2018')
         if load_s2 and s2_cloudless_layer_name not in existing_layer_names:
@@ -74,9 +75,19 @@ class Globe:
                                                     level=Qgis.Warning, duration=4)
         ne_data = {}
         if load_countries:
-            ne_data[tr(u'Countries')] = 'ne_110m_admin_0_countries.geojson'
+            def style_coutries(layer):
+                if intersecting_countries_color is None:
+                    layer.renderer().symbol().setColor(countries_color)
+                else:
+                    set_selection_based_style(layer, intersecting_countries_color, countries_color)
+                    ids = get_feature_ids_that_intersect_bbox(layer, self.iface.mapCanvas().extent(),
+                                                              self.qgis_instance.crs())
+                    layer.select(ids)
+
+            ne_data[tr(u'Countries')] = ('ne_110m_admin_0_countries.geojson', lambda l: style_coutries(l))
         if load_graticules:
-            ne_data[tr(u'Graticules')] = 'ne_10m_graticules_30.geojson'
+            ne_data[tr(u'Graticules')] = (
+                'ne_10m_graticules_30.geojson', lambda l: l.renderer().symbol().setColor(graticules_color))
         len(ne_data) and self.load_natural_eath_data(ne_data)
         self.iface.mapCanvas().refresh()
 
@@ -93,9 +104,9 @@ class Globe:
         else:
             root = NATURAL_EARTH_BASE_URL
 
-        for name, source in ne_data.items():
+        for name, data in ne_data.items():
+            source, styling_method = data
             if name not in existing_layer_names:
-
                 layer = QgsVectorLayer(os.path.join(root, source), name, "ogr")
                 if layer is None:
                     layer = QgsVectorLayer(os.path.join(LOCAL_DATA_DIR, source), name, "ogr")
@@ -107,6 +118,13 @@ class Globe:
                     layer.setName(name)
                     self.insert_layer_to_group(layer)
 
+            else:
+                layer = self.qgis_instance.mapLayersByName(name)[0]
+
+            if styling_method is not None and layer is not None:
+                styling_method(layer)
+                layer.triggerRepaint()
+
     def insert_layer_to_group(self, layer, index=0):
         self.qgis_instance.addMapLayer(layer, False)
         self.group.insertLayer(index, layer)
@@ -117,6 +135,11 @@ class Globe:
         proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj4(proj4_string)
+        self.qgis_instance.setCrs(crs)
+
+    def change_temporarily_to_azimuthal_ortographic_projection(self):
+        crs = self.qgis_instance.crs()
+        self.change_project_projection_to_azimuthal_orthographic()
         self.qgis_instance.setCrs(crs)
 
     def change_background_color(self, new_background_color):

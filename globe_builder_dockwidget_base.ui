@@ -6,18 +6,18 @@
    <rect>
        <x>0</x>
        <y>0</y>
-       <width>977</width>
-       <height>844</height>
+       <width>871</width>
+       <height>823</height>
    </rect>
   </property>
-  <property name="floating">
-   <bool>false</bool>
-  </property>
-  <property name="windowTitle">
-   <string>Globe Builder</string>
-  </property>
+     <property name="floating">
+         <bool>false</bool>
+     </property>
+     <property name="windowTitle">
+         <string>Globe Builder</string>
+     </property>
      <widget class="QWidget" name="dockWidgetContents">
-         <layout class="QVBoxLayout" name="verticalLayout_19">
+         <layout class="QVBoxLayout" name="verticalLayout_20">
              <item>
                  <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
                      <property name="sizeConstraint">
@@ -32,22 +32,22 @@
                                  <property name="geometry">
                                      <rect>
                                          <x>0</x>
-                                         <y>-140</y>
-                                         <width>941</width>
-                                         <height>796</height>
+                                         <y>-298</y>
+                                         <width>835</width>
+                                         <height>874</height>
                                      </rect>
                                  </property>
                                  <layout class="QVBoxLayout" name="verticalLayout_10">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_9">
-            <item>
-             <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
-              <property name="title">
-               <string>Data sources</string>
-              </property>
-              <property name="collapsed">
-               <bool>false</bool>
-              </property>
+                                     <item>
+                                         <layout class="QVBoxLayout" name="verticalLayout_9">
+                                             <item>
+                                                 <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
+                                                     <property name="title">
+                                                         <string>Data sources</string>
+                                                     </property>
+                                                     <property name="collapsed">
+                                                         <bool>false</bool>
+                                                     </property>
               <layout class="QVBoxLayout" name="verticalLayout_11">
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -103,7 +103,7 @@
                    <item>
                     <widget class="QPushButton" name="pushButtonLoadData">
                      <property name="text">
-                      <string>Load Data</string>
+                         <string>Load Data to a Map</string>
                      </property>
                     </widget>
                    </item>
@@ -122,7 +122,7 @@
              <bool>true</bool>
             </property>
             <property name="title">
-             <string>Center globe based on:</string>
+                <string>Center the Globe based on:</string>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -154,25 +154,39 @@
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <widget class="QLineEdit" name="lineEditLonLat"/>
-                   </item>
+                      <item>
+                          <widget class="QLineEdit" name="lineEditLonLat"/>
+                      </item>
                   </layout>
                  </item>
                 </layout>
                </item>
-               <item>
-                <widget class="Line" name="line_3">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_12">
-                 <item>
-                  <widget class="QRadioButton" name="radioButtonLayer">
-                   <property name="text">
+                  <item>
+                      <widget class="Line" name="line_3">
+                          <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                          </property>
+                      </widget>
+                  </item>
+                  <item>
+                      <widget class="QRadioButton" name="radioButtonCenter">
+                          <property name="text">
+                              <string>Center of the current view</string>
+                          </property>
+                      </widget>
+                  </item>
+                  <item>
+                      <widget class="Line" name="line_4">
+                          <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                          </property>
+                      </widget>
+                  </item>
+                  <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_12">
+                          <item>
+                              <widget class="QRadioButton" name="radioButtonLayer">
+                                  <property name="text">
                     <string>Layer</string>
                    </property>
                   </widget>
@@ -270,10 +284,10 @@
                         <number>1</number>
                        </property>
                        <property name="maximum">
-                        <number>40</number>
+                           <number>10</number>
                        </property>
                        <property name="value">
-                        <number>10</number>
+                           <number>5</number>
                        </property>
                       </widget>
                      </item>
@@ -348,21 +362,42 @@
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_6">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_15">
-                     <item>
-                      <widget class="QLabel" name="label_6">
-                       <property name="text">
-                        <string>Background</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_11">
-                       <property name="text">
-                        <string>Halo</string>
-                       </property>
-                      </widget>
-                     </item>
+                       <layout class="QVBoxLayout" name="verticalLayout_15">
+                           <item>
+                               <widget class="QLabel" name="label_6">
+                                   <property name="text">
+                                       <string>Background</string>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QLabel" name="label">
+                                   <property name="text">
+                                       <string>Globe Layout background</string>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QLabel" name="label_7">
+                                   <property name="text">
+                                       <string>Countries</string>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QLabel" name="label_12">
+                                   <property name="text">
+                                       <string>Graticules</string>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QLabel" name="label_11">
+                                   <property name="text">
+                                       <string>Halo</string>
+                                   </property>
+                               </widget>
+                           </item>
                     </layout>
                    </item>
                    <item>
@@ -379,19 +414,40 @@
                     </spacer>
                    </item>
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_16">
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonBackground">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonHalo">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_16">
+                           <item>
+                               <widget class="QgsColorButton" name="mColorButtonBackground">
+                                   <property name="allowOpacity">
+                                       <bool>true</bool>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QgsColorButton" name="mColorButtonLayoutBackground">
+                                   <property name="allowOpacity">
+                                       <bool>true</bool>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QgsColorButton" name="mColorButtonCountries">
+                                   <property name="allowOpacity">
+                                       <bool>true</bool>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QgsColorButton" name="mColorButtonGraticules">
+                                   <property name="allowOpacity">
+                                       <bool>true</bool>
+                                   </property>
+                               </widget>
+                           </item>
+                           <item>
+                               <widget class="QgsColorButton" name="mColorButtonHalo">
+                                   <property name="allowOpacity">
+                                       <bool>true</bool>
+                                   </property>
                       </widget>
                      </item>
                     </layout>
@@ -447,34 +503,65 @@
                   </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_10">
-                      <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_18">
-                              <item>
-                                  <widget class="QRadioButton" name="radioButtonHFillWithHalo">
-                                      <property name="text">
-                                          <string>Halo, fill</string>
-                                      </property>
-                                  </widget>
-                              </item>
-                              <item>
-                                  <widget class="QRadioButton" name="radioButtonHFill">
-                                      <property name="text">
-                                          <string>Outline, fill</string>
-                                      </property>
-                                  </widget>
-                              </item>
-                          </layout>
-                      </item>
-                      <item>
-                          <widget class="QgsColorButton" name="mColorButtonHFill"/>
-                      </item>
-                  </layout>
+                     <layout class="QHBoxLayout" name="horizontalLayout_10">
+                         <item>
+                             <layout class="QVBoxLayout" name="verticalLayout_18">
+                                 <item>
+                                     <widget class="QRadioButton" name="radioButtonHFillWithHalo">
+                                         <property name="text">
+                                             <string>Halo, fill</string>
+                                         </property>
+                                     </widget>
+                                 </item>
+                                 <item>
+                                     <widget class="QRadioButton" name="radioButtonHFill">
+                                         <property name="text">
+                                             <string>Outline, fill</string>
+                                         </property>
+                                     </widget>
+                                 </item>
+                             </layout>
+                         </item>
+                         <item>
+                             <widget class="QgsColorButton" name="mColorButtonHFill"/>
+                         </item>
+                     </layout>
                  </item>
                 </layout>
                </item>
               </layout>
              </item>
+                <item>
+                    <widget class="Line" name="line_5">
+                        <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_14">
+                        <item>
+                            <spacer name="horizontalSpacer_6">
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                                <property name="sizeHint" stdset="0">
+                                    <size>
+                                        <width>40</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="pushButtonApplyVisualizations">
+                                <property name="text">
+                                    <string>Apply</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
+                </item>
             </layout>
            </widget>
           </item>
@@ -503,30 +590,26 @@
                                                                  </item>
                                                              </layout>
                                                          </item>
+                                                     </layout>
+                                                 </item>
+                                                 <item>
+                                                     <layout class="QHBoxLayout" name="horizontalLayout_15">
                                                          <item>
-                                                             <layout class="QHBoxLayout" name="horizontalLayout_14">
-                                                                 <item>
-                                                                     <spacer name="horizontalSpacer_6">
-                                                                         <property name="orientation">
-                                                                             <enum>Qt::Horizontal</enum>
-                                                                         </property>
-                                                                         <property name="sizeHint" stdset="0">
-                                                                             <size>
-                                                                                 <width>40</width>
-                                                                                 <height>20</height>
-                                                                             </size>
-                                                                         </property>
-                                                                     </spacer>
-                                                                 </item>
-                                                                 <item>
-                                                                     <widget class="QPushButton"
-                                                                             name="pushButtonAddToLayout">
-                                                                         <property name="text">
-                                                                             <string>Add to Layout</string>
-                                                                         </property>
-                                                                     </widget>
-                                                                 </item>
-                                                             </layout>
+                                                             <widget class="QCheckBox" name="checkBoxIntCountries">
+                                                                 <property name="text">
+                                                                     <string>Color for Countries intersecting the
+                                                                         current view
+                                                                     </string>
+                                                                 </property>
+                                                             </widget>
+                                                         </item>
+                                                         <item>
+                                                             <widget class="QgsColorButton"
+                                                                     name="mColorButtonIntCountries">
+                                                                 <property name="allowOpacity">
+                                                                     <bool>true</bool>
+                                                                 </property>
+                                                             </widget>
                                                          </item>
                                                      </layout>
                                                  </item>
@@ -598,26 +681,44 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
+             <property name="sizeHint" stdset="0">
+                 <size>
+                     <width>40</width>
+                     <height>20</height>
+                 </size>
+             </property>
          </spacer>
         </item>
-        <item>
-         <widget class="QPushButton" name="pushButtonRun">
-          <property name="text">
-           <string>Run</string>
-          </property>
-         </widget>
-        </item>
+           <item>
+               <layout class="QVBoxLayout" name="verticalLayout_19">
+                   <item>
+                       <widget class="QPushButton" name="pushButtonRun">
+                           <property name="text">
+                               <string>Add the Globe to a Map</string>
+                           </property>
+                       </widget>
+                   </item>
+                   <item>
+                       <widget class="QPushButton" name="pushButtonAddToLayout">
+                           <property name="text">
+                               <string>Add the Globe to a Layout</string>
+                           </property>
+                       </widget>
+                   </item>
+               </layout>
+           </item>
        </layout>
       </item>
-     </layout>
-    </item>
-   </layout>
+                 </layout>
+             </item>
+             <item>
+                 <widget class="QLabel" name="label_9">
+                     <property name="text">
+                         <string/>
+                     </property>
+                 </widget>
+             </item>
+         </layout>
   </widget>
  </widget>
  <customwidgets>
