@@ -25,6 +25,13 @@ repository:
 
 3. Select the Install from ZIP tab, browse to the zip file you just downloaded, and click Install Plugin!
 
+
+## Usage
+
+The Globe could be added either to the current map or to a layout.
+
+![Plugin in layout mode](/images/screenshots/layout1.gif?raw=true "Plugin in layout mode")
+
 ## Gist
 There is also a Github [Gist](https://gist.github.com/Joonalai/7b8693ef904df75cb15cb9af0e82c032) that 
 provides the core functionality of the plugin. The usage can be seen in the following gif.
