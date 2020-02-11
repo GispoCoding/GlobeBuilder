@@ -33,7 +33,7 @@ from .utils.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNT
                              DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
                              DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
                              DEFAULT_LAYOUT_BACKGROUND_COLOR, DEFAULT_COUNTRIES_COLOR,
-                             DEFAULT_GRATICULES_COLOR)
+                             DEFAULT_GRATICULES_COLOR, DEFAULT_INTERSECTING_COUNTRIES_COLOR)
 from .utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
 
 sys.path.append(os.path.dirname(__file__))
@@ -97,6 +97,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.mColorButtonLayoutBackground.setColor(DEFAULT_LAYOUT_BACKGROUND_COLOR)
         self.mColorButtonCountries.setColor(DEFAULT_COUNTRIES_COLOR)
         self.mColorButtonGraticules.setColor(DEFAULT_GRATICULES_COLOR)
+        self.mColorButtonIntCountries.setColor(DEFAULT_INTERSECTING_COUNTRIES_COLOR)
 
         self.geolocations = {}
 
@@ -189,16 +190,14 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pushButtonLoadData_clicked(self):
         self.load_data_to_globe(False)
 
-    def load_data_to_globe(self, possibly_use_intersecting_colors=True):
-        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
-                             self.checkBoxGraticules.isChecked(), self.mColorButtonCountries.color(),
-                             self.mColorButtonGraticules.color(),
-                             self.get_intersecting_countries_color() if possibly_use_intersecting_colors else None)
+
 
     @pyqtSlot()
     def on_pushButtonApplyVisualizations_clicked(self):
         if not self.is_initializing:
             self.load_data_to_globe()
+            self.globe.change_background_color(self.mColorButtonBackground.color())
+            self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
             self.add_halo_to_globe()
 
     @pyqtSlot()
@@ -228,12 +227,14 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.globe.set_origin(
             {key: float("{:.0f}".format(val)) for key, val in self.calculate_origin_coordinates().items()})
         self.globe.change_temporarily_to_azimuthal_ortographic_projection()
+        self.globe.delete_group()
         self.load_data_to_globe()
 
         self.add_halo_to_globe()
         self.globe.set_group_visibility(False)
         self.globe.refresh_theme()
-        self.globe.add_to_layout(layout, background_color=self.mColorButtonLayoutBackground.color())
+        self.globe.add_to_layout(layout, background_color=self.mColorButtonLayoutBackground.color(),
+                                 size=self.spinBoxGlobeSize.value())
 
     def populate_comboBoxLayouts(self, *args):
         self.comboBoxLayouts.clear()
@@ -256,6 +257,14 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_geocoding_finished(self, geolocations):
         self.geolocations = geolocations.copy()
         [self.listWidgetGeocodingResults.addItem(name) for name in self.geolocations.keys()]
+
+    def load_data_to_globe(self, possibly_use_intersecting_colors=True):
+        self.globe.load_data(self.checkBoxS2cloudless.isChecked(), self.checkBoxCountries.isChecked(),
+                             self.checkBoxGraticules.isChecked(), self.mColorButtonCountries.color(),
+                             self.mColorButtonGraticules.color(),
+                             self.get_intersecting_countries_color() if possibly_use_intersecting_colors else None,
+                             self.comboBoxCountries.currentText().split(" ")[-1],
+                             self.comboBoxGraticules.currentText().split(" ")[-1])
 
     def get_geocoded_coordinates(self):
         coordinates = None

@@ -55,6 +55,15 @@ class Globe:
         else:
             return root.addGroup(Globe.GROUP_NAME)
 
+    def delete_group(self):
+        group = self.group
+        root = self.qgis_instance.layerTreeRoot()
+        if group is not None:
+            for child in group.children():
+                dump = child.dump()
+                self.qgis_instance.removeMapLayer(dump.split("=")[-1].strip())
+            root.removeChildNode(group)
+
     def set_origin(self, coordinates):
         if coordinates is not None:
             self.origin = coordinates
@@ -63,7 +72,7 @@ class Globe:
         self.group.setItemVisibilityCheckedRecursive(is_visible)
 
     def load_data(self, load_s2, load_countries, load_graticules, countries_color, graticules_color,
-                  intersecting_countries_color):
+                  intersecting_countries_color, counties_res, graticules_res):
         existing_layer_names = self.get_existing_layer_names()
         s2_cloudless_layer_name = tr(u'S2 Cloudless 2018')
         if load_s2 and s2_cloudless_layer_name not in existing_layer_names:
@@ -84,10 +93,12 @@ class Globe:
                                                               self.qgis_instance.crs())
                     layer.select(ids)
 
-            ne_data[tr(u'Countries')] = ('ne_110m_admin_0_countries.geojson', lambda l: style_coutries(l))
+            ne_data[tr(u'Countries')] = (
+            'ne_{}_admin_0_countries.geojson'.format(counties_res), lambda l: style_coutries(l))
         if load_graticules:
             ne_data[tr(u'Graticules')] = (
-                'ne_10m_graticules_30.geojson', lambda l: l.renderer().symbol().setColor(graticules_color))
+                'ne_10m_graticules_{}.geojson'.format(graticules_res),
+                lambda l: l.renderer().symbol().setColor(graticules_color))
         len(ne_data) and self.load_natural_eath_data(ne_data)
         self.iface.mapCanvas().refresh()
 
@@ -246,7 +257,7 @@ class Globe:
             map_theme_record.setLayerRecords([QgsMapThemeCollection.MapThemeLayerRecord(layer) for layer in layers])
             theme_collection.insert(Globe.THEME_NAME, map_theme_record)
 
-    def add_to_layout(self, layout, background_color=QColor(255, 255, 255, 0)):
+    def add_to_layout(self, layout, background_color=QColor(255, 255, 255, 0), size=80):
         '''
         Inspired by https://opensourceoptions.com/blog/pyqgis-create-and-print-a-map-layout-with-python/
         '''
@@ -269,4 +280,4 @@ class Globe:
         map.setBackgroundColor(background_color)
         layout.addLayoutItem(map)
         map.attemptMove(QgsLayoutPoint(5, 20, QgsUnitTypes.LayoutMillimeters))
-        map.attemptResize(QgsLayoutSize(80, 80, QgsUnitTypes.LayoutMillimeters))
+        map.attemptResize(QgsLayoutSize(size, size, QgsUnitTypes.LayoutMillimeters))

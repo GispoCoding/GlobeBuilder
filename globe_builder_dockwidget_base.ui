@@ -4,50 +4,50 @@
  <widget class="QDockWidget" name="GlobeBuilderDockWidgetBase">
   <property name="geometry">
    <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>871</width>
-       <height>823</height>
+    <x>0</x>
+    <y>0</y>
+    <width>706</width>
+    <height>823</height>
    </rect>
   </property>
-     <property name="floating">
-         <bool>false</bool>
-     </property>
-     <property name="windowTitle">
-         <string>Globe Builder</string>
-     </property>
-     <widget class="QWidget" name="dockWidgetContents">
-         <layout class="QVBoxLayout" name="verticalLayout_20">
-             <item>
-                 <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
-                     <property name="sizeConstraint">
-                         <enum>QLayout::SetNoConstraint</enum>
-                     </property>
-                     <item>
-                         <widget class="QScrollArea" name="scrollArea">
-                             <property name="widgetResizable">
-                                 <bool>true</bool>
-                             </property>
-                             <widget class="QWidget" name="scrollAreaWidgetContents_2">
-                                 <property name="geometry">
-                                     <rect>
-                                         <x>0</x>
-                                         <y>-298</y>
-                                         <width>835</width>
-                                         <height>874</height>
-                                     </rect>
-                                 </property>
-                                 <layout class="QVBoxLayout" name="verticalLayout_10">
-                                     <item>
-                                         <layout class="QVBoxLayout" name="verticalLayout_9">
-                                             <item>
-                                                 <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
-                                                     <property name="title">
-                                                         <string>Data sources</string>
-                                                     </property>
-                                                     <property name="collapsed">
-                                                         <bool>false</bool>
-                                                     </property>
+  <property name="floating">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Globe Builder</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout_20">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetNoConstraint</enum>
+      </property>
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>670</width>
+           <height>909</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
+              <property name="title">
+               <string>Data sources</string>
+              </property>
+              <property name="collapsed">
+               <bool>false</bool>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout_11">
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -56,7 +56,7 @@
                    <item>
                     <widget class="QCheckBox" name="checkBoxCountries">
                      <property name="text">
-                      <string>Countries</string>
+                      <string/>
                      </property>
                      <property name="checked">
                       <bool>true</bool>
@@ -64,14 +64,68 @@
                     </widget>
                    </item>
                    <item>
+                    <widget class="QComboBox" name="comboBoxCountries">
+                     <item>
+                      <property name="text">
+                       <string>Countries 50m</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Countries 110m</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_8">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
                     <widget class="QCheckBox" name="checkBoxGraticules">
                      <property name="text">
-                      <string>Graticules</string>
+                      <string/>
                      </property>
                      <property name="checked">
                       <bool>true</bool>
                      </property>
                     </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBoxGraticules">
+                     <item>
+                      <property name="text">
+                       <string>Graticules 10</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Graticules 30</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_9">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                    <item>
                     <widget class="QCheckBox" name="checkBoxS2cloudless">
@@ -103,7 +157,7 @@
                    <item>
                     <widget class="QPushButton" name="pushButtonLoadData">
                      <property name="text">
-                         <string>Load Data to a Map</string>
+                      <string>Load Data to a Map</string>
                      </property>
                     </widget>
                    </item>
@@ -122,7 +176,7 @@
              <bool>true</bool>
             </property>
             <property name="title">
-                <string>Center the Globe based on:</string>
+             <string>Center the Globe based on:</string>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -154,39 +208,39 @@
                      </property>
                     </widget>
                    </item>
-                      <item>
-                          <widget class="QLineEdit" name="lineEditLonLat"/>
-                      </item>
+                   <item>
+                    <widget class="QLineEdit" name="lineEditLonLat"/>
+                   </item>
                   </layout>
                  </item>
                 </layout>
                </item>
-                  <item>
-                      <widget class="Line" name="line_3">
-                          <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                          </property>
-                      </widget>
-                  </item>
-                  <item>
-                      <widget class="QRadioButton" name="radioButtonCenter">
-                          <property name="text">
-                              <string>Center of the current view</string>
-                          </property>
-                      </widget>
-                  </item>
-                  <item>
-                      <widget class="Line" name="line_4">
-                          <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                          </property>
-                      </widget>
-                  </item>
-                  <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_12">
-                          <item>
-                              <widget class="QRadioButton" name="radioButtonLayer">
-                                  <property name="text">
+               <item>
+                <widget class="Line" name="line_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioButtonCenter">
+                 <property name="text">
+                  <string>Center of the current view</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="Line" name="line_4">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_12">
+                 <item>
+                  <widget class="QRadioButton" name="radioButtonLayer">
+                   <property name="text">
                     <string>Layer</string>
                    </property>
                   </widget>
@@ -284,10 +338,10 @@
                         <number>1</number>
                        </property>
                        <property name="maximum">
-                           <number>10</number>
+                        <number>10</number>
                        </property>
                        <property name="value">
-                           <number>5</number>
+                        <number>5</number>
                        </property>
                       </widget>
                      </item>
@@ -332,7 +386,7 @@
              <string>Visualization</string>
             </property>
             <property name="collapsed">
-                <bool>false</bool>
+             <bool>false</bool>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
@@ -362,42 +416,42 @@
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_6">
                    <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_15">
-                           <item>
-                               <widget class="QLabel" name="label_6">
-                                   <property name="text">
-                                       <string>Background</string>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QLabel" name="label">
-                                   <property name="text">
-                                       <string>Globe Layout background</string>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QLabel" name="label_7">
-                                   <property name="text">
-                                       <string>Countries</string>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QLabel" name="label_12">
-                                   <property name="text">
-                                       <string>Graticules</string>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QLabel" name="label_11">
-                                   <property name="text">
-                                       <string>Halo</string>
-                                   </property>
-                               </widget>
-                           </item>
+                    <layout class="QVBoxLayout" name="verticalLayout_15">
+                     <item>
+                      <widget class="QLabel" name="label_6">
+                       <property name="text">
+                        <string>Background</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label">
+                       <property name="text">
+                        <string>Globe Layout background</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_7">
+                       <property name="text">
+                        <string>Countries</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_12">
+                       <property name="text">
+                        <string>Graticules</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_11">
+                       <property name="text">
+                        <string>Halo</string>
+                       </property>
+                      </widget>
+                     </item>
                     </layout>
                    </item>
                    <item>
@@ -414,40 +468,40 @@
                     </spacer>
                    </item>
                    <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_16">
-                           <item>
-                               <widget class="QgsColorButton" name="mColorButtonBackground">
-                                   <property name="allowOpacity">
-                                       <bool>true</bool>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QgsColorButton" name="mColorButtonLayoutBackground">
-                                   <property name="allowOpacity">
-                                       <bool>true</bool>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QgsColorButton" name="mColorButtonCountries">
-                                   <property name="allowOpacity">
-                                       <bool>true</bool>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QgsColorButton" name="mColorButtonGraticules">
-                                   <property name="allowOpacity">
-                                       <bool>true</bool>
-                                   </property>
-                               </widget>
-                           </item>
-                           <item>
-                               <widget class="QgsColorButton" name="mColorButtonHalo">
-                                   <property name="allowOpacity">
-                                       <bool>true</bool>
-                                   </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_16">
+                     <item>
+                      <widget class="QgsColorButton" name="mColorButtonBackground">
+                       <property name="allowOpacity">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QgsColorButton" name="mColorButtonLayoutBackground">
+                       <property name="allowOpacity">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QgsColorButton" name="mColorButtonCountries">
+                       <property name="allowOpacity">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QgsColorButton" name="mColorButtonGraticules">
+                       <property name="allowOpacity">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QgsColorButton" name="mColorButtonHalo">
+                       <property name="allowOpacity">
+                        <bool>true</bool>
+                       </property>
                       </widget>
                      </item>
                     </layout>
@@ -503,133 +557,185 @@
                   </widget>
                  </item>
                  <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_10">
-                         <item>
-                             <layout class="QVBoxLayout" name="verticalLayout_18">
-                                 <item>
-                                     <widget class="QRadioButton" name="radioButtonHFillWithHalo">
-                                         <property name="text">
-                                             <string>Halo, fill</string>
-                                         </property>
-                                     </widget>
-                                 </item>
-                                 <item>
-                                     <widget class="QRadioButton" name="radioButtonHFill">
-                                         <property name="text">
-                                             <string>Outline, fill</string>
-                                         </property>
-                                     </widget>
-                                 </item>
-                             </layout>
-                         </item>
-                         <item>
-                             <widget class="QgsColorButton" name="mColorButtonHFill"/>
-                         </item>
-                     </layout>
+                  <layout class="QHBoxLayout" name="horizontalLayout_10">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_18">
+                     <item>
+                      <widget class="QRadioButton" name="radioButtonHFillWithHalo">
+                       <property name="text">
+                        <string>Halo, fill</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButtonHFill">
+                       <property name="text">
+                        <string>Outline, fill</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QgsColorButton" name="mColorButtonHFill"/>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </item>
               </layout>
              </item>
-                <item>
-                    <widget class="Line" name="line_5">
-                        <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                        </property>
-                    </widget>
-                </item>
-                <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_14">
-                        <item>
-                            <spacer name="horizontalSpacer_6">
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                                <property name="sizeHint" stdset="0">
-                                    <size>
-                                        <width>40</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                        </item>
-                        <item>
-                            <widget class="QPushButton" name="pushButtonApplyVisualizations">
-                                <property name="text">
-                                    <string>Apply</string>
-                                </property>
-                            </widget>
-                        </item>
-                    </layout>
-                </item>
+             <item>
+              <widget class="Line" name="line_5">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_14">
+               <item>
+                <spacer name="horizontalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButtonApplyVisualizations">
+                 <property name="text">
+                  <string>Apply</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
-                                     <item>
-                                         <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
-                                             <property name="title">
-                                                 <string>Layout</string>
-                                             </property>
-                                             <property name="collapsed">
-                                                 <bool>false</bool>
-                                             </property>
-                                             <layout class="QVBoxLayout" name="verticalLayout_17">
-                                                 <item>
-                                                     <layout class="QVBoxLayout" name="verticalLayout_4">
-                                                         <item>
-                                                             <layout class="QHBoxLayout" name="horizontalLayout_13">
-                                                                 <item>
-                                                                     <widget class="QLabel" name="label_composer">
-                                                                         <property name="text">
-                                                                             <string>Map composer:</string>
-                                                                         </property>
-                                                                     </widget>
-                                                                 </item>
-                                                                 <item>
-                                                                     <widget class="QComboBox" name="comboBoxLayouts"/>
-                                                                 </item>
-                                                             </layout>
-                                                         </item>
-                                                     </layout>
-                                                 </item>
-                                                 <item>
-                                                     <layout class="QHBoxLayout" name="horizontalLayout_15">
-                                                         <item>
-                                                             <widget class="QCheckBox" name="checkBoxIntCountries">
-                                                                 <property name="text">
-                                                                     <string>Color for Countries intersecting the
-                                                                         current view
-                                                                     </string>
-                                                                 </property>
-                                                             </widget>
-                                                         </item>
-                                                         <item>
-                                                             <widget class="QgsColorButton"
-                                                                     name="mColorButtonIntCountries">
-                                                                 <property name="allowOpacity">
-                                                                     <bool>true</bool>
-                                                                 </property>
-                                                             </widget>
-                                                         </item>
-                                                     </layout>
-                                                 </item>
-                                             </layout>
-                                         </widget>
-                                     </item>
-                                     <item>
-                                         <spacer name="verticalSpacer_3">
-                                             <property name="orientation">
-                                                 <enum>Qt::Vertical</enum>
-                                             </property>
-                                             <property name="sizeHint" stdset="0">
-                                                 <size>
-                                                     <width>20</width>
-                                                     <height>40</height>
-                                                 </size>
-                                             </property>
-                                         </spacer>
-                                     </item>
-                                 </layout>
+          <item>
+           <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
+            <property name="title">
+             <string>Layout</string>
+            </property>
+            <property name="collapsed">
+             <bool>false</bool>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_17">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_13">
+                 <item>
+                  <widget class="QLabel" name="label_composer">
+                   <property name="text">
+                    <string>Map composer:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBoxLayouts"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <item>
+                <widget class="QCheckBox" name="checkBoxIntCountries">
+                 <property name="text">
+                  <string>Color for Countries intersecting the current view</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QgsColorButton" name="mColorButtonIntCountries">
+                 <property name="allowOpacity">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_16">
+               <item>
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_13">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Globe size in mm</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinBoxGlobeSize">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>10000</number>
+                 </property>
+                 <property name="value">
+                  <number>80</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -681,44 +787,44 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-             <property name="sizeHint" stdset="0">
-                 <size>
-                     <width>40</width>
-                     <height>20</height>
-                 </size>
-             </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
          </spacer>
         </item>
-           <item>
-               <layout class="QVBoxLayout" name="verticalLayout_19">
-                   <item>
-                       <widget class="QPushButton" name="pushButtonRun">
-                           <property name="text">
-                               <string>Add the Globe to a Map</string>
-                           </property>
-                       </widget>
-                   </item>
-                   <item>
-                       <widget class="QPushButton" name="pushButtonAddToLayout">
-                           <property name="text">
-                               <string>Add the Globe to a Layout</string>
-                           </property>
-                       </widget>
-                   </item>
-               </layout>
-           </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_19">
+          <item>
+           <widget class="QPushButton" name="pushButtonRun">
+            <property name="text">
+             <string>Add the Globe to a Map</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonAddToLayout">
+            <property name="text">
+             <string>Add the Globe to a Layout</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </item>
-                 </layout>
-             </item>
-             <item>
-                 <widget class="QLabel" name="label_9">
-                     <property name="text">
-                         <string/>
-                     </property>
-                 </widget>
-             </item>
-         </layout>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <customwidgets>

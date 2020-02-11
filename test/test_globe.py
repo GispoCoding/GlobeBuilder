@@ -58,14 +58,14 @@ class GlobeTest(unittest.TestCase):
     def test_loading_countries(self):
         """Test loading data"""
         self.assertFalse((len(IFACE.getMockLayers())))
-        self.globe.load_data(False, True, False)
+        self.globe.load_data(False, True, False, QColor(Qt.blue), QColor(Qt.blue), None, '50m', 10)
         names = get_existing_layer_names()
         self.assertTrue("Countries" in names)
 
     def test_loading_graticules(self):
         """Test loading data"""
         self.assertFalse((len(IFACE.getMockLayers())))
-        self.globe.load_data(False, False, True)
+        self.globe.load_data(False, False, True, QColor(Qt.blue), QColor(Qt.blue), None, '50m', 10)
         names = get_existing_layer_names()
         self.assertTrue("Graticules" in names)
 
@@ -74,7 +74,7 @@ class GlobeTest(unittest.TestCase):
     def test_loading_s2cloudless(self):
         """Test loading data"""
         self.assertFalse((len(IFACE.getMockLayers())))
-        self.globe.load_data(True, False, False)
+        self.globe.load_data(True, False, False, QColor(Qt.blue), QColor(Qt.blue), None, '50m', 10)
         names = get_existing_layer_names()
         self.assertTrue("S2 Cloudless 2018" in names)
 
@@ -83,7 +83,7 @@ class GlobeTest(unittest.TestCase):
     def test_loading_s2cloudless_countries_and_graticules(self):
         """Test loading data"""
         self.assertFalse((len(IFACE.getMockLayers())))
-        self.globe.load_data(True, True, True)
+        self.globe.load_data(True, True, True, QColor(Qt.blue), QColor(Qt.blue), None, '50m', 10)
         names = get_existing_layer_names()
         expected_names = {"Graticules", "S2 Cloudless 2018", "Countries"}
         self.assertEqual(expected_names, names)
@@ -105,8 +105,14 @@ class GlobeTest(unittest.TestCase):
         children = QGIS_INSTANCE.layerTreeRoot().children()
         self.assertTrue(group in children)
 
+    def test_group_deletion(self):
+        group = self.globe.group
+        self.globe.delete_group()
+        children = QGIS_INSTANCE.layerTreeRoot().children()
+        self.assertFalse(group in children)
+
     def test_theme_exist_if_items_in_group(self):
-        self.globe.load_data(False, False, True)
+        self.globe.load_data(False, False, True, QColor(Qt.blue), QColor(Qt.blue), None, '50m', 10)
         self.globe.refresh_theme()
         self.assertTrue(Globe.THEME_NAME in QGIS_INSTANCE.mapThemeCollection().mapThemes())
 

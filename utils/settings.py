@@ -61,6 +61,7 @@ DEFAULT_GRATICULES_COLOR = QColor(Qt.gray)
 DEFAULT_HALO_COLOR = QColor(Qt.lightGray)
 DEFAULT_HALO_LAYOUT_COLOR = QColor(Qt.black)
 DEFAULT_HALO_FILL_COLOR = QColor(Qt.blue)
+DEFAULT_INTERSECTING_COUNTRIES_COLOR = QColor(Qt.red)
 _transparent = QColor(Qt.black)
 _transparent.setAlpha(0)
 TRANSPARENT_COLOR = _transparent
