@@ -1,60 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fi_FI">
-<context>
-    <name>@default</name>
-    <message>
-        <location filename="../test/test_translations.py" line="48"/>
-        <source>Good morning</source>
-        <translation>Hyvää huomenta</translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="68"/>
-        <source>S2 Cloudless 2018</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="74"/>
-        <source>Could not add Sentinel 2 Cloudless layer</source>
-        <translation>Sentinel 2 Cloudless -tason lisääminen ei onnistunut</translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="87"/>
-        <source>Countries</source>
-        <translation>Valtiot</translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="89"/>
-        <source>Graticules</source>
-        <translation>Koordinaattiviivasto</translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="114"/>
-        <source>Could not load Natural Earth layer &apos;{}&apos;</source>
-        <translation>Natural earth-tason {} lataaminen ei onnistunut</translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="199"/>
-        <source>Halo</source>
-        <translation>Kehä</translation>
-    </message>
-    <message>
-        <location filename="../globe.py" line="41"/>
-        <source>Globe</source>
-        <translation>Maapallo</translation>
-    </message>
-</context>
-<context>
-    <name>GlobeBuilder</name>
-    <message>
-        <location filename="../plugin.py" line="194"/>
-        <source>&amp;Globe Builder</source>
-        <translation>Maapallonäkymän rakentaja</translation>
-    </message>
-    <message>
-        <location filename="../plugin.py" line="166"/>
-        <source>Build Globe view</source>
-        <translation>Rakenna maapallonäkymä</translation>
+< ? xml version = "1.0"
+encoding = "utf-8" ?
+>
+<!DOCTYPE
+TS > <TS version = "2.0"
+language = "fi_FI"
+sourcelanguage = "" >
+    <context>
+        <name>@
+default
+</name>
+< message >
+<location filename = "../test/test_translations.py"
+line = "48" / >
+    <source>Good
+morning < /source>
+< translation > Hyvää
+huomenta < /translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "77" / >
+    <source>S2
+Cloudless
+2018 < /source>
+< translation > </translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "83" / >
+    <source>Could
+not
+add
+Sentinel
+2
+Cloudless
+layer < /source>
+< translation > Sentinel
+2
+Cloudless - tason
+lisääminen
+ei
+onnistunut < /translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "96" / >
+<source>Countries < /source>
+< translation > Valtiot < /translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "99" / >
+<source>Graticules < /source>
+< translation > Koordinaattiviivasto < /translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "125" / >
+    <source>Could
+not
+load
+Natural
+Earth
+layer & apos;
+{
+}
+&
+apos;
+</source>
+< translation > Natural
+earth - tason
+{
+}
+lataaminen
+ei
+onnistunut < /translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "210" / >
+<source>Halo < /source>
+< translation > Kehä < /translation>
+< /message>
+< message >
+<location filename = "../globe.py"
+line = "41" / >
+<source>Globe < /source>
+< translation > Maapallo < /translation>
+< /message>
+< /context>
+< context >
+<name>GlobeBuilder < /name>
+< message >
+<location filename = "../plugin.py"
+line = "194" / >
+    <source> &amp; Globe
+Builder < /source>
+< translation > Maapallonäkymän
+rakentaja < /translation>
+< /message>
+< message >
+<location filename = "../plugin.py"
+line = "166" / >
+    <source>Build
+Globe
+view < /source>
+< translation > Rakenna
+maapallonäkymä < /translation>
     </message>
     <message>
         <location filename="../globe_builder.py" line="192"/>
@@ -201,67 +253,300 @@
             Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
             font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-           </source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Lisäosa hyödyntää &lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
-            style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;
-            geokoodaus-API:a.  &lt;span style=&quot; font-weight:600;&quot;&gt;Tee enintään 1 geokoodauskysely sekunnissat
-            &lt;/span&gt;. OpenStreetMap-aineisto on lisensoitu &lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
-            style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL-lisenssillä&lt;/span&gt;&lt;/a&gt;.&lt;/html&gt; Sentinel-2 cloudless -aineisto &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt; on EOX IT Services GmbH julkaisema (Sisältää muokattua Copernicus Sentinel aineistoa vuosilta
-            2017 &amp;amp; 2018) on lisensoitu lisenssillä &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons
-            Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
-            font-size:10pt;&quot;&gt;. Sentinel-2 cloudless -aineiston kaupalliseen käyttöön katso lisätietoja: &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
-            style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
-            style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>GlobeBuilderDockWidget</name>
-    <message>
-        <location filename="../globe_builder_dockwidget.py" line="287"/>
-        <source>Make sure to select an item from the Geolocation list</source>
-        <translation>Varmista, että valitset kohteen geokoodauslistalta</translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dockwidget.py" line="303"/>
-        <source>Error occurred while parsing center of the globe</source>
-        <translation>Keskitystä etsiessä tapahtui virhe</translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dockwidget.py" line="293"/>
-        <source>Make sure to have at least one layer in the project</source>
-        <translation>Varmista, että olet valinnut ainakin yhden tason projektissa</translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dockwidget.py" line="303"/>
-        <source>Traceback</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dockwidget.py" line="238"/>
-        <source>Create new layout (LayoutGlobe)</source>
-        <translation>Luo uusi taitto (LayoutGlobe)</translation>
-    </message>
-</context>
-<context>
-    <name>GlobeBuilderDockWidgetBase</name>
-    <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="17"/>
-        <source>Globe Builder</source>
-        <translation>Maapallonäkymän rakentaja</translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="46"/>
-        <source>Data sources</source>
-        <translation>Tietolähteet</translation>
-    </message>
-    <message>
-        <location filename="../globe_builder_dockwidget_base.ui" line="437"/>
-        <source>Countries</source>
-        <translation>Valtiot</translation>
+    style =
+&
+quot;
+font - size
+:
+10
+pt;
+&
+quot;
+&gt;.
+&lt;/span&gt;&lt;/
+p &gt; &lt;/body&gt;&lt;/
+html &gt;
+</source>
+< translation
+type = "obsolete" > &lt;html&gt;&lt;head / &gt; &lt;body&gt;&lt;p&gt;&lt;span style =
+&
+quot;
+font - size
+:
+10
+pt;
+&
+quot;
+&gt;
+Lisäosa
+hyödyntää &lt; a
+href =
+&
+quot;
+https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
+    style =
+&
+quot;
+text - decoration
+:
+underline;
+color:#0000
+ff;
+&
+quot;
+&gt;
+OpenStreetMap
+Nominatim &lt; /span&gt;&lt;/
+a &gt;
+geokoodaus - API
+:
+a. &lt; span
+style =
+&
+quot;
+font - weight
+:
+600;
+&
+quot;
+&gt;
+Tee
+enintään
+1
+geokoodauskysely
+sekunnissat
+&lt; /span&gt;. OpenStreetMap-aineisto on lisensoitu &lt;a href=&quot;https:/
+/opendatacommons.org/
+licenses / odbl / & quot;
+&gt;
+&lt;span
+    style =
+&
+quot;
+text - decoration
+:
+underline;
+color:#0000
+ff;
+&
+quot;
+&gt;
+ODbL - lisenssillä &lt; /span&gt;&lt;/
+a &gt;
+.
+&lt;/html&gt; Sentinel-2 cloudless -aineisto &lt;/s
+pan &gt; &lt;a href =
+&
+quot;
+https://s2maps.eu/&quot;&gt;&lt;span
+    style =
+&
+quot;
+font - size
+:
+10
+pt;
+text - decoration
+:
+underline;
+color:#0000
+ff;
+&
+quot;
+&gt;
+https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
+    style =
+&
+quot;
+font - size
+:
+10
+pt;
+&
+quot;
+&gt;
+on
+EOX
+IT
+Services
+GmbH
+julkaisema(Sisältää
+muokattua
+Copernicus
+Sentinel
+aineistoa
+vuosilta
+2017 &amp; amp;
+2018
+)
+on
+lisensoitu
+lisenssillä &lt; /span&gt;&lt;a href=&quot;https:/
+/creativecommons.org/
+licenses / by - nc - sa / 4.0 / & quot;
+&gt;
+&lt;span
+    style =
+&
+quot;
+font - size
+:
+10
+pt;
+text - decoration
+:
+underline;
+color:#0000
+ff;
+&
+quot;
+&gt;
+Creative
+Commons
+Attribution - NonCommercial - ShareAlike
+4.0
+International
+License &lt; /span&gt;&lt;/
+a &gt; &lt;span style =
+&
+quot;
+font - size
+:
+10
+pt;
+&
+quot;
+&gt;.
+Sentinel - 2
+cloudless - aineiston
+kaupalliseen
+käyttöön
+katso
+lisätietoja: &lt;/span&gt;&lt;a href=&quot;https:/
+/cloudless.eox.at&quot;&gt;&lt;span
+style =
+&
+quot;
+font - size
+:
+10
+pt;
+text - decoration
+:
+underline;
+color:#0000
+ff;
+&
+quot;
+&gt;
+https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
+    style =
+&
+quot;
+font - size
+:
+10
+pt;
+&
+quot;
+&gt;.
+&lt;/span&gt;&lt;/
+p &gt; &lt;/body&gt;&lt;/
+html &gt; </translation>
+< /message>
+< /context>
+< context >
+<name>GlobeBuilderDockWidget < /name>
+< message >
+<location filename = "../globe_builder_dockwidget.py"
+line = "290" / >
+    <source>Make
+sure
+to
+select
+an
+item
+from
+the
+Geolocation
+list < /source>
+< translation > Varmista, että
+valitset
+kohteen
+geokoodauslistalta < /translation>
+< /message>
+< message >
+<location filename = "../globe_builder_dockwidget.py"
+line = "306" / >
+    <source>Error
+occurred
+while parsing center
+of
+the
+globe < /source>
+< translation > Keskitystä
+etsiessä
+tapahtui
+virhe < /translation>
+< /message>
+< message >
+<location filename = "../globe_builder_dockwidget.py"
+line = "296" / >
+    <source>Make
+sure
+to
+have
+at
+least
+one
+layer in the
+project < /source>
+< translation > Varmista, että
+olet
+valinnut
+ainakin
+yhden
+tason
+projektissa < /translation>
+< /message>
+< message >
+<location filename = "../globe_builder_dockwidget.py"
+line = "306" / >
+<source>Traceback < /source>
+< translation > </translation>
+< /message>
+< message >
+<location filename = "../globe_builder_dockwidget.py"
+line = "241" / >
+    <source>Create
+new layout(LayoutGlobe) < /source>
+< translation > Luo
+uusi
+taitto(LayoutGlobe) < /translation>
+< /message>
+< /context>
+< context >
+<name>GlobeBuilderDockWidgetBase < /name>
+< message >
+<location filename = "../globe_builder_dockwidget_base.ui"
+line = "17" / >
+    <source>Globe
+Builder < /source>
+< translation > Maapallonäkymän
+rakentaja < /translation>
+< /message>
+< message >
+<location filename = "../globe_builder_dockwidget_base.ui"
+line = "46" / >
+    <source>Data
+sources < /source>
+< translation > Tietolähteet < /translation>
+< /message>
+< message >
+<location filename = "../globe_builder_dockwidget_base.ui"
+line = "437" / >
+<source>Countries < /source>
+< translation > Valtiot < /translation>
     </message>
     <message>
         <location filename="../globe_builder_dockwidget_base.ui" line="444"/>

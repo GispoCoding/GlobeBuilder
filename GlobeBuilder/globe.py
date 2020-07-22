@@ -43,6 +43,7 @@ class Globe:
     def __init__(self, iface, origin=DEFAULT_ORIGIN):
         self.iface = iface
         self.origin = origin
+        # noinspection PyArgumentList
         self.qgis_instance = QgsProject.instance()
 
     @property
@@ -163,6 +164,7 @@ class Globe:
         self.iface.mapCanvas().setCanvasColor(new_background_color)
         self.iface.mapCanvas().refresh()
 
+    # noinspection PyArgumentList
     @staticmethod
     def get_existing_layer_names():
         return [layer.name() for layer in QgsProject.instance().mapLayers().values()]
@@ -206,6 +208,7 @@ class Globe:
         layer.triggerRepaint()
         return layer
 
+    # noinspection PyCallByClass
     def add_halo(self, use_effects, stroke_color, fill_color=None, halo_with_fill=False):
         layer_name = tr(u"Halo")
 
@@ -227,6 +230,7 @@ class Globe:
         self.iface.mainWindow().blockSignals(False)
 
         feature = QgsFeature()
+        # noinspection PyArgumentList
         geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
         if draw_method == HaloDrawMethod.buffered_point:
             geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)

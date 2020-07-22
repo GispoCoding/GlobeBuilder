@@ -58,6 +58,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.setupUi(self)
 
         self.iface = iface
+        # noinspection PyArgumentList
         self.qgis_instance = QgsProject.instance()
         self.layout_mngr = self.qgis_instance.layoutManager()
         self.globe = Globe(iface)
@@ -109,6 +110,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.is_initializing = False
 
     def closeEvent(self, event):
+        # noinspection PyUnresolvedReferences
         self.closingPlugin.emit()
         event.accept()
 

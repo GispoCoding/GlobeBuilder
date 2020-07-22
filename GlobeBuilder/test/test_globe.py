@@ -25,6 +25,7 @@ from ..globe import Globe
 from ..utils.settings import (AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR, DEFAULT_ORIGIN)
 
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
+# noinspection PyArgumentList
 QGIS_INSTANCE = QgsProject.instance()
 
 LOGGER = logging.getLogger('QGIS')

@@ -57,6 +57,7 @@ def create_layout(layout_name, qgis_instance):
 
 
 def set_selection_based_style(layer, s_color, else_color):
+    # noinspection PyCallByClass
     fill_for_selected = QgsFillSymbol.createSimple({'color': 'blue'})
     fill_for_selected.setColor(s_color)
     rule_s = QgsRuleBasedRenderer.Rule(fill_for_selected, label=tr(u"Selected"),

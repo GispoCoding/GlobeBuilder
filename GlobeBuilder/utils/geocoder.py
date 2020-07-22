@@ -30,6 +30,7 @@ from .settings import NOMINATIM_URL, MAX_NAME_PARTS
 
 
 class Geocoder:
+    # noinspection PyUnresolvedReferences
     def __init__(self, callback):
         self.network_access_manager = QNetworkAccessManager()
         self.network_access_manager.finished.connect(self.on_search_response)
@@ -45,6 +46,7 @@ class Geocoder:
         # http://osgeo-org.1560.x6.nabble.com/QGIS-Developer-Do-we-have-a-User-Agent-string-for-QGIS-td5360740.html
         user_agent = QSettings().value("/qgis/networkAndProxy/userAgent", "Mozilla/5.0")
         user_agent += " " if len(user_agent) else ""
+        # noinspection PyUnresolvedReferences
         user_agent += "QGIS/{}".format(Qgis.QGIS_VERSION_INT)
         user_agent += " GlobeBuilder-plugin"
 

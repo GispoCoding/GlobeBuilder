@@ -137,6 +137,7 @@ class GlobeBuilder:
 
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
+        # noinspection PyUnresolvedReferences
         action.triggered.connect(callback)
         action.setEnabled(enabled_flag)
 
