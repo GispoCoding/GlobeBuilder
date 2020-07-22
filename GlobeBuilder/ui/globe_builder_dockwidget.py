@@ -19,26 +19,27 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
-import sys
+import logging
 
-from PyQt5.QtCore import pyqtSignal, QSettings, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from qgis.PyQt import QtWidgets
-from qgis.PyQt import uic
-from qgis.core import Qgis, QgsProject
+from qgis.core import QgsProject
 
-from .globe import Globe
-from .utils.geocoder import Geocoder
-from .utils.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
-                             DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
-                             DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
-                             DEFAULT_LAYOUT_BACKGROUND_COLOR, DEFAULT_COUNTRIES_COLOR,
-                             DEFAULT_GRATICULES_COLOR, DEFAULT_INTERSECTING_COUNTRIES_COLOR)
-from .utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
+from ..core.globe import Globe
+from ..core.utils.geocoder import Geocoder
+from ..core.utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
+from ..definitions.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
+                                    DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
+                                    DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
+                                    DEFAULT_LAYOUT_BACKGROUND_COLOR, DEFAULT_COUNTRIES_COLOR,
+                                    DEFAULT_GRATICULES_COLOR, DEFAULT_INTERSECTING_COUNTRIES_COLOR)
+from ..qgis_plugin_tools.tools.custom_logging import bar_msg
+from ..qgis_plugin_tools.tools.i18n import tr
+from ..qgis_plugin_tools.tools.resources import load_ui, plugin_name
+from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
 
-sys.path.append(os.path.dirname(__file__))
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'globe_builder_dockwidget_base.ui'), resource_suffix='')
+FORM_CLASS = load_ui('globe_builder_dockwidget_base.ui')
+LOGGER = logging.getLogger(plugin_name())
 
 
 class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
@@ -65,22 +66,10 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.geocoder = Geocoder(lambda results: self.on_geocoding_finished(results))
 
         # Set default values
-        self.spinBoxMaxResults.setValue(
-            QSettings().value("/GlobeBuilder/maxNumberOfResults",
-                              DEFAULT_MAX_NUMBER_OF_RESULTS,
-                              type=int))
-        self.checkBoxCountries.setChecked(
-            QSettings().value("/GlobeBuilder/useNE-countries",
-                              DEFAULT_USE_NE_COUNTRIES,
-                              type=bool))
-        self.checkBoxGraticules.setChecked(
-            QSettings().value("/GlobeBuilder/useNE-graticules",
-                              DEFAULT_USE_NE_GRATICULES,
-                              type=bool))
-        self.checkBoxS2cloudless.setChecked(
-            QSettings().value("/GlobeBuilder/useS2cloudless",
-                              DEFAULT_USE_S2_CLOUDLESS,
-                              type=bool))
+        self.spinBoxMaxResults.setValue(get_setting("maxNumberOfResults", DEFAULT_MAX_NUMBER_OF_RESULTS, int))
+        self.checkBoxCountries.setChecked(get_setting("useNE-countries", DEFAULT_USE_NE_COUNTRIES, bool))
+        self.checkBoxGraticules.setChecked(get_setting("useNE-graticules", DEFAULT_USE_NE_GRATICULES, bool))
+        self.checkBoxS2cloudless.setChecked(get_setting("useS2cloudless", DEFAULT_USE_S2_CLOUDLESS, bool))
 
         self.lineEditLonLat.setText("{lon}, {lat}".format(**DEFAULT_ORIGIN))
         self.on_radioButtonCoordinates_toggled(self.radioButtonCoordinates.isChecked())
@@ -165,19 +154,19 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     @pyqtSlot(int)
     def on_spinBoxMaxResults_valueChanged(self, value):
-        QSettings().setValue("/GlobeBuilder/maxNumberOfResults", value)
+        set_setting("maxNumberOfResults", value)
 
     def on_checkBoxCountries_stateChanged(self):
-        QSettings().setValue("/GlobeBuilder/useNE-countries", self.checkBoxCountries.isChecked())
+        set_setting("useNE-countries", self.checkBoxCountries.isChecked())
 
     def on_checkBoxGraticules_stateChanged(self):
-        QSettings().setValue("/GlobeBuilder/useNE-graticules", self.checkBoxGraticules.isChecked())
+        set_setting("useNE-graticules", self.checkBoxGraticules.isChecked())
 
     def on_checkBoxS2cloudless_stateChanged(self):
-        QSettings().setValue("/GlobeBuilder/useS2cloudless", self.checkBoxS2cloudless.isChecked())
+        set_setting("useS2cloudless", self.checkBoxS2cloudless.isChecked())
 
     def on_checkBoxIntCountries_stateChanged(self):
-        QSettings().setValue("/GlobeBuilder/intCountries", self.checkBoxIntCountries.isChecked())
+        set_setting("intCountries", self.checkBoxIntCountries.isChecked())
         self.mColorButtonIntCountries.setEnabled(self.checkBoxIntCountries.isChecked())
 
     @pyqtSlot()
@@ -191,8 +180,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pushButtonLoadData_clicked(self):
         self.load_data_to_globe(False)
-
-
 
     @pyqtSlot()
     def on_pushButtonApplyVisualizations_clicked(self):
@@ -240,7 +227,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def populate_comboBoxLayouts(self, *args):
         self.comboBoxLayouts.clear()
-        self.comboBoxLayouts.addItem(self.tr(u"Create new layout (LayoutGlobe)"))
+        self.comboBoxLayouts.addItem(tr(u"Create new layout (LayoutGlobe)"))
         for layout in self.layout_mngr.layouts():
             self.comboBoxLayouts.addItem(layout.name())
 
@@ -289,13 +276,13 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             elif self.radioButtonGeocoding.isChecked():
                 coordinates = self.get_geocoded_coordinates()
                 if not coordinates:
-                    raise ValueError(self.tr(u"Make sure to select an item from the Geolocation list"))
+                    raise ValueError(tr(u"Make sure to select an item from the Geolocation list"))
                 coordinates = None
 
             elif self.radioButtonLayer.isChecked():
                 layer = self.mMapLayerComboBox.currentLayer()
                 if layer is None:
-                    raise ValueError(self.tr(u"Make sure to have at least one layer in the project"))
+                    raise ValueError(tr(u"Make sure to have at least one layer in the project"))
                 center_point = layer.extent().center()
 
                 center_point = transform_to_wgs84(center_point, layer.crs(), self.qgis_instance)
@@ -305,7 +292,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 coordinates = get_map_center_coordinates(self.iface, self.qgis_instance)
 
         except ValueError as e:
-            self.iface.messageBar().pushMessage(self.tr(u"Error occurred while parsing center of the globe"),
-                                                "{}: {}".format(self.tr(u"Traceback"), e),
-                                                level=Qgis.Warning, duration=6)
+            LOGGER.warning(tr(u"Error occurred while parsing center of the globe"),
+                           bar_msg(f"{tr(u'Traceback')}: {e}", duration=6))
         return coordinates

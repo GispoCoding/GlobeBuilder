@@ -20,26 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt5.QtCore import QCoreApplication
 from qgis.core import QgsPrintLayout, QgsFillSymbol, QgsRuleBasedRenderer, QgsFeatureRequest, \
     QgsCoordinateTransformContext, QgsCoordinateTransform
 
-from .settings import WGS84
-
-
-def tr(message):
-    """Get the translation for a string using Qt translation API.
-
-    We implement this ourselves since we do not inherit QObject.
-
-    :param message: String for translation.
-    :type message: str, QString
-
-    :returns: Translated version of message.
-    :rtype: QString
-    """
-    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-    return QCoreApplication.translate('GlobeBuilder', message)
+from ...definitions.settings import WGS84
+from ...qgis_plugin_tools.tools.i18n import tr
 
 
 def create_layout(layout_name, qgis_instance):

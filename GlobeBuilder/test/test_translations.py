@@ -7,49 +7,26 @@
      (at your option) any later version.
 
 """
-from .utilities import get_qgis_app
+from ..qgis_plugin_tools.tools.resources import resources_path
 
 __author__ = 'ismailsunni@yahoo.co.id'
 __date__ = '12/10/2011'
 __copyright__ = ('Copyright 2012, Australia Indonesia Facility for '
                  'Disaster Reduction')
-import unittest
+
 import os
 
 from PyQt5.QtCore import QCoreApplication, QTranslator
 
-QGIS_APP = get_qgis_app()
 
+def test_translations(new_project):
+    """Test that translations work."""
+    if 'LANG' in iter(os.environ.keys()):
+        os.environ.__delitem__('LANG')
+    translator = QTranslator()
+    translator.load(resources_path("i18n", 'fi.qm'))
+    QCoreApplication.installTranslator(translator)
 
-class SafeTranslationsTest(unittest.TestCase):
-    """Test translations work."""
-
-    def setUp(self):
-        """Runs before each test."""
-        if 'LANG' in iter(os.environ.keys()):
-            os.environ.__delitem__('LANG')
-
-    def tearDown(self):
-        """Runs after each test."""
-        if 'LANG' in iter(os.environ.keys()):
-            os.environ.__delitem__('LANG')
-
-    def test_qgis_translations(self):
-        """Test that translations work."""
-        parent_path = os.path.join(__file__, os.path.pardir, os.path.pardir)
-        dir_path = os.path.abspath(parent_path)
-        file_path = os.path.join(
-            dir_path, 'i18n', 'GlobeBuilder_fi.qm')
-        translator = QTranslator()
-        translator.load(file_path)
-        QCoreApplication.installTranslator(translator)
-
-        expected_message = 'Hyvää huomenta'
-        real_message = QCoreApplication.translate("@default", 'Good morning')
-        self.assertEqual(real_message, expected_message)
-
-
-if __name__ == "__main__":
-    suite = unittest.makeSuite(SafeTranslationsTest)
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)
+    expected_message = 'Hyvää huomenta'
+    real_message = QCoreApplication.translate("@default", 'Good morning')
+    assert real_message == expected_message

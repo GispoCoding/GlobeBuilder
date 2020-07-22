@@ -28,6 +28,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from qgis.core import QgsCoordinateReferenceSystem
 
+from ..qgis_plugin_tools.tools.resources import resources_path
+
 
 class LayerConnectionType(enum.Enum):
     local = 1
@@ -41,7 +43,7 @@ class HaloDrawMethod(enum.Enum):
 
 NATURAL_EARTH_BASE_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson"
 S2CLOUDLESS_WMTS_URL = "url=https://tiles.maps.eox.at/wmts?SERVICE%3DWMTS%26REQUEST%3DGetCapabilities&contextualWMSLegend=0&crs=EPSG:4326&dpiMode=7&featureCount=10&format=image/jpeg&layers=s2cloudless-2018&styles=default&tileMatrixSet=WGS84"
-LOCAL_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+LOCAL_DATA_DIR = resources_path("data")
 DEFAULT_ORIGIN = {'lat': 42.5, 'lon': 0.5}
 AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR = '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs'
 EARTH_RADIUS = 6370997

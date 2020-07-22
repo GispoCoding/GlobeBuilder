@@ -1,0 +1,2 @@
+# Only for development purposes
+pytest~=5.4.3

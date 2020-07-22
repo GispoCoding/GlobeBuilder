@@ -23,15 +23,17 @@
 """
 import os.path
 
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
+from qgis.PyQt.QtCore import QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from .globe_builder_dockwidget import GlobeBuilderDockWidget
-
+from .qgis_plugin_tools.tools.custom_logging import setup_logger
+from .qgis_plugin_tools.tools.i18n import setup_translation, tr
+from .qgis_plugin_tools.tools.resources import plugin_name
+from .ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 
 # Initialize Qt resources from file resources.py
-# Import the code for the dialog
+from .resources import *
 
 
 class GlobeBuilder:
@@ -47,23 +49,22 @@ class GlobeBuilder:
         """
         # Save reference to the QGIS interface
         self.iface = iface
-        # initialize plugin directory
-        self.plugin_dir = os.path.dirname(__file__)
-        # initialize locale
-        locale = QSettings().value('locale/userLocale')[0:2]
-        locale_path = os.path.join(
-            self.plugin_dir,
-            'i18n',
-            'GlobeBuilder_{}.qm'.format(locale))
 
-        if os.path.exists(locale_path):
-            self.translator = QTranslator()
-            self.translator.load(locale_path)
-            QCoreApplication.installTranslator(self.translator)
+        setup_logger(plugin_name(), iface)
+
+        # initialize locale
+        locale, file_path = setup_translation()
+        if file_path:
+            translator = QTranslator()
+            translator.load(file_path)
+            # noinspection PyCallByClass
+            QCoreApplication.installTranslator(translator)
+        else:
+            pass
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&Globe Builder')
+        self.menu = tr(u'&Globe Builder')
 
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
@@ -166,7 +167,7 @@ class GlobeBuilder:
         icon_path = ':/plugins/GlobeBuilder/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Build Globe view'),
+            text=tr(u'Build Globe view'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -193,7 +194,7 @@ class GlobeBuilder:
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&Globe Builder'),
+                tr(u'&Globe Builder'),
                 action)
             self.iface.removeToolBarIcon(action)
 

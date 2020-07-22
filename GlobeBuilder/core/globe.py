@@ -22,18 +22,22 @@
 """
 import os
 
-from PyQt5.QtCore import QSettings
 from PyQt5.QtGui import QColor
 from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
                        QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
                        QgsFeature, QgsGeometry, QgsPointXY, QgsMapThemeCollection, QgsLayoutItemMap,
                        QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
 
-from .utils.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS, LOCAL_DATA_DIR,
-                             DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL, AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
-                             DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN, TRANSPARENT_COLOR,
-                             WGS84)
-from .utils.utils import tr, set_selection_based_style, get_feature_ids_that_intersect_bbox
+from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
+from ..definitions.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS,
+                                    LOCAL_DATA_DIR,
+                                    DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
+                                    AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
+                                    DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN,
+                                    TRANSPARENT_COLOR,
+                                    WGS84)
+from ..qgis_plugin_tools.tools.i18n import tr
+from ..qgis_plugin_tools.tools.settings import get_setting
 
 
 class Globe:
@@ -95,7 +99,7 @@ class Globe:
                     layer.select(ids)
 
             ne_data[tr(u'Countries')] = (
-            'ne_{}_admin_0_countries.geojson'.format(counties_res), lambda l: style_coutries(l))
+                'ne_{}_admin_0_countries.geojson'.format(counties_res), lambda l: style_coutries(l))
         if load_graticules:
             ne_data[tr(u'Graticules')] = (
                 'ne_10m_graticules_{}.geojson'.format(graticules_res),
@@ -108,8 +112,7 @@ class Globe:
         existing_layer_names = self.get_existing_layer_names()
 
         connection_type = LayerConnectionType(
-            QSettings().value("/GlobeBuilder/layerConnectionType", DEFAULT_LAYER_CONNECTION_TYPE.value,
-                              type=int))
+            get_setting("layerConnectionType", DEFAULT_LAYER_CONNECTION_TYPE.value, int))
 
         if connection_type == LayerConnectionType.local:
             root = LOCAL_DATA_DIR
@@ -146,7 +149,7 @@ class Globe:
         self.qgis_instance.setCrs(WGS84)
         proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         crs = QgsCoordinateReferenceSystem()
-        crs.createFromProj4(proj4_string)
+        crs.createFromProj(proj4_string)
         self.qgis_instance.setCrs(crs)
 
     def change_temporarily_to_azimuthal_ortographic_projection(self):
@@ -198,6 +201,7 @@ class Globe:
         if draw_method == HaloDrawMethod.buffered_point:
             renderer.setSymbol(fill_symbol)
         else:
+            # noinspection PyCallByClass
             geom_generator_sl = QgsGeometryGeneratorSymbolLayer.create({
                 'SymbolType': 'Fill',
                 'geometryModifier': 'buffer($geometry, {:d})'.format(EARTH_RADIUS)
@@ -218,14 +222,13 @@ class Globe:
             [self.qgis_instance.removeMapLayer(lyr.id()) for lyr in self.qgis_instance.mapLayersByName(layer_name)]
 
         draw_method = HaloDrawMethod(
-            QSettings().value("/GlobeBuilder/haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value,
-                              type=str))
+            get_setting("haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value, str))
         proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
         # Block signals required to prevent the pop up asking about the crs change
         self.iface.mainWindow().blockSignals(True)
         layer = QgsVectorLayer(draw_method.value, layer_name, "memory")
         crs = layer.crs()
-        crs.createFromProj4(proj4_string)
+        crs.createFromProj(proj4_string)
         layer.setCrs(crs)
         self.iface.mainWindow().blockSignals(False)
 
@@ -254,7 +257,7 @@ class Globe:
     def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()
         layers = [layer.layer() for layer in self.group.findLayers()]
-        if Globe.THEME_NAME not in theme_collection.mapThemes():
+        if Globe.THEME_NAME in theme_collection.mapThemes():
             theme_collection.removeMapTheme(Globe.THEME_NAME)
         if len(layers):
             map_theme_record = QgsMapThemeCollection.MapThemeRecord()
@@ -262,9 +265,9 @@ class Globe:
             theme_collection.insert(Globe.THEME_NAME, map_theme_record)
 
     def add_to_layout(self, layout, background_color=QColor(255, 255, 255, 0), size=80):
-        '''
+        """
         Inspired by https://opensourceoptions.com/blog/pyqgis-create-and-print-a-map-layout-with-python/
-        '''
+        """
         layers = [layer.layer() for layer in self.group.findLayers()]
         # create map item in the layout
         map = QgsLayoutItemMap(layout)
@@ -273,7 +276,7 @@ class Globe:
         ms = QgsMapSettings()
         ms.setLayers(layers)  # set layers to be mapped
         crs = QgsCoordinateReferenceSystem()
-        crs.createFromProj4(AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin))
+        crs.createFromProj(AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin))
         map.setCrs(crs)
         map.setFollowVisibilityPreset(True)
         map.setFollowVisibilityPresetName(Globe.THEME_NAME)

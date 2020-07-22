@@ -23,6 +23,17 @@
  This script initializes the plugin, making it known to QGIS.
 """
 
+import os
+
+if os.environ.get('QGIS_PLUGIN_USE_DEBUGGER') == 'pydevd':
+    if os.environ.get('IN_TESTS', "0") != "1" and os.environ.get('QGIS_PLUGIN_IN_CI', "0") != "1":
+        try:
+            import pydevd
+
+            pydevd.settrace('localhost', port=5678, stdoutToServer=True, stderrToServer=True)
+        except Exception as e:
+            print('Unable to create pydevd debugger: {}'.format(e))
+
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name

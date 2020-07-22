@@ -20,9 +20,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from qgis.core import QgsProject
 
-from .utilities import get_qgis_app
-from ..globe import Globe
-from ..utils.settings import (AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR, DEFAULT_ORIGIN)
+from ..qgis_plugin_tools.testing.utilities import get_qgis_app
+from ..core.globe import Globe
+from ..definitions.settings import (AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR, DEFAULT_ORIGIN)
 
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 # noinspection PyArgumentList

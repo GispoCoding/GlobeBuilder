@@ -21,12 +21,16 @@
  ***************************************************************************/
 """
 import json
+import logging
 
 from PyQt5.QtCore import QSettings, QUrl
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 from qgis.core import Qgis, QgsMessageLog
 
-from .settings import NOMINATIM_URL, MAX_NAME_PARTS
+from ...definitions.settings import NOMINATIM_URL, MAX_NAME_PARTS
+from ...qgis_plugin_tools.tools.resources import plugin_name
+
+LOGGER = logging.getLogger(plugin_name())
 
 
 class Geocoder:
@@ -73,7 +77,7 @@ class Geocoder:
                 coordinates = f['geometry']['coordinates']
                 result_dict[name] = coordinates
         else:
-            QgsMessageLog.logMessage(str(error), "GlobeBuilder", Qgis.Warning)
-            QgsMessageLog.logMessage(search_result.errorString(), "GlobeBuilder", Qgis.Warning)
+            LOGGER.warning(str(error))
+            LOGGER.warning(search_result.errorString())
 
         self.callback(result_dict)
