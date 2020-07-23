@@ -276,8 +276,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             elif self.radioButtonGeocoding.isChecked():
                 coordinates = self.get_geocoded_coordinates()
                 if not coordinates:
+                    coordinates = coordinates
                     raise ValueError(tr(u"Make sure to select an item from the Geolocation list"))
-                coordinates = None
 
             elif self.radioButtonLayer.isChecked():
                 layer = self.mMapLayerComboBox.currentLayer()
