@@ -1,0 +1,32 @@
+# workflow name
+name: Tests
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the wanted branches
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Pull qgis image
+        run: docker pull qgis/qgis:final-3_14_1_focal
+
+      # Runs all tests
+      - name: Run tests
+        run: docker run --rm --net=host --volume `pwd`/Qaava:/app -w=/app -e QGIS_PLUGIN_IN_CI=1 qgis/qgis:final-3_14_1_focal sh -c "pip3 install -q pytest && xvfb-run -s '+extension GLX -screen 0 1024x768x24' pytest -v"
