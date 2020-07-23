@@ -29,10 +29,10 @@ from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRaster
                        QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
 
 from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
+from ..definitions.projections import Projection
 from ..definitions.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS,
                                     LOCAL_DATA_DIR,
                                     DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
-                                    AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR,
                                     DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN,
                                     TRANSPARENT_COLOR,
                                     WGS84)
@@ -44,9 +44,10 @@ class Globe:
     THEME_NAME = tr(u"Globe")
     GROUP_NAME = tr(u"Globe")
 
-    def __init__(self, iface, origin=DEFAULT_ORIGIN):
+    def __init__(self, iface, origin=DEFAULT_ORIGIN, projection=Projection.AZIMUTHAL_ORTHOGRAPHIC):
         self.iface = iface
         self.origin = origin
+        self.projection = projection
         # noinspection PyArgumentList
         self.qgis_instance = QgsProject.instance()
 
@@ -72,6 +73,9 @@ class Globe:
     def set_origin(self, coordinates):
         if coordinates is not None:
             self.origin = coordinates
+
+    def set_projection(self, projection):
+        self.projection = projection
 
     def set_group_visibility(self, is_visible):
         self.group.setItemVisibilityCheckedRecursive(is_visible)
@@ -144,17 +148,17 @@ class Globe:
         self.qgis_instance.addMapLayer(layer, False)
         self.group.insertLayer(index, layer)
 
-    def change_project_projection_to_azimuthal_orthographic(self):
+    def change_project_projection(self):
         # Change to wgs84 to activate the changes in origin
         self.qgis_instance.setCrs(WGS84)
-        proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
+        proj_string = self.projection.proj_str(self.origin)
         crs = QgsCoordinateReferenceSystem()
-        crs.createFromProj(proj4_string)
+        crs.createFromProj(proj_string)
         self.qgis_instance.setCrs(crs)
 
     def change_temporarily_to_azimuthal_ortographic_projection(self):
         crs = self.qgis_instance.crs()
-        self.change_project_projection_to_azimuthal_orthographic()
+        self.change_project_projection()
         self.qgis_instance.setCrs(crs)
 
     def change_background_color(self, new_background_color):
@@ -223,12 +227,12 @@ class Globe:
 
         draw_method = HaloDrawMethod(
             get_setting("haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value, str))
-        proj4_string = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin)
+        proj_string = self.projection.proj_str(self.origin)
         # Block signals required to prevent the pop up asking about the crs change
         self.iface.mainWindow().blockSignals(True)
         layer = QgsVectorLayer(draw_method.value, layer_name, "memory")
         crs = layer.crs()
-        crs.createFromProj(proj4_string)
+        crs.createFromProj(proj_string)
         layer.setCrs(crs)
         self.iface.mainWindow().blockSignals(False)
 
@@ -248,10 +252,6 @@ class Globe:
         self.qgis_instance.addMapLayer(layer, False)
 
         index = 0 if use_effects else -1
-        # Remove if certain that group will be used with Halo
-        # tree_root = self.qgis_instance.layerTreeRoot()
-        # tree_root.insertChildNode(index, QgsLayerTreeLayer(layer))
-
         self.insert_layer_to_group(layer, index)
 
     def refresh_theme(self):
@@ -276,7 +276,7 @@ class Globe:
         ms = QgsMapSettings()
         ms.setLayers(layers)  # set layers to be mapped
         crs = QgsCoordinateReferenceSystem()
-        crs.createFromProj(AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**self.origin))
+        crs.createFromProj(self.projection.proj_str(self.origin))
         map.setCrs(crs)
         map.setFollowVisibilityPreset(True)
         map.setFollowVisibilityPresetName(Globe.THEME_NAME)

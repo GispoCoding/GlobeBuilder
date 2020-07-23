@@ -6,8 +6,9 @@ QGIS 3 plugin that is meant for adding globe visualization to the current map us
 ![Plugin in action](/images/screenshots/geocoding1.gif?raw=true "Plugin in action")
 
 Inspired by these blog posts by 
-[statsmapsnpix](http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html)
-and [Gispo](https://www.gispo.fi/en/blog/the-power-of-community-30daymapchallenge/).
+* [statsmapsnpix](http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html)
+* [Gispo](https://www.gispo.fi/en/blog/the-power-of-community-30daymapchallenge/)
+* [gislounge](https://www.gislounge.com/how-to-use-the-equal-earth-projection-using-qgis-on-the-mac/)
 
 
 The plugin is still in beta-development. Please report issues preferably to Issues.

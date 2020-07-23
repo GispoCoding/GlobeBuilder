@@ -17,13 +17,15 @@ from PyQt5.QtGui import QColor
 
 from .conftest import QGIS_INSTANCE, IFACE, CANVAS
 from ..core.globe import Globe
-from ..definitions.settings import (AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR, DEFAULT_ORIGIN)
+from ..definitions.projections import Projection
+from ..definitions.settings import (DEFAULT_ORIGIN)
 
 
 def test_projection_change_with_default_origin(globe):
     """Test if projection really changes"""
-    globe.change_project_projection_to_azimuthal_orthographic()
-    expeted_proj = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**DEFAULT_ORIGIN)
+    globe.set_projection(Projection.AZIMUTHAL_ORTHOGRAPHIC)
+    globe.change_project_projection()
+    expeted_proj = Projection.AZIMUTHAL_ORTHOGRAPHIC.proj_str(DEFAULT_ORIGIN)
     assert QGIS_INSTANCE.crs().toProj() == expeted_proj
 
 
@@ -31,8 +33,8 @@ def test_projection_change_with_custom_origin(globe):
     """Test if projection really changes"""
     custom_origin = {'lat': 10, 'lon': 10}
     globe.set_origin(custom_origin)
-    globe.change_project_projection_to_azimuthal_orthographic()
-    expeted_proj = AZIMUTHAL_ORTHOGRAPHIC_PROJ4_STR.format(**custom_origin)
+    globe.change_project_projection()
+    expeted_proj = Projection.AZIMUTHAL_ORTHOGRAPHIC.proj_str(custom_origin)
     assert QGIS_INSTANCE.crs().toProj() == expeted_proj
 
 

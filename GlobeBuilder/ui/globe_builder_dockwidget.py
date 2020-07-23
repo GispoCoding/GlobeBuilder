@@ -28,6 +28,7 @@ from qgis.core import QgsProject
 from ..core.globe import Globe
 from ..core.utils.geocoder import Geocoder
 from ..core.utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
+from ..definitions.projections import Projection
 from ..definitions.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
                                     DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
                                     DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
@@ -37,6 +38,7 @@ from ..qgis_plugin_tools.tools.custom_logging import bar_msg
 from ..qgis_plugin_tools.tools.i18n import tr
 from ..qgis_plugin_tools.tools.resources import load_ui, plugin_name
 from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
+from ..qgis_plugin_tools.tools.version import proj_version
 
 FORM_CLASS = load_ui('globe_builder_dockwidget_base.ui')
 LOGGER = logging.getLogger(plugin_name())
@@ -80,6 +82,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.on_checkBoxIntCountries_stateChanged()
 
         self.populate_comboBoxLayouts()
+        self.populate_comboBoxProjections()
 
         self.mColorButtonBackground.setColor(DEFAULT_BACKGROUND_COLOR)
         self.mColorButtonHalo.setColor(DEFAULT_HALO_COLOR)
@@ -95,6 +98,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.layout_mngr.layoutAdded.connect(self.populate_comboBoxLayouts)
         self.layout_mngr.layoutRemoved.connect(self.populate_comboBoxLayouts)
         self.layout_mngr.layoutRenamed.connect(self.populate_comboBoxLayouts)
+        self.comboBoxProjections.currentTextChanged.connect(self.projection_changed)
 
         self.is_initializing = False
 
@@ -192,16 +196,18 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pushButtonCenter_clicked(self):
         self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.change_project_projection_to_azimuthal_orthographic()
+        self.globe.set_projection(Projection.proj_from_id(self.comboBoxProjections.currentText()))
+        self.globe.change_project_projection()
         self.add_halo_to_globe()
 
     @pyqtSlot()
     def on_pushButtonRun_clicked(self):
         self.load_data_to_globe(False)
         self.globe.set_origin(self.calculate_origin_coordinates())
+        self.globe.set_projection(Projection.proj_from_id(self.comboBoxProjections.currentText()))
         self.globe.change_background_color(self.mColorButtonBackground.color())
         self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
-        self.globe.change_project_projection_to_azimuthal_orthographic()
+        self.globe.change_project_projection()
         self.globe.set_group_visibility(True)
         self.add_halo_to_globe()
 
@@ -230,6 +236,13 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.comboBoxLayouts.addItem(tr(u"Create new layout (LayoutGlobe)"))
         for layout in self.layout_mngr.layouts():
             self.comboBoxLayouts.addItem(layout.name())
+
+    def populate_comboBoxProjections(self, *args):
+        proj_v = proj_version()
+        self.comboBoxProjections.clear()
+        for projection in Projection:
+            if proj_v >= projection.min_proj:
+                self.comboBoxProjections.addItem(projection.tr_name)
 
     def add_halo_to_globe(self):
         self.globe.add_halo(self.radioButtonHHalo.isChecked(), self.mColorButtonHalo.color(),
@@ -295,3 +308,9 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             LOGGER.warning(tr(u"Error occurred while parsing center of the globe"),
                            bar_msg(f"{tr(u'Traceback')}: {e}", duration=6))
         return coordinates
+
+    def projection_changed(self, projection_id: str):
+        # TODO: check if this causes problems in newer QGIS versions
+        projection = Projection.proj_from_id(projection_id)
+        # Centering is disabled due to rendering artifacts
+        self.centeringGroupBox.setEnabled(projection != Projection.EQUAL_EARTH)

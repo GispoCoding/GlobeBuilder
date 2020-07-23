@@ -6,6 +6,7 @@ import pytest
 from qgis.core import QgsProject
 
 from ..core.globe import Globe
+from ..definitions.projections import Projection
 from ..qgis_plugin_tools.testing.utilities import get_qgis_app
 
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
@@ -35,4 +36,6 @@ def canvas():
 
 @pytest.fixture(scope='function')
 def globe(new_project, iface) -> Globe:
-    return Globe(iface)
+    globe = Globe(iface)
+    globe.set_projection(Projection.AZIMUTHAL_ORTHOGRAPHIC)
+    return globe
