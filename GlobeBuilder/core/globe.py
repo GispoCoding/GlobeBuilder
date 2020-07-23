@@ -26,7 +26,8 @@ from PyQt5.QtGui import QColor
 from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
                        QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
                        QgsFeature, QgsGeometry, QgsPointXY, QgsMapThemeCollection, QgsLayoutItemMap,
-                       QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
+                       QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize,
+                       QgsCoordinateTransform)
 
 from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
 from ..definitions.projections import Projection
@@ -156,7 +157,7 @@ class Globe:
         crs.createFromProj(proj_string)
         self.qgis_instance.setCrs(crs)
 
-    def change_temporarily_to_azimuthal_ortographic_projection(self):
+    def change_temporarily_to_globe_projection(self):
         crs = self.qgis_instance.crs()
         self.change_project_projection()
         self.qgis_instance.setCrs(crs)
@@ -238,9 +239,13 @@ class Globe:
 
         feature = QgsFeature()
         # noinspection PyArgumentList
-        geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
-        if draw_method == HaloDrawMethod.buffered_point:
-            geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
+        if self.projection != Projection.EQUAL_EARTH:
+            geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
+            if draw_method == HaloDrawMethod.buffered_point:
+                geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
+        else:
+            geom = self.create_equal_earth_halo(layer.crs())
+
         feature.setGeometry(geom)
         provider = layer.dataProvider()
         layer.startEditing()
@@ -253,6 +258,29 @@ class Globe:
 
         index = 0 if use_effects else -1
         self.insert_layer_to_group(layer, index)
+        self.change_project_projection()
+
+    def create_equal_earth_halo(self, crs):
+        min_x = -180
+        min_y = -90
+        max_x = 180
+        max_y = 90
+        step = 5
+        coords = []
+        for y in range(min_y, max_y + step, step):
+            coords.append((min_x, y))
+        for x in range(min_x + step, max_x + step, step):
+            coords.append((x, max_y))
+        for y in reversed(range(min_y, max_y + step, step)):
+            coords.append((max_x, y))
+        for x in reversed(range(min_x + step, max_x + step, step)):
+            coords.append((x, min_y))
+        coords.append(coords[0])
+        geom = QgsGeometry.fromPolygonXY([[QgsPointXY(pair[0], pair[1]) for pair in coords]]).asQPolygonF()
+        transformer = QgsCoordinateTransform(WGS84, crs, self.qgis_instance)
+        transformer.transformPolygon(geom)
+        geom = QgsGeometry.fromQPolygonF(geom)
+        return geom
 
     def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()

@@ -221,7 +221,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # projection needs to be set to project level before attempting to use it in a layout
         self.globe.set_origin(
             {key: float("{:.0f}".format(val)) for key, val in self.calculate_origin_coordinates().items()})
-        self.globe.change_temporarily_to_azimuthal_ortographic_projection()
+        self.globe.change_temporarily_to_globe_projection()
         self.globe.delete_group()
         self.load_data_to_globe()
 

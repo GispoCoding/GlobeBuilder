@@ -10,8 +10,9 @@ class Projection(Enum):
                               }
     # https://www.gislounge.com/how-to-use-the-equal-earth-projection-using-qgis-on-the-mac/
     EQUAL_EARTH = {'name': tr(u'Equal Earth'), 'min_proj': (5, 2),
-                   'proj_str': '+proj=eqearth +datum=WGS84 +wktext'
-                   # '+proj=eqearth +lat_0={lat} +lon_0={lon} +datum=WGS84 +wktext' # Unfortunately this causes rendering artifacts
+                   'proj_str': '+proj=eqearth +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
+                   # '+proj=eqearth +datum=WGS84 +wktext'
+                   # '+proj=eqearth +lon_0={lon} +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs' # Unfortunately this causes rendering artifacts
                    }
 
     @staticmethod
