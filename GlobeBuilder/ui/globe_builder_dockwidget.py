@@ -28,7 +28,7 @@ from qgis.core import QgsProject
 from ..core.globe import Globe
 from ..core.utils.geocoder import Geocoder
 from ..core.utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
-from ..definitions.projections import Projection
+from ..definitions.projections import Projections
 from ..definitions.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
                                     DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
                                     DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
@@ -196,7 +196,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pushButtonCenter_clicked(self):
         self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.set_projection(Projection.proj_from_id(self.comboBoxProjections.currentText()))
+        self.globe.set_projection(Projections.proj_from_id(self.comboBoxProjections.currentText()))
         self.globe.change_project_projection()
         self.add_halo_to_globe()
 
@@ -204,7 +204,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pushButtonRun_clicked(self):
         self.load_data_to_globe(False)
         self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.set_projection(Projection.proj_from_id(self.comboBoxProjections.currentText()))
+        self.globe.set_projection(Projections.proj_from_id(self.comboBoxProjections.currentText()))
         self.globe.change_background_color(self.mColorButtonBackground.color())
         self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
         self.globe.change_project_projection()
@@ -240,9 +240,9 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def populate_comboBoxProjections(self, *args):
         proj_v = proj_version()
         self.comboBoxProjections.clear()
-        for projection in Projection:
-            if proj_v >= projection.min_proj:
-                self.comboBoxProjections.addItem(projection.tr_name)
+        for projection in Projections:
+            if proj_v >= projection.value.min_proj:
+                self.comboBoxProjections.addItem(projection.value.name)
 
     def add_halo_to_globe(self):
         self.globe.add_halo(self.radioButtonHHalo.isChecked(), self.mColorButtonHalo.color(),
@@ -311,6 +311,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def projection_changed(self, projection_id: str):
         # TODO: check if this causes problems in newer QGIS versions
-        projection = Projection.proj_from_id(projection_id)
+        projection = Projections.proj_from_id(projection_id)
         # Centering is disabled due to rendering artifacts
-        self.centeringGroupBox.setEnabled(projection != Projection.EQUAL_EARTH)
+        self.centeringGroupBox.setEnabled(projection != Projections.EQUAL_EARTH)

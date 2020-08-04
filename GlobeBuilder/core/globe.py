@@ -30,7 +30,7 @@ from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRaster
                        QgsCoordinateTransform)
 
 from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
-from ..definitions.projections import Projection
+from ..definitions.projections import Projections
 from ..definitions.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS,
                                     LOCAL_DATA_DIR,
                                     DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
@@ -45,7 +45,7 @@ class Globe:
     THEME_NAME = tr(u"Globe")
     GROUP_NAME = tr(u"Globe")
 
-    def __init__(self, iface, origin=DEFAULT_ORIGIN, projection=Projection.AZIMUTHAL_ORTHOGRAPHIC):
+    def __init__(self, iface, origin=DEFAULT_ORIGIN, projection=Projections.AZIMUTHAL_ORTHOGRAPHIC):
         self.iface = iface
         self.origin = origin
         self.projection = projection
@@ -152,7 +152,7 @@ class Globe:
     def change_project_projection(self):
         # Change to wgs84 to activate the changes in origin
         self.qgis_instance.setCrs(WGS84)
-        proj_string = self.projection.proj_str(self.origin)
+        proj_string = self.projection.value.proj_str(self.origin)
         crs = QgsCoordinateReferenceSystem()
         crs.createFromProj(proj_string)
         self.qgis_instance.setCrs(crs)
@@ -228,7 +228,7 @@ class Globe:
 
         draw_method = HaloDrawMethod(
             get_setting("haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value, str))
-        proj_string = self.projection.proj_str(self.origin)
+        proj_string = self.projection.value.proj_str(self.origin)
         # Block signals required to prevent the pop up asking about the crs change
         self.iface.mainWindow().blockSignals(True)
         layer = QgsVectorLayer(draw_method.value, layer_name, "memory")
@@ -239,7 +239,7 @@ class Globe:
 
         feature = QgsFeature()
         # noinspection PyArgumentList
-        if self.projection != Projection.EQUAL_EARTH:
+        if self.projection != Projections.EQUAL_EARTH:
             geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
             if draw_method == HaloDrawMethod.buffered_point:
                 geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
@@ -304,7 +304,7 @@ class Globe:
         ms = QgsMapSettings()
         ms.setLayers(layers)  # set layers to be mapped
         crs = QgsCoordinateReferenceSystem()
-        crs.createFromProj(self.projection.proj_str(self.origin))
+        crs.createFromProj(self.projection.value.proj_str(self.origin))
         map.setCrs(crs)
         map.setFollowVisibilityPreset(True)
         map.setFollowVisibilityPresetName(Globe.THEME_NAME)
