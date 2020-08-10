@@ -239,12 +239,12 @@ class Globe:
 
         feature = QgsFeature()
         # noinspection PyArgumentList
-        if self.projection != Projections.EQUAL_EARTH:
+        if self.projection == Projections.AZIMUTHAL_ORTHOGRAPHIC:
             geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
             if draw_method == HaloDrawMethod.buffered_point:
                 geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
         else:
-            geom = self.create_equal_earth_halo(layer.crs())
+            geom = self.create_grid_halo(layer.crs())
 
         feature.setGeometry(geom)
         provider = layer.dataProvider()
@@ -260,12 +260,12 @@ class Globe:
         self.insert_layer_to_group(layer, index)
         self.change_project_projection()
 
-    def create_equal_earth_halo(self, crs):
+    def create_grid_halo(self, crs):
         min_x = -180
         min_y = -90
         max_x = 180
         max_y = 90
-        step = 5
+        step = 2
         coords = []
         for y in range(min_y, max_y + step, step):
             coords.append((min_x, y))
@@ -279,8 +279,7 @@ class Globe:
         geom = QgsGeometry.fromPolygonXY([[QgsPointXY(pair[0], pair[1]) for pair in coords]]).asQPolygonF()
         transformer = QgsCoordinateTransform(WGS84, crs, self.qgis_instance)
         transformer.transformPolygon(geom)
-        geom = QgsGeometry.fromQPolygonF(geom)
-        return geom
+        return QgsGeometry.fromQPolygonF(geom)
 
     def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()

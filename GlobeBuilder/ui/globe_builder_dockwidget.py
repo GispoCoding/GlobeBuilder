@@ -313,4 +313,4 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # TODO: check if this causes problems in newer QGIS versions
         projection = Projections.proj_from_id(projection_id)
         # Centering is disabled due to rendering artifacts
-        self.centeringGroupBox.setEnabled(projection != Projections.EQUAL_EARTH)
+        self.centeringGroupBox.setEnabled(projection == Projections.AZIMUTHAL_ORTHOGRAPHIC)
