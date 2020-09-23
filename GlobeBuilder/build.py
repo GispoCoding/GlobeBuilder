@@ -11,8 +11,7 @@ from qgis_plugin_tools.infrastructure.plugin_maker import PluginMaker
 '''
 
 py_files = (
-        [fil for fil in glob.glob("**/*.py", recursive=True) if "test/" not in fil] +
-        ["test/test_translations.py"]
+        [fil for fil in glob.glob("**/*.py", recursive=True) if "test/" not in fil]
 )
 locales = ['fi']
 profile = 'dev'

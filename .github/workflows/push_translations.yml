@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  plugin_dst:
+  push_translations:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,5 @@ jobs:
       - name: Install qgis-plugin-ci
         run: pip3 install qgis-plugin-ci
 
-      # When osgeo upload is wanted: --osgeo-username usrname --osgeo-password ${{ secrets.OSGEO_PASSWORD }}
       - name: Push translations
         run: qgis-plugin-ci push-translation ${{ secrets.TRANSIFEX_TOKEN }}
