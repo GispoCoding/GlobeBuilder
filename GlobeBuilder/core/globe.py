@@ -23,27 +23,24 @@
 import os
 
 from PyQt5.QtGui import QColor
-from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsFillSymbol, QgsEffectStack,
-                       QgsDropShadowEffect, QgsInnerShadowEffect, QgsGeometryGeneratorSymbolLayer, QgsVectorLayer,
-                       QgsFeature, QgsGeometry, QgsPointXY, QgsMapThemeCollection, QgsLayoutItemMap,
-                       QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize,
-                       QgsCoordinateTransform)
+from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRasterLayer, QgsVectorLayer,
+                       QgsMapThemeCollection, QgsLayoutItemMap,
+                       QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
 
+from .halo import Halo
 from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
 from ..definitions.projections import Projections
-from ..definitions.settings import (LayerConnectionType, HaloDrawMethod, S2CLOUDLESS_WMTS_URL, EARTH_RADIUS,
-                                    LOCAL_DATA_DIR,
+from ..definitions.settings import (LayerConnectionType, S2CLOUDLESS_WMTS_URL, LOCAL_DATA_DIR,
                                     DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
-                                    DEFAULT_HALO_DRAW_METHOD, DEFAULT_NUMBER_OF_SEGMENTS, DEFAULT_ORIGIN,
-                                    TRANSPARENT_COLOR,
+                                    DEFAULT_ORIGIN,
                                     WGS84)
 from ..qgis_plugin_tools.tools.i18n import tr
 from ..qgis_plugin_tools.tools.settings import get_setting
 
 
 class Globe:
-    THEME_NAME = tr(u"Globe")
-    GROUP_NAME = tr(u"Globe")
+    THEME_NAME = tr('Globe')
+    GROUP_NAME = tr('Globe')
 
     def __init__(self, iface, origin=DEFAULT_ORIGIN, projection=Projections.AZIMUTHAL_ORTHOGRAPHIC):
         self.iface = iface
@@ -94,7 +91,7 @@ class Globe:
                                                     level=Qgis.Warning, duration=4)
         ne_data = {}
         if load_countries:
-            def style_coutries(layer):
+            def style_countries(layer):
                 if intersecting_countries_color is None:
                     layer.renderer().symbol().setColor(countries_color)
                 else:
@@ -104,15 +101,15 @@ class Globe:
                     layer.select(ids)
 
             ne_data[tr(u'Countries')] = (
-                'ne_{}_admin_0_countries.geojson'.format(counties_res), lambda l: style_coutries(l))
+                'ne_{}_admin_0_countries.geojson'.format(counties_res), lambda l: style_countries(l))
         if load_graticules:
             ne_data[tr(u'Graticules')] = (
                 'ne_10m_graticules_{}.geojson'.format(graticules_res),
                 lambda l: l.renderer().symbol().setColor(graticules_color))
-        len(ne_data) and self.load_natural_eath_data(ne_data)
+        len(ne_data) and self.load_natural_earth_data(ne_data)
         self.iface.mapCanvas().refresh()
 
-    def load_natural_eath_data(self, ne_data):
+    def load_natural_earth_data(self, ne_data):
         # TODO: resolution
         existing_layer_names = self.get_existing_layer_names()
 
@@ -132,7 +129,7 @@ class Globe:
                     layer = QgsVectorLayer(os.path.join(LOCAL_DATA_DIR, source), name, "ogr")
                 if layer is None:
                     self.iface.messageBar().pushMessage(
-                        tr(u"Could not load Natural Earth layer '{}'".format(name)),
+                        tr(u"Could not load Natural Earth layer '{}'", name),
                         level=Qgis.Warning, duration=3)
                 else:
                     layer.setName(name)
@@ -178,108 +175,18 @@ class Globe:
         return [layer.name() for layer in QgsProject.instance().mapLayers().values()]
 
     # noinspection PyArgumentList
-    @staticmethod
-    def set_halo_styles(layer, draw_method, stroke_color, use_effects, fill_color=None):
-        renderer = layer.renderer()
-        sym = renderer.symbol()
-
-        props = {'color': 'blue'}
-        fill_symbol = QgsFillSymbol.createSimple(props)
-        fill_symbol_layer = fill_symbol.symbolLayers()[0]
-        fill_symbol_layer.setStrokeColor(stroke_color)
-        if fill_color is not None:
-            fill_symbol_layer.setColor(fill_color)
-        elif not use_effects:
-            fill_symbol_layer.setColor(TRANSPARENT_COLOR)
-
-        if use_effects:
-            # Assign effects
-            effect_stack = QgsEffectStack()
-            drop_shdw = QgsDropShadowEffect()
-            drop_shdw.setColor(stroke_color)
-            inner_shdw = QgsInnerShadowEffect()
-            inner_shdw.setColor(stroke_color)
-            effect_stack.appendEffect(drop_shdw)
-            effect_stack.appendEffect(inner_shdw)
-
-            fill_symbol_layer.setPaintEffect(effect_stack)
-        if draw_method == HaloDrawMethod.buffered_point:
-            renderer.setSymbol(fill_symbol)
-        else:
-            # noinspection PyCallByClass
-            geom_generator_sl = QgsGeometryGeneratorSymbolLayer.create({
-                'SymbolType': 'Fill',
-                'geometryModifier': 'buffer($geometry, {:d})'.format(EARTH_RADIUS)
-            })
-            geom_generator_sl.setSubSymbol(fill_symbol)
-            sym.changeSymbolLayer(0, geom_generator_sl)
-
-        layer.triggerRepaint()
-        return layer
-
-    # noinspection PyCallByClass
     def add_halo(self, use_effects, stroke_color, fill_color=None, halo_with_fill=False):
-        layer_name = tr(u"Halo")
+        halo = Halo(self.iface, self.origin, self.projection)
 
         if halo_with_fill:
             self.add_halo(True, stroke_color)
         else:
-            [self.qgis_instance.removeMapLayer(lyr.id()) for lyr in self.qgis_instance.mapLayersByName(layer_name)]
+            [self.qgis_instance.removeMapLayer(lyr.id()) for lyr in
+             self.qgis_instance.mapLayersByName(halo.LAYER_NAME)]
 
-        draw_method = HaloDrawMethod(
-            get_setting("haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value, str))
-        proj_string = self.projection.value.proj_str(self.origin)
-        # Block signals required to prevent the pop up asking about the crs change
-        self.iface.mainWindow().blockSignals(True)
-        layer = QgsVectorLayer(draw_method.value, layer_name, "memory")
-        crs = layer.crs()
-        crs.createFromProj(proj_string)
-        layer.setCrs(crs)
-        self.iface.mainWindow().blockSignals(False)
-
-        feature = QgsFeature()
-        # noinspection PyArgumentList
-        if self.projection == Projections.AZIMUTHAL_ORTHOGRAPHIC:
-            geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
-            if draw_method == HaloDrawMethod.buffered_point:
-                geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
-        else:
-            geom = self.create_grid_halo(layer.crs())
-
-        feature.setGeometry(geom)
-        provider = layer.dataProvider()
-        layer.startEditing()
-        provider.addFeatures([feature])
-        layer.commitChanges()
-
-        # Assign styles and to map (but not toc yet)
-        self.set_halo_styles(layer, draw_method, stroke_color, use_effects, fill_color)
-        self.qgis_instance.addMapLayer(layer, False)
-
-        index = 0 if use_effects else -1
+        layer, index = halo.create_halo_layer(use_effects, stroke_color, fill_color)
         self.insert_layer_to_group(layer, index)
         self.change_project_projection()
-
-    def create_grid_halo(self, crs):
-        min_x = -180
-        min_y = -90
-        max_x = 180
-        max_y = 90
-        step = 2
-        coords = []
-        for y in range(min_y, max_y + step, step):
-            coords.append((min_x, y))
-        for x in range(min_x + step, max_x + step, step):
-            coords.append((x, max_y))
-        for y in reversed(range(min_y, max_y + step, step)):
-            coords.append((max_x, y))
-        for x in reversed(range(min_x + step, max_x + step, step)):
-            coords.append((x, min_y))
-        coords.append(coords[0])
-        geom = QgsGeometry.fromPolygonXY([[QgsPointXY(pair[0], pair[1]) for pair in coords]]).asQPolygonF()
-        transformer = QgsCoordinateTransform(WGS84, crs, self.qgis_instance)
-        transformer.transformPolygon(geom)
-        return QgsGeometry.fromQPolygonF(geom)
 
     def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()
