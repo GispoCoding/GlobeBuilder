@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Tuple
 
-from GlobeBuilder.qgis_plugin_tools.tools.i18n import tr
+from ..qgis_plugin_tools.tools.i18n import tr
 
 
 class Projection:
