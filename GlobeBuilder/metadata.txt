@@ -21,7 +21,7 @@ repository=https://github.com/GispoCoding/GlobeBuilder
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-# changelog=
+changelog=
 
 # Tags are comma separated with spaces allowed
 tags=python, globe, world
