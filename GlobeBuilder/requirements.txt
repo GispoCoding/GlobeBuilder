@@ -1,2 +1,3 @@
 # Only for development purposes
 pytest~=5.4.3
+qgis_plugin_ci~=1.8.4

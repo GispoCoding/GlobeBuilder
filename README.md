@@ -2,6 +2,7 @@ Globe Builder
 =============
 ![](https://github.com/GispoCoding/GlobeBuilder/workflows/Tests/badge.svg)
 ![](https://github.com/GispoCoding/GlobeBuilder/workflows/Release/badge.svg)
+![](https://github.com/GispoCoding/GlobeBuilder/workflows/Translations/badge.svg)
 
 QGIS 3 plugin that is meant for adding globe visualization to the current map using.
 
