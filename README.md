@@ -41,6 +41,11 @@ provides the core functionality of the plugin. The usage can be seen in the foll
 
 ![Gist in action](/images/screenshots/globe_view_gist.gif?raw=true "Gist in action")
 
+
+## Development
+
+Refer to [development instructions](docs/development.md).
+
 ## Licence
 
 This plugin is licenced with [GNU Genereal Public License, version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
