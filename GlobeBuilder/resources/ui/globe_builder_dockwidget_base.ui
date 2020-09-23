@@ -32,9 +32,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-60</y>
+           <y>0</y>
            <width>670</width>
-              <height>984</height>
+           <height>984</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -109,6 +109,21 @@
                      </item>
                      <item>
                       <property name="text">
+                       <string>Graticules 2</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Graticules 5</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Graticules 20</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
                        <string>Graticules 30</string>
                       </property>
                      </item>
@@ -170,34 +185,34 @@
             </item>
            </layout>
           </item>
+          <item>
+           <widget class="QgsCollapsibleGroupBox" name="mGroupBox_5">
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
              <item>
-                 <widget class="QgsCollapsibleGroupBox" name="mGroupBox_5">
-                     <layout class="QHBoxLayout" name="horizontalLayout_17">
-                         <item>
-                             <widget class="QLabel" name="label_14">
-                                 <property name="text">
-                                     <string>Projection</string>
-                                 </property>
-                             </widget>
-                         </item>
-                         <item>
-                             <widget class="QComboBox" name="comboBoxProjections"/>
-                         </item>
-                     </layout>
-                 </widget>
+              <widget class="QLabel" name="label_14">
+               <property name="text">
+                <string>Projection</string>
+               </property>
+              </widget>
              </item>
              <item>
-                 <widget class="QgsCollapsibleGroupBox" name="centeringGroupBox">
-                     <property name="enabled">
-                         <bool>true</bool>
-                     </property>
-                     <property name="title">
-                         <string>Center the Globe based on:</string>
-                     </property>
-                     <property name="flat">
-                         <bool>false</bool>
-                     </property>
-                     <property name="collapsed">
+              <widget class="QComboBox" name="comboBoxProjections"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QgsCollapsibleGroupBox" name="centeringGroupBox">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="title">
+             <string>Center the Globe based on:</string>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+            <property name="collapsed">
              <bool>false</bool>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -861,6 +876,6 @@
    <header>qgsmaplayercombobox.h</header>
   </customwidget>
  </customwidgets>
-    <resources/>
+ <resources/>
  <connections/>
 </ui>
