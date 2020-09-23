@@ -216,11 +216,13 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         selected_layouts = tuple(
             filter(lambda l: l.name() == self.comboBoxLayouts.currentText(), self.layout_mngr.layouts()))
         layout = selected_layouts[0] if len(selected_layouts) == 1 else create_layout("LayoutGlobe", self.qgis_instance)
+        crs = self.qgis_instance.crs()
 
         # For some reason layout mode can't handle azimuthal ortographic projection with any decimals and the
         # projection needs to be set to project level before attempting to use it in a layout
         self.globe.set_origin(
             {key: float("{:.0f}".format(val)) for key, val in self.calculate_origin_coordinates().items()})
+        self.globe.set_projection(Projections.proj_from_id(self.comboBoxProjections.currentText()))
         self.globe.change_temporarily_to_globe_projection()
         self.globe.delete_group()
         self.load_data_to_globe()
@@ -230,6 +232,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.globe.refresh_theme()
         self.globe.add_to_layout(layout, background_color=self.mColorButtonLayoutBackground.color(),
                                  size=self.spinBoxGlobeSize.value())
+
+        self.qgis_instance.setCrs(crs)
 
     def populate_comboBoxLayouts(self, *args):
         self.comboBoxLayouts.clear()
@@ -251,7 +255,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def get_halo_fill_color(self):
         return self.mColorButtonHFill.color() if (
-                self.radioButtonHFill.isChecked() or self.radioButtonHFillWithHalo.isChecked()) else None
+            self.radioButtonHFill.isChecked() or self.radioButtonHFillWithHalo.isChecked()) else None
 
     def get_intersecting_countries_color(self):
         return self.mColorButtonIntCountries.color() if self.checkBoxIntCountries.isChecked() else None
@@ -271,8 +275,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def get_geocoded_coordinates(self):
         coordinates = None
         if (len(self.geolocations) and
-                self.listWidgetGeocodingResults.count() > 0 and
-                self.listWidgetGeocodingResults.currentItem() is not None):
+            self.listWidgetGeocodingResults.count() > 0 and
+            self.listWidgetGeocodingResults.currentItem() is not None):
             geolocation = self.listWidgetGeocodingResults.currentItem().text()
             coordinates = self.geolocations.get(geolocation, None)
             coordinates = {'lon': coordinates[0], 'lat': coordinates[1]}
