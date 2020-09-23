@@ -19,7 +19,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-import processing
+
 from PyQt5.QtGui import QColor
 from qgis.core import (QgsProcessingFeedback, QgsVectorLayer, QgsFillSymbol,
                        QgsSymbolLayer, QgsFeatureRenderer)
@@ -65,6 +65,7 @@ class Graticules:
         layer.triggerRepaint()
 
     def _create_graticule_layer(self, tmp_grid_layer) -> QgsVectorLayer:
+        import processing
         params = {
             'INPUT': tmp_grid_layer,
             'OUTPUT': f'memory:{self.LAYER_NAME}', 'VERTICES': self.num_vertices}
@@ -74,6 +75,7 @@ class Graticules:
         return layer
 
     def _create_grid_layer(self) -> QgsVectorLayer:
+        import processing
         params = {'CRS': WGS84,
                   'EXTENT': '-180,180,-90,90 [EPSG:4326]', 'HOVERLAY': 0, 'HSPACING': self.spacing,
                   'OUTPUT': 'memory:tmp_grid', 'TYPE': 2, 'VOVERLAY': 0, 'VSPACING': self.spacing}
