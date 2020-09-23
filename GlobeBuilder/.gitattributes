@@ -1,0 +1,4 @@
+.gitattributes export-ignore
+.editorconfig export-ignore
+test export-ignore
+
