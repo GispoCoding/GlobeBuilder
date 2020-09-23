@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+import logging
 import os
 
 from PyQt5.QtGui import QColor
@@ -27,6 +28,7 @@ from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRaster
                        QgsMapThemeCollection, QgsLayoutItemMap,
                        QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
 
+from .graticules import Graticules
 from .halo import Halo
 from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
 from ..definitions.projections import Projections
@@ -34,8 +36,12 @@ from ..definitions.settings import (LayerConnectionType, S2CLOUDLESS_WMTS_URL, L
                                     DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
                                     DEFAULT_ORIGIN,
                                     WGS84)
+from ..qgis_plugin_tools.tools.custom_logging import bar_msg
 from ..qgis_plugin_tools.tools.i18n import tr
+from ..qgis_plugin_tools.tools.resources import plugin_name
 from ..qgis_plugin_tools.tools.settings import get_setting
+
+LOGGER = logging.getLogger(plugin_name())
 
 
 class Globe:
@@ -87,8 +93,8 @@ class Globe:
             if s2_layer.isValid():
                 self.insert_layer_to_group(s2_layer)
             else:
-                self.iface.messageBar().pushMessage(tr(u"Could not add Sentinel 2 Cloudless layer"),
-                                                    level=Qgis.Warning, duration=4)
+                LOGGER.warning(tr(u"Could not add Sentinel 2 Cloudless layer"), extra=bar_msg())
+
         ne_data = {}
         if load_countries:
             def style_countries(layer):
@@ -102,11 +108,18 @@ class Globe:
 
             ne_data[tr(u'Countries')] = (
                 'ne_{}_admin_0_countries.geojson'.format(counties_res), lambda l: style_countries(l))
-        if load_graticules:
-            ne_data[tr(u'Graticules')] = (
-                'ne_10m_graticules_{}.geojson'.format(graticules_res),
-                lambda l: l.renderer().symbol().setColor(graticules_color))
-        len(ne_data) and self.load_natural_earth_data(ne_data)
+
+        if len(ne_data):
+            self.load_natural_earth_data(ne_data)
+
+        gra = Graticules(graticules_res)
+        if load_graticules and gra.LAYER_NAME not in existing_layer_names:
+            graticule_layer = gra.create_graticules(graticules_color)
+            if graticule_layer.isValid():
+                self.insert_layer_to_group(graticule_layer)
+            else:
+                LOGGER.warning(tr('Could not add graticules'), extra=bar_msg())
+
         self.iface.mapCanvas().refresh()
 
     def load_natural_earth_data(self, ne_data):
