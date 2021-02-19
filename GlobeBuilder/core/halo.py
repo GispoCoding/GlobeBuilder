@@ -1,28 +1,26 @@
-"""
-/***************************************************************************
- GlobeBuilder
-                                 A QGIS plugin
- This plugin adds Globe view
-                              -------------------
-        begin                : 2020-09-22
-        git sha              : $Format:%H$
-        copyright            : (C) 2020 by Gispo Ltd.
-        email                : joona@gispo.fi
- ***************************************************************************/
+#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
+#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-"""
-from qgis.gui import QgisInterface
 from qgis.core import (QgsFillSymbol, QgsEffectStack, QgsDropShadowEffect, QgsInnerShadowEffect,
                        QgsGeometryGeneratorSymbolLayer, QgsVectorLayer, QgsFeature, QgsGeometry, QgsPointXY,
                        QgsCoordinateTransform, QgsProject)
+from qgis.gui import QgisInterface
 
 from ..definitions.projections import Projections
 from ..definitions.settings import (TRANSPARENT_COLOR, HaloDrawMethod, EARTH_RADIUS, DEFAULT_HALO_DRAW_METHOD,
@@ -55,8 +53,8 @@ class Halo:
         self.iface.mainWindow().blockSignals(False)
 
         feature = QgsFeature()
-        # noinspection PyArgumentList
         if self.projection == Projections.AZIMUTHAL_ORTHOGRAPHIC:
+            # noinspection PyArgumentList
             geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
             if draw_method == HaloDrawMethod.buffered_point:
                 geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)

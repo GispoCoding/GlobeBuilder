@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
-"""
-/***************************************************************************
- GlobeBuilder
-                                 A QGIS plugin
- This plugin adds Globe view
-                              -------------------
-        begin                : 2020-01-22
-        git sha              : $Format:%H$
-        copyright            : (C) 2020 by Gispo Ltd.
-        email                : joona@gispo.fi
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-"""
+#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
+#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
 from qgis.core import QgsPrintLayout, QgsFillSymbol, QgsRuleBasedRenderer, QgsFeatureRequest, \
     QgsCoordinateTransformContext, QgsCoordinateTransform
 
@@ -42,7 +41,7 @@ def create_layout(layout_name, qgis_instance):
 
 
 def set_selection_based_style(layer, s_color, else_color):
-    # noinspection PyCallByClass
+    # noinspection PyCallByClass,PyArgumentList
     fill_for_selected = QgsFillSymbol.createSimple({'color': 'blue'})
     fill_for_selected.setColor(s_color)
     rule_s = QgsRuleBasedRenderer.Rule(fill_for_selected, label=tr(u"Selected"),

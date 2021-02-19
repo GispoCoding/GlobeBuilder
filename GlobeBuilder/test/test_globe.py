@@ -1,16 +1,23 @@
 # coding=utf-8
-"""Globe test.
 
-.. note:: This program is free software; you can redistribute it and/or modify
-     it under the terms of the GNU General Public License as published by
-     the Free Software Foundation; either version 2 of the License, or
-     (at your option) any later version.
-
-"""
-
-__author__ = 'joona@gispo.fi'
-__date__ = '2020-02-05'
-__copyright__ = 'Copyright 2020, Gispo Ltd.'
+#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
+#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
 from PyQt5.QtCore import Qt

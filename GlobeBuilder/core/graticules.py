@@ -1,24 +1,21 @@
-"""
-/***************************************************************************
- GlobeBuilder
-                                 A QGIS plugin
- This plugin adds Globe view
-                              -------------------
-        begin                : 2020-09-22
-        git sha              : $Format:%H$
-        copyright            : (C) 2020 by Gispo Ltd.
-        email                : joona@gispo.fi
- ***************************************************************************/
-
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-"""
+#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
+#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
 from PyQt5.QtGui import QColor
 from qgis.core import (QgsProcessingFeedback, QgsVectorLayer, QgsFillSymbol,
@@ -61,10 +58,12 @@ class Graticules:
         fill_color.setAlpha(0)
         fill_symbol_layer.setFillColor(fill_color)
         fill_symbol_layer.setStrokeColor(stroke_color)
+        # noinspection PyUnresolvedReferences
         renderer.setSymbol(fill_symbol)
         layer.triggerRepaint()
 
     def _create_graticule_layer(self, tmp_grid_layer) -> QgsVectorLayer:
+        # noinspection PyUnresolvedReferences
         import processing
         params = {
             'INPUT': tmp_grid_layer,
@@ -75,6 +74,7 @@ class Graticules:
         return layer
 
     def _create_grid_layer(self) -> QgsVectorLayer:
+        # noinspection PyUnresolvedReferences
         import processing
         params = {'CRS': WGS84,
                   'EXTENT': '-180,180,-90,90 [EPSG:4326]', 'HOVERLAY': 0, 'HSPACING': self.spacing,
