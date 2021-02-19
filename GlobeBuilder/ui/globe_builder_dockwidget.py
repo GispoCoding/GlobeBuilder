@@ -242,7 +242,10 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.comboBoxLayouts.addItem(layout.name())
 
     def populate_comboBoxProjections(self, *args):
-        proj_v = proj_version()
+        try:
+            proj_v = proj_version()
+        except AttributeError:
+            proj_v = (0, 0)
         self.comboBoxProjections.clear()
         for projection in Projections:
             if proj_v >= projection.value.min_proj:
