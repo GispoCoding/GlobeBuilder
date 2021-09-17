@@ -23,7 +23,7 @@ from qgis.PyQt.QtCore import QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from .qgis_plugin_tools.tools.custom_logging import setup_logger
+from .qgis_plugin_tools.tools.custom_logging import setup_logger, teardown_logger
 from .qgis_plugin_tools.tools.i18n import setup_translation, tr
 from .qgis_plugin_tools.tools.resources import plugin_name, resources_path
 from .ui.globe_builder_dockwidget import GlobeBuilderDockWidget
@@ -43,7 +43,7 @@ class GlobeBuilder:
         # Save reference to the QGIS interface
         self.iface = iface
 
-        setup_logger(plugin_name(), iface)
+        setup_logger(plugin_name())
 
         # initialize locale
         locale, file_path = setup_translation()
@@ -170,8 +170,6 @@ class GlobeBuilder:
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
-        # print "** CLOSING KHRLoader"
-
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
 
@@ -190,6 +188,7 @@ class GlobeBuilder:
                 tr(u'&Globe Builder'),
                 action)
             self.iface.removeToolBarIcon(action)
+        teardown_logger(plugin_name())
 
     def run(self):
         """Run method that performs all the real work"""
@@ -207,6 +206,5 @@ class GlobeBuilder:
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
 
             # show the dockwidget
-            # TODO: fix to allow choice of dock location
             self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
             self.dockwidget.show()

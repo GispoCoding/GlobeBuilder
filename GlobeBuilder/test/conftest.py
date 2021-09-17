@@ -1,5 +1,15 @@
 """
 This class contains fixtures and common helper function to keep the test files shorter
+
+pytest-qgis (https://pypi.org/project/pytest-qgis) contains the following helpful fixtures:
+
+* qgis_app initializes and returns fully configured QgsApplication.
+  This fixture is called automatically on the start of pytest session.
+* qgis_canvas initializes and returns QgsMapCanvas
+* qgis_iface returns mocked QgsInterface
+* new_project makes sure that all the map layers and configurations are removed.
+  This should be used with tests that add stuff to QgsProject.
+
 """
 
 #  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
@@ -22,40 +32,13 @@ This class contains fixtures and common helper function to keep the test files s
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
-from qgis.core import QgsProject
 
 from ..core.globe import Globe
 from ..definitions.projections import Projections
-from ..qgis_plugin_tools.testing.utilities import get_qgis_app
-
-QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
-# noinspection PyArgumentList
-QGIS_INSTANCE = QgsProject.instance()
 
 
 @pytest.fixture(scope='function')
-def new_project() -> None:
-    """Initializes new iface project"""
-    yield IFACE.newProject()
-
-
-@pytest.fixture(scope='function')
-def qgs_instance():
-    return QGIS_INSTANCE
-
-
-@pytest.fixture(scope='function')
-def iface():
-    return IFACE
-
-
-@pytest.fixture(scope='function')
-def canvas():
-    return CANVAS
-
-
-@pytest.fixture(scope='function')
-def globe(new_project, iface) -> Globe:
-    globe = Globe(iface)
+def globe(new_project, qgis_iface) -> Globe:
+    globe = Globe(qgis_iface)
     globe.set_projection(Projections.AZIMUTHAL_ORTHOGRAPHIC)
     return globe
