@@ -1,5 +1,4 @@
-#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
-#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+#  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
