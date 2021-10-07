@@ -71,8 +71,7 @@ def test_loading_s2cloudless(globe, qgis_iface, qgis_canvas):
     assert "S2 Cloudless 2018" in names
 
 
-@pytest.mark.skip('TODO: figure way to test processing')
-def test_loading_s2cloudless_countries_and_graticules(globe, qgis_iface, qgis_canvas):
+def test_loading_s2cloudless_countries_and_graticules(globe, qgis_iface, qgis_canvas, qgis_processing):
     """Test loading data"""
     assert len(qgis_iface.getMockLayers()) == 0
     globe.load_data(True, True, True, QColor(Qt.blue), QColor(Qt.blue), None, '50m', 10)
