@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>706</width>
-    <height>823</height>
+    <width>546</width>
+    <height>888</height>
    </rect>
   </property>
   <property name="floating">
@@ -17,7 +17,7 @@
    <string>Globe Builder</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QVBoxLayout" name="verticalLayout_20">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
      <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,0,0">
       <property name="sizeConstraint">
@@ -32,9 +32,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
-           <width>670</width>
-           <height>904</height>
+           <y>-143</y>
+           <width>510</width>
+           <height>886</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -43,7 +43,7 @@
             <item>
              <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
               <property name="title">
-               <string>Data sources</string>
+               <string>Data sources (optional)</string>
               </property>
               <property name="collapsed">
                <bool>false</bool>
@@ -154,30 +154,6 @@
                    </item>
                   </layout>
                  </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_8">
-                   <item>
-                    <spacer name="horizontalSpacer_4">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="pushButtonLoadData">
-                     <property name="text">
-                      <string>Load Data to a Map</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
                 </layout>
                </item>
               </layout>
@@ -238,7 +214,7 @@
                    <item>
                     <widget class="QLabel" name="label_2">
                      <property name="text">
-                      <string>'Longitude, Latitude' in decimal degree</string>
+                      <string>'Longitude, Latitude' in decimal degrees</string>
                      </property>
                     </widget>
                    </item>
@@ -259,7 +235,7 @@
                <item>
                 <widget class="QRadioButton" name="radioButtonCenter">
                  <property name="text">
-                  <string>Center of the current view</string>
+                  <string>Center to the current view</string>
                  </property>
                 </widget>
                </item>
@@ -385,30 +361,6 @@
                  </item>
                 </layout>
                </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_7">
-                 <item>
-                  <spacer name="horizontalSpacer_3">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonCenter">
-                   <property name="text">
-                    <string>Center</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
               </layout>
              </item>
             </layout>
@@ -428,11 +380,94 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_14">
                  <item>
-                  <widget class="QLabel" name="label_8">
-                   <property name="text">
-                    <string>Colors</string>
-                   </property>
-                  </widget>
+                  <layout class="QGridLayout" name="gridLayout_2">
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_15">
+                     <property name="text">
+                      <string>  Fill</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_11">
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Halo</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_17">
+                     <property name="text">
+                      <string>  Line</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_6">
+                     <property name="text">
+                      <string>Background</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QgsColorButton" name="mColorButtonBackground">
+                     <property name="allowOpacity">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="0">
+                    <widget class="QLabel" name="label_12">
+                     <property name="text">
+                      <string>  Graticules</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="1">
+                    <widget class="QgsColorButton" name="mColorButtonGraticules">
+                     <property name="allowOpacity">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="label_7">
+                     <property name="text">
+                      <string>  Countries</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QgsColorButton" name="mColorButtonCountries">
+                     <property name="allowOpacity">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_18">
+                     <property name="text">
+                      <string>Optional visualizations</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QgsColorButton" name="mColorButtonHalo">
+                     <property name="allowOpacity">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QgsColorButton" name="mColorButtonHFill"/>
+                   </item>
+                  </layout>
                  </item>
                  <item>
                   <spacer name="verticalSpacer_2">
@@ -446,101 +481,6 @@
                     </size>
                    </property>
                   </spacer>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_6">
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_15">
-                     <item>
-                      <widget class="QLabel" name="label_6">
-                       <property name="text">
-                        <string>Background</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label">
-                       <property name="text">
-                        <string>Globe Layout background</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_7">
-                       <property name="text">
-                        <string>Countries</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_12">
-                       <property name="text">
-                        <string>Graticules</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_11">
-                       <property name="text">
-                        <string>Halo</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer_5">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_16">
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonBackground">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonLayoutBackground">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonCountries">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonGraticules">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QgsColorButton" name="mColorButtonHalo">
-                       <property name="allowOpacity">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
                  </item>
                 </layout>
                </item>
@@ -584,6 +524,13 @@
                   </widget>
                  </item>
                  <item>
+                  <widget class="QRadioButton" name="radioButtonHFillWithHalo">
+                   <property name="text">
+                    <string>Halo, fill</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QRadioButton" name="radioButtonHOutline">
                    <property name="text">
                     <string>Outline, no fill</string>
@@ -591,29 +538,11 @@
                   </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_10">
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_18">
-                     <item>
-                      <widget class="QRadioButton" name="radioButtonHFillWithHalo">
-                       <property name="text">
-                        <string>Halo, fill</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QRadioButton" name="radioButtonHFill">
-                       <property name="text">
-                        <string>Outline, fill</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QgsColorButton" name="mColorButtonHFill"/>
-                   </item>
-                  </layout>
+                  <widget class="QRadioButton" name="radioButtonHFill">
+                   <property name="text">
+                    <string>Outline, fill</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -640,13 +569,6 @@
                   </size>
                  </property>
                 </spacer>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonApplyVisualizations">
-                 <property name="text">
-                  <string>Apply</string>
-                 </property>
-                </widget>
                </item>
               </layout>
              </item>
@@ -677,6 +599,30 @@
                   <widget class="QComboBox" name="comboBoxLayouts"/>
                  </item>
                 </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Globe Layout background</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QgsColorButton" name="mColorButtonLayoutBackground">
+                 <property name="minimumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16</height>
+                  </size>
+                 </property>
+                 <property name="allowOpacity">
+                  <bool>true</bool>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -774,6 +720,44 @@
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonApplyVisualizations">
+          <property name="text">
+           <string>Apply changes</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonRun">
+          <property name="text">
+           <string>Add the Globe to a Map</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonAddToLayout">
+          <property name="text">
+           <string>Add the Globe to a Layout</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QGroupBox" name="groupBox_6">
         <property name="title">
          <string>Attributions</string>
@@ -811,52 +795,7 @@
         </layout>
        </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_7"/>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_19">
-          <item>
-           <widget class="QPushButton" name="pushButtonRun">
-            <property name="text">
-             <string>Add the Globe to a Map</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonAddToLayout">
-            <property name="text">
-             <string>Add the Globe to a Layout</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_9">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
