@@ -198,7 +198,6 @@ class Globe:
 
         layer, index = halo.create_halo_layer(use_effects, stroke_color, fill_color)
         self.insert_layer_to_group(layer, index)
-        self.change_project_projection()
 
     def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()
