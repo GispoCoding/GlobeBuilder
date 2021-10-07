@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
-#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+
+#  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
@@ -93,6 +93,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.mColorButtonIntCountries.setColor(DEFAULT_INTERSECTING_COUNTRIES_COLOR)
 
         self.geolocations = {}
+        self.old_coordinates = DEFAULT_ORIGIN
+        self.old_projection = Projections.proj_from_id(self.comboBoxProjections.currentText())
 
         # connections
         self.layout_mngr.layoutAdded.connect(self.populate_comboBoxLayouts)
@@ -124,30 +126,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.listWidgetGeocodingResults.setEnabled(is_checked)
         self.spinBoxMaxResults.setEnabled(is_checked)
 
-    # @pyqtSlot(bool)
-    # def on_radioButtonHHalo_toggled(self, is_checked):
-    #     if not self.is_initializing:
-    #         self.add_halo_to_globe()
-
-    # @pyqtSlot(bool)
-    # def on_radioButtonHOutline_toggled(self, is_checked):
-    #     if not self.is_initializing:
-    #         self.add_halo_to_globe()
-
-    # @pyqtSlot(QColor)
-    # def on_mColorButtonBackground_colorChanged(self, color):
-    #     if not self.is_initializing:
-    #         self.globe.change_background_color(color)
-    #
-    # @pyqtSlot(QColor)
-    # def on_mColorButtonHalo_colorChanged(self, color):
-    #     if not self.is_initializing:
-    #         self.add_halo_to_globe()
-    #
-    # @pyqtSlot(QColor)
-    # def on_mColorButtonHFill_colorChanged(self, color):
-    #     if not self.is_initializing:
-    #         self.add_halo_to_globe()
 
     def on_radioButtonHFillWithHalo_toggled(self, is_checked):
         self.mColorButtonHFill.setEnabled(is_checked or self.radioButtonHFill.isChecked())
@@ -182,29 +160,30 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.geocoder.geocode(text, self.spinBoxMaxResults.value())
 
     @pyqtSlot()
-    def on_pushButtonLoadData_clicked(self):
-        self.load_data_to_globe(False)
-
-    @pyqtSlot()
     def on_pushButtonApplyVisualizations_clicked(self):
         if not self.is_initializing:
+            coordinates = self.calculate_origin_coordinates()
+            if coordinates != self.old_coordinates:
+                self.old_coordinates = coordinates
+                self.globe.set_origin(coordinates)
+            projection = Projections.proj_from_id(self.comboBoxProjections.currentText())
+            if projection != self.old_projection:
+                self.old_projection = projection
+                self.globe.set_projection(projection)
+                self.globe.change_project_projection()
             self.load_data_to_globe()
             self.globe.change_background_color(self.mColorButtonBackground.color())
             self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
+            self.globe.set_group_visibility(True)
             self.add_halo_to_globe()
-
-    @pyqtSlot()
-    def on_pushButtonCenter_clicked(self):
-        self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.set_projection(Projections.proj_from_id(self.comboBoxProjections.currentText()))
-        self.globe.change_project_projection()
-        self.add_halo_to_globe()
 
     @pyqtSlot()
     def on_pushButtonRun_clicked(self):
         self.load_data_to_globe(False)
-        self.globe.set_origin(self.calculate_origin_coordinates())
-        self.globe.set_projection(Projections.proj_from_id(self.comboBoxProjections.currentText()))
+        self.old_coordinates = self.calculate_origin_coordinates()
+        self.globe.set_origin(self.old_coordinates)
+        self.old_projection = Projections.proj_from_id(self.comboBoxProjections.currentText())
+        self.globe.set_projection(self.old_projection)
         self.globe.change_background_color(self.mColorButtonBackground.color())
         self.mColorButtonBackground.setColor(self.iface.mapCanvas().canvasColor())
         self.globe.change_project_projection()

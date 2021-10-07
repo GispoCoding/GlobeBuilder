@@ -1,5 +1,4 @@
-#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
-#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+#  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
@@ -38,7 +37,7 @@ class Projections(Enum):
     AZIMUTHAL_ORTHOGRAPHIC = Projection(tr(u'Azimuthal Orthographic'),
                                         '+proj=ortho +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs')
 
-    # Unfortunately +lon_0={lon} causes nasty rendering artifacts for all projections below (tested with QGIS 3.14.0)
+    # Unfortunately +lon_0={lon} causes nasty rendering artifacts for all projections below (tested with QGIS 3.14.0 and 3.20.3)
 
     # https://www.gislounge.com/how-to-use-the-equal-earth-projection-using-qgis-on-the-mac/
     EQUAL_EARTH = Projection(tr(u'Equal Earth'), '+proj=eqearth +datum=WGS84 +units=m +no_defs', (5, 2))
