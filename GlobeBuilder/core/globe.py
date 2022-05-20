@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#  Gispo Ltd., hereby disclaims all copyright interest in the program GlobeBuilder
-#  Copyright (C) 2020-2021 Gispo Ltd (https://www.gispo.fi/).
+
+#  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
@@ -198,7 +198,6 @@ class Globe:
 
         layer, index = halo.create_halo_layer(use_effects, stroke_color, fill_color)
         self.insert_layer_to_group(layer, index)
-        self.change_project_projection()
 
     def refresh_theme(self):
         theme_collection = self.qgis_instance.mapThemeCollection()

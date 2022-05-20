@@ -1,8 +1,10 @@
 Globe Builder
 =============
 ![](https://github.com/GispoCoding/GlobeBuilder/workflows/Tests/badge.svg)
+[![codecov.io](https://codecov.io/github/GispoCoding/GlobeBuilder/coverage.svg?branch=master)](https://codecov.io/github/GispoCoding/GlobeBuilder?branch=master)
 ![](https://github.com/GispoCoding/GlobeBuilder/workflows/Release/badge.svg)
 ![](https://github.com/GispoCoding/GlobeBuilder/workflows/Translations/badge.svg)
+[![GPLv2 license](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 QGIS 3 plugin that is meant for adding globe visualization to the current map using.
 
